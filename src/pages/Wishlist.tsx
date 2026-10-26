@@ -18,13 +18,13 @@ export const Wishlist: React.FC = () => {
           Your wishlist is empty
         </h1>
         <p className="text-chocolate-600 text-sm sm:text-base max-w-sm mb-8 leading-relaxed">
-          Save your favourite brownies, cookies and cakes here for your next craving.
+          Save your favourite artisanal brownies and molten fudge slabs here for your next craving.
         </p>
         <Link
           to="/shop"
           className="px-8 py-4 rounded-full bg-chocolate-900 text-cream-50 text-xs font-semibold uppercase tracking-wider hover:bg-caramel-600 transition-colors shadow-soft"
         >
-          Explore Fresh Treats
+          Explore Brownie Slabs
         </Link>
       </div>
     );

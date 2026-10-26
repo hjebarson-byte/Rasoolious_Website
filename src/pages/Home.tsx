@@ -27,8 +27,8 @@ export const Home: React.FC = () => {
 
   // Filter specific product sets
   const bestSellers = PRODUCTS.filter((p) => p.badge === 'BEST SELLER').slice(0, 4);
-  const signatureBrownies = PRODUCTS.filter((p) => p.category === 'Brownies').slice(0, 4);
-  const signatureCakes = PRODUCTS.filter((p) => p.category === 'Cakes').slice(0, 6);
+  const signatureBrownies = PRODUCTS.slice(0, 4);
+  const moltenBrownies = PRODUCTS.filter((p) => p.category === 'Molten Centers' || p.category === 'Classic Fudgy').slice(0, 6);
 
   return (
     <div className="pt-24 sm:pt-28">
@@ -119,9 +119,9 @@ export const Home: React.FC = () => {
       {/* ================= 2. FEATURED CATEGORIES ================= */}
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeading
-          badge="Boutique Menu"
-          title="Explore Our Fresh Bakes"
-          subtitle="From molten fudgy brownies to towering celebration cakes, everything is made by hand in small daily batches."
+          badge="Atelier Menu"
+          title="Explore Our Brownie Collections"
+          subtitle="From 70% Callebaut dark chocolate molten slabs to roasted walnut crunches, every brownie is baked in small daily batches."
         />
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-5">
@@ -208,10 +208,10 @@ export const Home: React.FC = () => {
             </p>
           </div>
           <Link
-            to="/shop?category=Brownies"
+            to="/shop"
             className="mt-4 md:mt-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-caramel-300 text-chocolate-800 text-xs font-semibold hover:bg-caramel-50 transition-colors shadow-soft-sm"
           >
-            <span>View All Brownies (8)</span>
+            <span>View All Brownies (12)</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -236,22 +236,22 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             <div className="lg:col-span-7 space-y-4">
               <span className="px-3.5 py-1 text-xs font-bold tracking-widest uppercase rounded-full bg-caramel-500 text-white inline-block">
-                Custom Box Savings
+                Artisan Brownie Box
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-cream-50 leading-tight">
-                Sweet box. Better mood.
+                Sweet box. Pure indulgence.
               </h2>
               <p className="text-chocolate-200 text-sm sm:text-base max-w-lg leading-relaxed">
-                Build your own box of 6 treats and save 10%. Mix & match dark fudge brownies, oversized NYC cookies, and artisanal cakes in an embossed gift box with a ribbon.
+                Build your own box of handcrafted brownies and save 10%. Mix & match dark chocolate fudge, molten Lotus Biscoff slabs, and roasted Kashmiri walnut brownies in an embossed gift box with a satin ribbon.
               </p>
               
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <Link
-                  to="/shop?category=Gift+Boxes"
+                  to="/shop"
                   className="px-8 py-3.5 rounded-full bg-cream-50 hover:bg-caramel-200 text-chocolate-950 text-sm font-semibold transition-all shadow-soft active:scale-95 inline-flex items-center gap-2"
                 >
                   <ShoppingBag className="w-4 h-4 text-caramel-600" />
-                  <span>Build Your Box</span>
+                  <span>Choose Your Brownies</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <span className="text-xs text-caramel-300 font-medium">
@@ -273,16 +273,16 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 6. CELEBRATION CAKES COLLECTION ================= */}
+      {/* ================= 6. MOLTEN & LOADED BROWNIE SLABS ================= */}
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeading
-          badge="Centerpiece Bakes"
-          title="Celebration Cakes For Special Moments"
-          subtitle="Towering layers of moist Genoese crumb, silky Belgian chocolate ganache, and caramelized Basque crusts."
+          badge="Chef's Selection"
+          title="Molten & Loaded Brownie Slabs"
+          subtitle="Thick 500g whole uncut slabs featuring molten Nutella cores, golden salted caramel, and crunchy caramelized almonds."
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {signatureCakes.map((product) => (
+          {moltenBrownies.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -293,10 +293,10 @@ export const Home: React.FC = () => {
 
         <div className="mt-12 text-center">
           <Link
-            to="/shop?category=Cakes"
+            to="/shop"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-chocolate-900 hover:bg-caramel-600 text-cream-50 text-xs font-semibold uppercase tracking-wider transition-colors shadow-soft"
           >
-            <span>Explore All Celebration Cakes</span>
+            <span>Explore All Brownie Slabs</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

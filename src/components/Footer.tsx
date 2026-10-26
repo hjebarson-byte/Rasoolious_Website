@@ -78,32 +78,32 @@ export const Footer: React.FC = () => {
           {/* Shop Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold tracking-widest text-caramel-400 uppercase">
-              Shop Treats
+              Brownie Collections
             </h4>
             <ul className="space-y-2 text-sm text-chocolate-300">
               <li>
-                <Link to="/shop?category=Brownies" className="hover:text-cream-50 transition-colors">
-                  Fudge Brownies
+                <Link to="/shop?category=Classic+Fudgy" className="hover:text-cream-50 transition-colors">
+                  Classic Fudgy Slabs
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Cakes" className="hover:text-cream-50 transition-colors">
-                  Celebration Cakes
+                <Link to="/shop?category=Molten+Centers" className="hover:text-cream-50 transition-colors">
+                  Molten Centers (Nutella & Biscoff)
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Cookies" className="hover:text-cream-50 transition-colors">
-                  Monster NYC Cookies
+                <Link to="/shop?category=Nut+%26+Crunch" className="hover:text-cream-50 transition-colors">
+                  Nut & Crunch Brownies
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Gift+Boxes" className="hover:text-cream-50 transition-colors">
-                  Curated Gift Boxes
+                <Link to="/shop?category=Artisan+Slabs" className="hover:text-cream-50 transition-colors">
+                  Artisan Slabs
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Specials" className="hover:text-cream-50 transition-colors">
-                  Seasonal Specials
+                <Link to="/shop?category=Special+Editions" className="hover:text-cream-50 transition-colors">
+                  Special Editions
                 </Link>
               </li>
             </ul>

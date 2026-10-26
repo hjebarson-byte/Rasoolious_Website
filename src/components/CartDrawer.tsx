@@ -114,7 +114,7 @@ export const CartDrawer: React.FC = () => {
                 Your basket is empty
               </h4>
               <p className="text-xs text-chocolate-600 max-w-xs mb-6">
-                Fresh warm brownies, cookies and cakes are calling your name.
+                Fresh warm artisanal brownies and molten fudge slabs are calling your name.
               </p>
               <button
                 type="button"

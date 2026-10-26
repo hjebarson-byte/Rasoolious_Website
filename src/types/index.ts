@@ -1,10 +1,10 @@
 export type CategoryType = 
   | 'All' 
-  | 'Brownies' 
-  | 'Cakes' 
-  | 'Cookies' 
-  | 'Gift Boxes' 
-  | 'Specials';
+  | 'Classic Fudgy' 
+  | 'Molten Centers' 
+  | 'Nut & Crunch' 
+  | 'Artisan Slabs' 
+  | 'Special Editions';
 
 export interface Product {
   id: string;

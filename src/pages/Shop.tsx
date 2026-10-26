@@ -8,11 +8,11 @@ import { ProductQuickView } from '../components/ProductQuickView';
 
 const CATEGORIES: CategoryType[] = [
   'All',
-  'Brownies',
-  'Cakes',
-  'Cookies',
-  'Gift Boxes',
-  'Specials',
+  'Classic Fudgy',
+  'Molten Centers',
+  'Nut & Crunch',
+  'Artisan Slabs',
+  'Special Editions',
 ];
 
 export const Shop: React.FC = () => {
@@ -124,10 +124,10 @@ export const Shop: React.FC = () => {
             Fresh From The Oven
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl text-chocolate-950 font-normal tracking-tight">
-            Shop All Treats
+            Artisanal Brownie Slabs
           </h1>
           <p className="mt-3 text-chocolate-600 text-base sm:text-lg">
-            Find your next favourite bite. Baked fresh daily with pure chocolate & butter.
+            Handcrafted with 70% Callebaut dark chocolate and pure French cultured butter.
           </p>
         </div>
 
@@ -139,7 +139,7 @@ export const Shop: React.FC = () => {
               <Search className="w-5 h-5 text-chocolate-400 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search brownies, cakes, cookies..."
+                placeholder="Search brownies, molten fudge slabs, biscoff, walnuts..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-11 pr-10 py-3 rounded-full bg-cream-50 border border-cream-200 text-sm text-chocolate-900 placeholder:text-chocolate-400 focus:outline-none focus:ring-2 focus:ring-caramel-500"

@@ -54,11 +54,11 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: 'Home', path: '/' },
-    { label: 'Shop All', path: '/shop' },
-    { label: 'Brownies', path: '/shop?category=Brownies' },
-    { label: 'Cakes', path: '/shop?category=Cakes' },
-    { label: 'Cookies', path: '/shop?category=Cookies' },
-    { label: 'Gift Boxes', path: '/shop?category=Gift+Boxes' },
+    { label: 'All Brownies', path: '/shop' },
+    { label: 'Classic Fudgy', path: '/shop?category=Classic+Fudgy' },
+    { label: 'Molten Centers', path: '/shop?category=Molten+Centers' },
+    { label: 'Nut & Crunch', path: '/shop?category=Nut+%26+Crunch' },
+    { label: 'Our Story', path: '/our-story' },
   ];
 
   return (
@@ -218,7 +218,7 @@ export const Navbar: React.FC = () => {
               <input
                 type="text"
                 autoFocus
-                placeholder="Search brownies, cakes, cookies, biscoff, pecan..."
+                placeholder="Search brownies, molten slabs, biscoff, walnuts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-14 pr-12 py-4 rounded-2xl bg-cream-50 text-chocolate-900 placeholder:text-chocolate-400 border border-cream-300 focus:outline-none focus:ring-2 focus:ring-caramel-400 text-base md:text-lg"
