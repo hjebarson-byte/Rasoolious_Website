@@ -5,8 +5,6 @@ import {
   Package, 
   Truck, 
   BarChart3, 
-  Users, 
-  ShieldCheck, 
   Settings, 
   X,
   Thermometer
@@ -21,9 +19,7 @@ export const Sidebar: React.FC = () => {
     sidebarOpen, 
     setSidebarOpen, 
     orders, 
-    products, 
-    users, 
-    roles
+    products
   } = useAdmin();
 
   const handleNavClick = (screen: AdminScreen) => {
@@ -53,7 +49,7 @@ export const Sidebar: React.FC = () => {
         },
         {
           id: 'inventory' as AdminScreen,
-          label: 'Batch & Inventory',
+          label: 'Brownie Inventory',
           icon: Package,
           badge: products.length.toString(),
           badgeColor: 'bg-caramel-100 text-caramel-800'
@@ -69,25 +65,6 @@ export const Sidebar: React.FC = () => {
           label: 'Analytics & Reports',
           icon: BarChart3,
           badge: null
-        }
-      ]
-    },
-    {
-      group: 'Administration',
-      items: [
-        {
-          id: 'users' as AdminScreen,
-          label: 'User Management',
-          icon: Users,
-          badge: users.length.toString(),
-          badgeColor: 'bg-emerald-100 text-emerald-800'
-        },
-        {
-          id: 'roles' as AdminScreen,
-          label: 'Roles Management',
-          icon: ShieldCheck,
-          badge: roles.length.toString(),
-          badgeColor: 'bg-sky-100 text-sky-800'
         }
       ]
     }

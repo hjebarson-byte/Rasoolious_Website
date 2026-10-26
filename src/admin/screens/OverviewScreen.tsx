@@ -66,9 +66,9 @@ export const OverviewScreen: React.FC = () => {
       color: 'bg-purple-100 text-purple-700'
     },
     {
-      label: 'Batch Catalogue',
+      label: 'Brownie Catalogue',
       value: `${availableProductsCount}/${products.length}`,
-      trend: 'Available Treats',
+      trend: 'Available Slabs',
       trendPositive: true,
       icon: Package,
       color: 'bg-emerald-100 text-emerald-700'
@@ -94,7 +94,7 @@ export const OverviewScreen: React.FC = () => {
             Good morning, Chef Rasool
           </h1>
           <p className="text-xs sm:text-sm text-chocolate-600 mt-1">
-            Here's your bakery's live operational overview for Kanniyakumari Hub.
+            Here's your brownie atelier's live operational overview for Kanniyakumari Hub.
           </p>
         </div>
 
@@ -104,7 +104,7 @@ export const OverviewScreen: React.FC = () => {
             className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
-            <span>Add Treat</span>
+            <span>Add Brownie</span>
           </button>
           <button
             onClick={() => setCurrentScreen('kitchen-orders')}

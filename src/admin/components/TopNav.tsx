@@ -15,13 +15,11 @@ import {
   AlertTriangle 
 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
-import type { UserRole } from '../types/adminTypes';
 
 export const TopNav: React.FC = () => {
   const { 
     setSidebarOpen, 
     activeRole, 
-    setActiveRole, 
     setCurrentScreen, 
     notifications, 
     removeNotification, 
@@ -195,24 +193,10 @@ export const TopNav: React.FC = () => {
         {/* Right Section: Role Simulator, Date, Notifications, Store Link & Profile */}
         <div className="flex items-center gap-2 sm:gap-3">
           
-          {/* Active Role Simulator Pill */}
-          <div className="hidden lg:flex items-center gap-1.5 bg-stone-50 border border-stone-200 px-2.5 py-1 rounded-xl text-xs">
+          {/* Active Admin Badge */}
+          <div className="hidden lg:flex items-center gap-1.5 bg-caramel-50 border border-caramel-200/80 px-3 py-1 rounded-xl text-xs font-semibold text-caramel-900">
             <ShieldCheck className="w-3.5 h-3.5 text-caramel-600" />
-            <span className="text-stone-500 text-[11px]">Role:</span>
-            <select
-              value={activeRole}
-              onChange={e => {
-                const newRole = e.target.value as UserRole;
-                setActiveRole(newRole);
-                showToast(`Switched active role simulator to ${newRole}`, 'info');
-              }}
-              className="bg-transparent text-chocolate-900 font-semibold text-xs focus:outline-none cursor-pointer"
-            >
-              <option value="Super Admin" className="bg-white text-chocolate-900">Super Admin</option>
-              <option value="Admin" className="bg-white text-chocolate-900">Admin</option>
-              <option value="Kitchen Staff" className="bg-white text-chocolate-900">Kitchen Staff</option>
-              <option value="User" className="bg-white text-chocolate-900">User</option>
-            </select>
+            <span>Super Admin</span>
           </div>
 
           {/* Current Date Badge */}
@@ -332,17 +316,6 @@ export const TopNav: React.FC = () => {
                 >
                   <Sliders className="w-4 h-4 text-caramel-600" />
                   <span>Delivery Rates & Pincodes</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    setCurrentScreen('roles');
-                    setProfileOpen(false);
-                  }}
-                  className="w-full text-left px-3.5 py-2 hover:bg-stone-50 text-chocolate-800 flex items-center gap-2.5 transition-colors"
-                >
-                  <ShieldCheck className="w-4 h-4 text-caramel-600" />
-                  <span>Role Permissions Matrix</span>
                 </button>
 
                 <div className="border-t border-stone-100 my-1"></div>

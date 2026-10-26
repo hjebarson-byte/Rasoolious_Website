@@ -10,8 +10,6 @@ import { KitchenOrdersScreen } from '../screens/KitchenOrdersScreen';
 import { InventoryScreen } from '../screens/InventoryScreen';
 import { DeliverySlotsScreen } from '../screens/DeliverySlotsScreen';
 import { AnalyticsScreen } from '../screens/AnalyticsScreen';
-import { UsersScreen } from '../screens/UsersScreen';
-import { RolesScreen } from '../screens/RolesScreen';
 
 export const AdminLayout: React.FC = () => {
   const { currentScreen } = useAdmin();
@@ -28,10 +26,6 @@ export const AdminLayout: React.FC = () => {
         return <DeliverySlotsScreen />;
       case 'analytics':
         return <AnalyticsScreen />;
-      case 'users':
-        return <UsersScreen />;
-      case 'roles':
-        return <RolesScreen />;
       default:
         return <OverviewScreen />;
     }

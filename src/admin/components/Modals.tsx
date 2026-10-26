@@ -142,7 +142,7 @@ const ProductModalForm: React.FC<{
   onSave: (prod: any) => void;
 }> = ({ isEdit, initialData, onClose, onSave }) => {
   const [name, setName] = useState(initialData?.name || '');
-  const [category, setCategory] = useState(initialData?.category || 'Brownies');
+  const [category, setCategory] = useState(initialData?.category || 'Classic Fudgy');
   const [weight, setWeight] = useState(initialData?.weight || '500 g');
   const [price, setPrice] = useState(initialData?.price || 450);
   const [salePrice, setSalePrice] = useState(initialData?.salePrice || 420);
@@ -188,9 +188,9 @@ const ProductModalForm: React.FC<{
           </div>
           <div>
             <h3 className="font-serif font-bold text-lg text-chocolate-950">
-              {isEdit ? `Edit Treat: ${initialData?.name}` : '+ Add New Bakery Treat'}
+              {isEdit ? `Edit Brownie: ${initialData?.name}` : '+ Add New Brownie Recipe'}
             </h3>
-            <p className="text-xs text-stone-500">Specify batch portions, daily kitchen limit and artisan pricing.</p>
+            <p className="text-xs text-stone-500">Specify cocoa %, batch portions, daily kitchen limit and artisan pricing.</p>
           </div>
         </div>
         <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
@@ -200,7 +200,7 @@ const ProductModalForm: React.FC<{
 
       <div className="p-6 space-y-4 text-xs max-h-[75vh] overflow-y-auto">
         <div>
-          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Treat Title *</label>
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Brownie Recipe Title *</label>
           <input
             type="text"
             required
@@ -213,17 +213,17 @@ const ProductModalForm: React.FC<{
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Category</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Brownie Style / Category</label>
             <select
               value={category}
               onChange={e => setCategory(e.target.value)}
               className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             >
-              <option value="Brownies">Brownies</option>
-              <option value="Cookies">Cookies</option>
-              <option value="Cakes">Cakes</option>
-              <option value="Gift Boxes">Gift Boxes</option>
-              <option value="Specials">Specials</option>
+              <option value="Classic Fudgy">Classic Fudgy</option>
+              <option value="Molten Centers">Molten Centers</option>
+              <option value="Nut & Crunch">Nut & Crunch</option>
+              <option value="Artisan Slabs">Artisan Slabs</option>
+              <option value="Special Editions">Special Editions</option>
             </select>
           </div>
 
@@ -323,7 +323,7 @@ const ProductModalForm: React.FC<{
               onChange={e => setFeatured(e.target.checked)}
               className="rounded border-stone-300 text-caramel-500 focus:ring-caramel-400"
             />
-            <span className="font-semibold text-chocolate-900">Feature this treat prominently on storefront showcase</span>
+            <span className="font-semibold text-chocolate-900">Feature this brownie prominently on storefront showcase</span>
           </label>
         </div>
       </div>
@@ -340,7 +340,7 @@ const ProductModalForm: React.FC<{
           type="submit"
           className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold transition-colors shadow-sm"
         >
-          {isEdit ? 'Save Changes' : 'Create Treat'}
+          {isEdit ? 'Save Changes' : 'Create Brownie'}
         </button>
       </div>
     </form>

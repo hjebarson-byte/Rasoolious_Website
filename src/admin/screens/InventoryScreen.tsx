@@ -17,7 +17,7 @@ export const InventoryScreen: React.FC = () => {
     toggleProductStatus 
   } = useAdmin();
 
-  const categories = ['All', 'Brownies', 'Cookies', 'Cakes', 'Gift Boxes', 'Specials'];
+  const categories = ['All', 'Classic Fudgy', 'Molten Centers', 'Nut & Crunch', 'Artisan Slabs', 'Special Editions'];
 
   // Metrics
   const inStockCount = products.filter(p => p.status === 'In Stock').length;
@@ -46,10 +46,10 @@ export const InventoryScreen: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="font-serif font-bold text-2xl sm:text-3xl text-chocolate-950">
-            Daily Batch & Inventory
+            Daily Brownie Batch & Inventory
           </h1>
           <p className="text-xs sm:text-sm text-chocolate-600 mt-1">
-            Control freshly baked product availability, daily production ceilings, and customer menus.
+            Control freshly baked artisanal brownie slab availability, daily tray limits, and customer orders.
           </p>
         </div>
 
@@ -58,14 +58,14 @@ export const InventoryScreen: React.FC = () => {
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs transition-colors shadow-sm self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
-          <span>Add New Treat</span>
+          <span>Add New Brownie</span>
         </button>
       </div>
 
       {/* Inventory KPI Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
         <div className="bg-white border border-stone-200/90 rounded-2xl p-4 shadow-xs">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Total Treats</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">Total Brownies</span>
           <div className="font-serif font-black text-2xl text-chocolate-950 mt-1">{products.length}</div>
           <span className="text-[11px] text-caramel-700 font-semibold">Active catalog</span>
         </div>
