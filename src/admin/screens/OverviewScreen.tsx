@@ -39,7 +39,7 @@ export const OverviewScreen: React.FC = () => {
       trend: '+18.4% vs yesterday',
       trendPositive: true,
       icon: TrendingUp,
-      color: 'from-amber-500/20 to-caramel-500/20 text-caramel-400'
+      color: 'bg-amber-100 text-amber-700'
     },
     {
       label: 'Orders Received',
@@ -47,7 +47,7 @@ export const OverviewScreen: React.FC = () => {
       trend: '42 today target',
       trendPositive: true,
       icon: Receipt,
-      color: 'from-blue-500/20 to-sky-500/20 text-sky-400'
+      color: 'bg-sky-100 text-sky-700'
     },
     {
       label: 'In Production',
@@ -55,7 +55,7 @@ export const OverviewScreen: React.FC = () => {
       trend: `${inOvenCount} oven • ${inCoolingCount} cooling`,
       trendPositive: true,
       icon: Flame,
-      color: 'from-orange-500/20 to-amber-500/20 text-amber-400'
+      color: 'bg-orange-100 text-orange-700'
     },
     {
       label: 'Pending Dispatch',
@@ -63,7 +63,7 @@ export const OverviewScreen: React.FC = () => {
       trend: 'NH-66 courier route',
       trendPositive: true,
       icon: Truck,
-      color: 'from-purple-500/20 to-pink-500/20 text-purple-400'
+      color: 'bg-purple-100 text-purple-700'
     },
     {
       label: 'Batch Catalogue',
@@ -71,17 +71,17 @@ export const OverviewScreen: React.FC = () => {
       trend: 'Available Treats',
       trendPositive: true,
       icon: Package,
-      color: 'from-emerald-500/20 to-teal-500/20 text-emerald-400'
+      color: 'bg-emerald-100 text-emerald-700'
     }
   ];
 
   // Pipeline stage counts
   const pipelineStages: { id: OrderStatus; label: string; count: number; color: string }[] = [
-    { id: 'received', label: 'Received', count: orders.filter(o => o.status === 'received').length, color: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
-    { id: 'oven', label: 'In Oven', count: inOvenCount, color: 'text-orange-400 bg-orange-500/10 border-orange-500/30' },
-    { id: 'cooling', label: 'Cooling & Slicing', count: inCoolingCount, color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' },
-    { id: 'delivery', label: 'Out for Delivery', count: pendingDispatchCount, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' },
-    { id: 'completed', label: 'Completed', count: orders.filter(o => o.status === 'completed').length, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' }
+    { id: 'received', label: 'Received', count: orders.filter(o => o.status === 'received').length, color: 'text-amber-800 bg-amber-50 border-amber-200 hover:bg-amber-100/70' },
+    { id: 'oven', label: 'In Oven', count: inOvenCount, color: 'text-orange-800 bg-orange-50 border-orange-200 hover:bg-orange-100/70' },
+    { id: 'cooling', label: 'Cooling & Slicing', count: inCoolingCount, color: 'text-sky-800 bg-sky-50 border-sky-200 hover:bg-sky-100/70' },
+    { id: 'delivery', label: 'Out for Delivery', count: pendingDispatchCount, color: 'text-purple-800 bg-purple-50 border-purple-200 hover:bg-purple-100/70' },
+    { id: 'completed', label: 'Completed', count: orders.filter(o => o.status === 'completed').length, color: 'text-emerald-800 bg-emerald-50 border-emerald-200 hover:bg-emerald-100/70' }
   ];
 
   return (
@@ -90,10 +90,10 @@ export const OverviewScreen: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif font-bold text-2xl sm:text-3xl text-cream-50">
+          <h1 className="font-serif font-bold text-2xl sm:text-3xl text-chocolate-950">
             Good morning, Chef Rasool
           </h1>
-          <p className="text-xs sm:text-sm text-chocolate-300 mt-1">
+          <p className="text-xs sm:text-sm text-chocolate-600 mt-1">
             Here's your bakery's live operational overview for Kanniyakumari Hub.
           </p>
         </div>
@@ -101,17 +101,17 @@ export const OverviewScreen: React.FC = () => {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => openModal('addProduct')}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-400 text-chocolate-950 font-bold text-xs transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Add Treat</span>
           </button>
           <button
             onClick={() => setCurrentScreen('kitchen-orders')}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-chocolate-900 hover:bg-chocolate-850 text-cream-100 font-semibold text-xs border border-chocolate-800 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-chocolate-900 font-semibold text-xs border border-stone-200 transition-colors shadow-xs"
           >
             <span>Live Queue</span>
-            <ArrowRight className="w-3.5 h-3.5 text-caramel-400" />
+            <ArrowRight className="w-3.5 h-3.5 text-caramel-600" />
           </button>
         </div>
       </div>
@@ -123,20 +123,20 @@ export const OverviewScreen: React.FC = () => {
           return (
             <div
               key={idx}
-              className="bg-chocolate-950 border border-chocolate-850 rounded-2xl p-4 shadow-sm relative overflow-hidden group hover:border-chocolate-700 transition-all"
+              className="bg-white border border-stone-200/90 rounded-2xl p-4 shadow-xs relative overflow-hidden group hover:border-caramel-300 hover:shadow-sm transition-all"
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-chocolate-400">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
                   {kpi.label}
                 </span>
-                <div className={`p-2 rounded-xl bg-gradient-to-br ${kpi.color}`}>
+                <div className={`p-2 rounded-xl ${kpi.color}`}>
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
-              <div className="font-serif font-black text-xl sm:text-2xl text-cream-50 mt-2">
+              <div className="font-serif font-black text-xl sm:text-2xl text-chocolate-950 mt-2">
                 {kpi.value}
               </div>
-              <div className="text-[11px] text-caramel-400 font-semibold mt-1">
+              <div className="text-[11px] text-caramel-700 font-semibold mt-1">
                 {kpi.trend}
               </div>
             </div>
@@ -145,17 +145,17 @@ export const OverviewScreen: React.FC = () => {
       </div>
 
       {/* Baking & Dispatch Pipeline Queue */}
-      <div className="bg-chocolate-950 border border-chocolate-850 rounded-3xl p-5 shadow-sm space-y-4">
+      <div className="bg-white border border-stone-200/90 rounded-3xl p-5 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-caramel-500/20 text-caramel-400">
+            <div className="p-2.5 rounded-xl bg-orange-100 text-orange-600">
               <Flame className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-serif font-bold text-base text-cream-50">
+              <h3 className="font-serif font-bold text-base text-chocolate-950">
                 Live Kitchen Production Pipeline
               </h3>
-              <p className="text-xs text-chocolate-400">
+              <p className="text-xs text-stone-500">
                 Track confections progressing from oven to doorstep across Kanniyakumari.
               </p>
             </div>
@@ -163,7 +163,7 @@ export const OverviewScreen: React.FC = () => {
 
           <button
             onClick={() => setCurrentScreen('kitchen-orders')}
-            className="text-xs font-semibold text-caramel-400 hover:text-caramel-300 flex items-center gap-1"
+            className="text-xs font-semibold text-caramel-700 hover:text-caramel-800 flex items-center gap-1"
           >
             <span>Manage Orders</span>
             <ChevronRight className="w-4 h-4" />
@@ -175,15 +175,15 @@ export const OverviewScreen: React.FC = () => {
             <div
               key={stage.id}
               onClick={() => setCurrentScreen('kitchen-orders')}
-              className={`p-3.5 rounded-2xl border cursor-pointer hover:scale-[1.02] transition-transform ${stage.color}`}
+              className={`p-3.5 rounded-2xl border cursor-pointer transition-all hover:scale-[1.02] shadow-xs ${stage.color}`}
             >
               <span className="text-[10px] font-bold uppercase tracking-wider block">
                 {stage.label}
               </span>
-              <div className="font-serif font-black text-2xl mt-1 text-cream-50">
+              <div className="font-serif font-black text-2xl mt-1 text-chocolate-950">
                 {stage.count}
               </div>
-              <span className="text-[10px] text-chocolate-400 mt-0.5 block">
+              <span className="text-[10px] text-stone-600 mt-0.5 block font-medium">
                 {stage.count === 1 ? '1 active order' : `${stage.count} active orders`}
               </span>
             </div>
@@ -195,50 +195,51 @@ export const OverviewScreen: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Recent Urgent Orders (2 cols) */}
-        <div className="lg:col-span-2 bg-chocolate-950 border border-chocolate-850 rounded-3xl p-5 shadow-sm space-y-4">
+        <div className="lg:col-span-2 bg-white border border-stone-200/90 rounded-3xl p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-serif font-bold text-base text-cream-50">
+            <h3 className="font-serif font-bold text-base text-chocolate-950">
               Recent Kitchen Dispatches
             </h3>
             <button
               onClick={() => setCurrentScreen('kitchen-orders')}
-              className="text-xs text-caramel-400 hover:text-caramel-300 font-semibold flex items-center gap-1"
+              className="text-xs text-caramel-700 hover:text-caramel-800 font-semibold flex items-center gap-1"
             >
               <span>View All ({orders.length})</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="divide-y divide-chocolate-850">
+          <div className="divide-y divide-stone-100">
             {orders.slice(0, 5).map(order => (
               <div
                 key={order.id}
                 onClick={() => openOrderDrawer(order)}
-                className="py-3 flex items-center justify-between gap-3 hover:bg-chocolate-900/60 p-2 rounded-xl cursor-pointer transition-colors group"
+                className="py-3 flex items-center justify-between gap-3 hover:bg-stone-50 p-2.5 rounded-2xl cursor-pointer transition-colors group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-chocolate-900 border border-chocolate-800 flex items-center justify-center font-mono font-bold text-xs text-caramel-300">
+                  <div className="w-9 h-9 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center font-mono font-bold text-xs text-caramel-700">
                     {order.id.slice(-3)}
                   </div>
                   <div>
-                    <div className="font-semibold text-xs text-cream-100 group-hover:text-caramel-300 transition-colors">
+                    <div className="font-semibold text-xs text-chocolate-950 group-hover:text-caramel-700 transition-colors">
                       {order.customerName}
                     </div>
-                    <div className="text-[11px] text-chocolate-400">
-                      {order.locality} • <span className="text-chocolate-300">{order.slot.split(',')[0]}</span>
+                    <div className="text-[11px] text-stone-500">
+                      {order.locality} • <span className="text-stone-700">{order.slot.split(',')[0]}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="font-mono font-bold text-xs text-cream-100">
+                  <div className="font-mono font-bold text-xs text-chocolate-950">
                     ₹{order.total}
                   </div>
                   <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                    order.status === 'oven' ? 'bg-amber-500/20 text-amber-300' :
-                    order.status === 'delivery' ? 'bg-purple-500/20 text-purple-300' :
-                    order.status === 'completed' ? 'bg-emerald-500/20 text-emerald-300' :
-                    'bg-chocolate-800 text-chocolate-300'
+                    order.status === 'oven' ? 'bg-orange-100 text-orange-800' :
+                    order.status === 'cooling' ? 'bg-sky-100 text-sky-800' :
+                    order.status === 'delivery' ? 'bg-purple-100 text-purple-800' :
+                    order.status === 'completed' ? 'bg-emerald-100 text-emerald-800' :
+                    'bg-amber-100 text-amber-800'
                   }`}>
                     {order.status.toUpperCase()}
                   </span>
@@ -249,42 +250,42 @@ export const OverviewScreen: React.FC = () => {
         </div>
 
         {/* Delivery Slot Booking Progress (1 col) */}
-        <div className="bg-chocolate-950 border border-chocolate-850 rounded-3xl p-5 shadow-sm space-y-4">
+        <div className="bg-white border border-stone-200/90 rounded-3xl p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-serif font-bold text-base text-cream-50">
+            <h3 className="font-serif font-bold text-base text-chocolate-950">
               Today's Slot Capacity
             </h3>
             <button
               onClick={() => setCurrentScreen('delivery-slots')}
-              className="text-xs text-caramel-400 hover:text-caramel-300 font-semibold"
+              className="text-xs text-caramel-700 hover:text-caramel-800 font-semibold"
             >
               Manage
             </button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {deliverySlots.map(slot => {
               const pct = Math.min(100, Math.round((slot.booked / slot.capacity) * 100));
               const isFull = slot.booked >= slot.capacity;
 
               return (
-                <div key={slot.id} className="bg-chocolate-900/60 border border-chocolate-850 rounded-2xl p-3.5 space-y-2">
+                <div key={slot.id} className="bg-stone-50/80 border border-stone-200/70 rounded-2xl p-3.5 space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <div>
-                      <span className="font-bold text-cream-100">{slot.name}</span>
-                      <span className="text-[10px] text-chocolate-400 ml-1.5">({slot.timeWindow})</span>
+                      <span className="font-bold text-chocolate-950">{slot.name}</span>
+                      <span className="text-[10px] text-stone-500 ml-1.5">({slot.timeWindow})</span>
                     </div>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      isFull ? 'bg-terracotta-500/20 text-terracotta-300' : 'bg-emerald-500/20 text-emerald-300'
+                      isFull ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'
                     }`}>
                       {slot.booked}/{slot.capacity}
                     </span>
                   </div>
 
-                  <div className="w-full bg-chocolate-950 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-stone-200 rounded-full h-2 overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        isFull ? 'bg-terracotta-500' : 'bg-caramel-500'
+                        isFull ? 'bg-rose-500' : 'bg-caramel-500'
                       }`}
                       style={{ width: `${pct}%` }}
                     />
@@ -294,9 +295,9 @@ export const OverviewScreen: React.FC = () => {
             })}
           </div>
 
-          <div className="pt-2 border-t border-chocolate-850 text-xs text-chocolate-400 space-y-2">
+          <div className="pt-2 border-t border-stone-100 text-xs text-stone-500 space-y-2">
             <div className="flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-caramel-400 shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 text-caramel-600 shrink-0 mt-0.5" />
               <p className="text-[11px] leading-relaxed">
                 Evening slot is currently capped at 20 orders to preserve warm bake dispatch quality.
               </p>

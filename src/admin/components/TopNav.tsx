@@ -66,7 +66,7 @@ export const TopNav: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Filter search matches
+  // Search Results
   const matchedOrders = searchQuery.trim()
     ? orders.filter(
         o =>
@@ -85,14 +85,14 @@ export const TopNav: React.FC = () => {
     : [];
 
   return (
-    <header className="sticky top-0 z-40 bg-chocolate-950 text-cream-50 border-b border-chocolate-800/80 shadow-md">
+    <header className="sticky top-0 z-40 bg-white text-chocolate-950 border-b border-stone-200/90 shadow-xs">
       <div className="flex items-center justify-between px-3.5 sm:px-6 py-2.5 gap-2 sm:gap-4">
         
         {/* Left: Brand & Sidebar Toggle */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(prev => !prev)}
-            className="p-1.5 rounded-lg text-cream-200 hover:text-white hover:bg-chocolate-900 transition-colors"
+            className="p-1.5 rounded-xl text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors"
             title="Toggle Sidebar"
           >
             <Menu className="w-5 h-5" />
@@ -102,14 +102,14 @@ export const TopNav: React.FC = () => {
             onClick={() => setCurrentScreen('overview')}
             className="flex items-center gap-2.5 cursor-pointer group"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-caramel-400 to-caramel-600 text-chocolate-950 flex items-center justify-center font-serif font-black text-lg shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-caramel-400 to-caramel-600 text-white flex items-center justify-center font-serif font-black text-lg shadow-sm">
               R
             </div>
             <div className="hidden sm:block">
-              <span className="font-serif font-bold text-base tracking-wider text-cream-50 group-hover:text-caramel-300 transition-colors">
+              <span className="font-serif font-bold text-base tracking-wider text-chocolate-950 group-hover:text-caramel-600 transition-colors">
                 Rasolicious
               </span>
-              <span className="block text-[10px] text-caramel-400 uppercase tracking-widest font-semibold -mt-0.5">
+              <span className="block text-[10px] text-caramel-600 uppercase tracking-widest font-semibold -mt-0.5">
                 Admin Atelier • TN
               </span>
             </div>
@@ -119,7 +119,7 @@ export const TopNav: React.FC = () => {
         {/* Center: Global Search Bar */}
         <div className="flex-1 max-w-md relative hidden md:block">
           <div className="relative">
-            <Search className="w-4 h-4 text-chocolate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               ref={searchRef}
               type="text"
@@ -128,23 +128,23 @@ export const TopNav: React.FC = () => {
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
               placeholder="Search orders, brownies, customers, Marthandam..."
-              className="w-full bg-chocolate-900/90 text-cream-50 placeholder-chocolate-400 text-xs sm:text-sm pl-9 pr-14 py-2 rounded-xl border border-chocolate-700/80 focus:outline-none focus:border-caramel-400 focus:ring-1 focus:ring-caramel-400 transition-all"
+              className="w-full bg-stone-50 text-chocolate-900 placeholder-stone-400 text-xs sm:text-sm pl-9 pr-14 py-2 rounded-xl border border-stone-200 focus:bg-white focus:outline-none focus:border-caramel-500 focus:ring-1 focus:ring-caramel-500 transition-all"
             />
-            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] bg-chocolate-800 text-chocolate-300 px-1.5 py-0.5 rounded font-mono font-medium border border-chocolate-700">
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] bg-stone-200 text-stone-600 px-1.5 py-0.5 rounded font-mono font-medium border border-stone-300">
               ⌘K
             </div>
           </div>
 
           {/* Quick Search Results Dropdown */}
           {searchFocused && searchQuery.trim() && (
-            <div className="absolute top-full left-0 right-0 mt-1.5 bg-chocolate-900 border border-chocolate-700 rounded-xl shadow-2xl overflow-hidden z-50 text-xs">
+            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-stone-200 rounded-xl shadow-xl overflow-hidden z-50 text-xs">
               {matchedOrders.length === 0 && matchedProducts.length === 0 ? (
-                <div className="p-3 text-chocolate-400 text-center">No orders or treats found matching "{searchQuery}"</div>
+                <div className="p-3 text-stone-500 text-center">No orders or treats found matching "{searchQuery}"</div>
               ) : (
-                <div className="divide-y divide-chocolate-800 max-h-72 overflow-y-auto">
+                <div className="divide-y divide-stone-100 max-h-72 overflow-y-auto">
                   {matchedOrders.length > 0 && (
                     <div className="p-2">
-                      <div className="text-[10px] uppercase font-bold text-caramel-400 px-2 py-1">Matching Orders</div>
+                      <div className="text-[10px] uppercase font-bold text-caramel-600 px-2 py-1">Matching Orders</div>
                       {matchedOrders.map(ord => (
                         <button
                           key={ord.id}
@@ -152,14 +152,14 @@ export const TopNav: React.FC = () => {
                             openOrderDrawer(ord);
                             setSearchQuery('');
                           }}
-                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-chocolate-800 flex items-center justify-between text-cream-100 group transition-colors"
+                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-stone-50 flex items-center justify-between text-chocolate-900 group transition-colors"
                         >
                           <div>
-                            <span className="font-semibold text-caramel-300 mr-2">{ord.id}</span>
+                            <span className="font-semibold text-caramel-600 mr-2">{ord.id}</span>
                             <span>{ord.customerName}</span>
-                            <span className="text-[11px] text-chocolate-400 ml-2">({ord.locality})</span>
+                            <span className="text-[11px] text-stone-500 ml-2">({ord.locality})</span>
                           </div>
-                          <span className="text-[10px] font-mono text-cream-300">₹{ord.total}</span>
+                          <span className="text-[10px] font-mono font-bold text-chocolate-800">₹{ord.total}</span>
                         </button>
                       ))}
                     </div>
@@ -167,7 +167,7 @@ export const TopNav: React.FC = () => {
 
                   {matchedProducts.length > 0 && (
                     <div className="p-2">
-                      <div className="text-[10px] uppercase font-bold text-caramel-400 px-2 py-1">Matching Treats</div>
+                      <div className="text-[10px] uppercase font-bold text-caramel-600 px-2 py-1">Matching Treats</div>
                       {matchedProducts.map(prod => (
                         <button
                           key={prod.id}
@@ -175,13 +175,13 @@ export const TopNav: React.FC = () => {
                             setCurrentScreen('inventory');
                             setSearchQuery('');
                           }}
-                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-chocolate-800 flex items-center justify-between text-cream-100 group transition-colors"
+                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-stone-50 flex items-center justify-between text-chocolate-900 group transition-colors"
                         >
                           <div>
-                            <span className="font-semibold text-cream-50">{prod.name}</span>
-                            <span className="text-[10px] text-chocolate-400 ml-2">[{prod.category}]</span>
+                            <span className="font-semibold text-chocolate-900">{prod.name}</span>
+                            <span className="text-[10px] text-stone-500 ml-2">[{prod.category}]</span>
                           </div>
-                          <span className="text-[10px] text-emerald-400 font-mono">₹{prod.price}</span>
+                          <span className="text-[10px] text-emerald-600 font-mono font-bold">₹{prod.price}</span>
                         </button>
                       ))}
                     </div>
@@ -196,9 +196,9 @@ export const TopNav: React.FC = () => {
         <div className="flex items-center gap-2 sm:gap-3">
           
           {/* Active Role Simulator Pill */}
-          <div className="hidden lg:flex items-center gap-1.5 bg-chocolate-900 border border-chocolate-700/80 px-2.5 py-1 rounded-xl text-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-caramel-400" />
-            <span className="text-chocolate-400 text-[11px]">Role:</span>
+          <div className="hidden lg:flex items-center gap-1.5 bg-stone-50 border border-stone-200 px-2.5 py-1 rounded-xl text-xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-caramel-600" />
+            <span className="text-stone-500 text-[11px]">Role:</span>
             <select
               value={activeRole}
               onChange={e => {
@@ -206,18 +206,18 @@ export const TopNav: React.FC = () => {
                 setActiveRole(newRole);
                 showToast(`Switched active role simulator to ${newRole}`, 'info');
               }}
-              className="bg-transparent text-caramel-300 font-medium text-xs focus:outline-none cursor-pointer"
+              className="bg-transparent text-chocolate-900 font-semibold text-xs focus:outline-none cursor-pointer"
             >
-              <option value="Super Admin" className="bg-chocolate-900 text-cream-100">Super Admin</option>
-              <option value="Admin" className="bg-chocolate-900 text-cream-100">Admin</option>
-              <option value="Kitchen Staff" className="bg-chocolate-900 text-cream-100">Kitchen Staff</option>
-              <option value="User" className="bg-chocolate-900 text-cream-100">User</option>
+              <option value="Super Admin" className="bg-white text-chocolate-900">Super Admin</option>
+              <option value="Admin" className="bg-white text-chocolate-900">Admin</option>
+              <option value="Kitchen Staff" className="bg-white text-chocolate-900">Kitchen Staff</option>
+              <option value="User" className="bg-white text-chocolate-900">User</option>
             </select>
           </div>
 
           {/* Current Date Badge */}
-          <div className="hidden xl:flex items-center gap-1.5 text-xs text-chocolate-300 bg-chocolate-900/60 px-2.5 py-1 rounded-xl border border-chocolate-800">
-            <Calendar className="w-3.5 h-3.5 text-caramel-400" />
+          <div className="hidden xl:flex items-center gap-1.5 text-xs text-stone-600 bg-stone-50 px-2.5 py-1 rounded-xl border border-stone-200">
+            <Calendar className="w-3.5 h-3.5 text-caramel-600" />
             <span>Tuesday, 13 Oct 2026</span>
           </div>
 
@@ -226,39 +226,39 @@ export const TopNav: React.FC = () => {
             to="/"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-chocolate-900 hover:bg-chocolate-800 text-cream-200 hover:text-white border border-chocolate-700/80 transition-all shadow-sm"
+            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-stone-50 hover:bg-stone-100 text-chocolate-800 border border-stone-200 transition-all shadow-xs"
             title="Open Customer Storefront in New Tab"
           >
             <span className="hidden sm:inline">Storefront</span>
-            <ExternalLink className="w-3.5 h-3.5 text-caramel-400" />
+            <ExternalLink className="w-3.5 h-3.5 text-caramel-600" />
           </Link>
 
           {/* Notifications Bell */}
           <div className="relative" ref={notifRef}>
             <button
               onClick={() => setNotificationsOpen(prev => !prev)}
-              className="relative p-2 rounded-xl text-cream-200 hover:text-white bg-chocolate-900 hover:bg-chocolate-800 border border-chocolate-700/80 transition-colors"
+              className="relative p-2 rounded-xl text-stone-700 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 border border-stone-200 transition-colors"
               title="Notifications & Alerts"
             >
               <Bell className="w-4 h-4" />
               {notifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-terracotta-500 text-white rounded-full text-[10px] font-bold flex items-center justify-center animate-pulse">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-terracotta-500 text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs animate-pulse">
                   {notifications.length}
                 </span>
               )}
             </button>
 
             {notificationsOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-chocolate-950 border border-chocolate-700 rounded-2xl shadow-2xl z-50 overflow-hidden text-xs">
-                <div className="p-3 border-b border-chocolate-800 bg-chocolate-900/80 flex items-center justify-between">
-                  <span className="font-bold text-cream-50 font-serif text-sm">Bakery Alerts & Dispatches</span>
-                  <span className="text-[10px] bg-terracotta-500/20 text-terracotta-400 px-2 py-0.5 rounded-full font-semibold">
+              <div className="absolute right-0 mt-2 w-80 bg-white border border-stone-200 rounded-2xl shadow-2xl z-50 overflow-hidden text-xs">
+                <div className="p-3 border-b border-stone-100 bg-stone-50 flex items-center justify-between">
+                  <span className="font-bold text-chocolate-950 font-serif text-sm">Bakery Alerts & Dispatches</span>
+                  <span className="text-[10px] bg-terracotta-100 text-terracotta-700 px-2 py-0.5 rounded-full font-semibold">
                     {notifications.length} live
                   </span>
                 </div>
-                <div className="divide-y divide-chocolate-800/80 max-h-72 overflow-y-auto">
+                <div className="divide-y divide-stone-100 max-h-72 overflow-y-auto">
                   {notifications.length === 0 ? (
-                    <div className="p-4 text-center text-chocolate-400">All alerts cleared</div>
+                    <div className="p-4 text-center text-stone-400">All alerts cleared</div>
                   ) : (
                     notifications.map(n => (
                       <div
@@ -267,18 +267,18 @@ export const TopNav: React.FC = () => {
                           setCurrentScreen(n.screen);
                           setNotificationsOpen(false);
                         }}
-                        className="p-3 hover:bg-chocolate-900/60 cursor-pointer flex items-start gap-2.5 transition-colors group"
+                        className="p-3 hover:bg-stone-50 cursor-pointer flex items-start gap-2.5 transition-colors group"
                       >
-                        <div className="p-1.5 rounded-lg bg-chocolate-900 border border-chocolate-800 shrink-0 mt-0.5">
-                          {n.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-400" />}
-                          {n.type === 'oven' && <Flame className="w-4 h-4 text-terracotta-400" />}
-                          {n.type === 'dispatch' && <Truck className="w-4 h-4 text-caramel-400" />}
+                        <div className="p-1.5 rounded-lg bg-stone-100 border border-stone-200 shrink-0 mt-0.5">
+                          {n.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-600" />}
+                          {n.type === 'oven' && <Flame className="w-4 h-4 text-terracotta-500" />}
+                          {n.type === 'dispatch' && <Truck className="w-4 h-4 text-caramel-600" />}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-cream-100 group-hover:text-caramel-300 transition-colors">
+                          <p className="font-semibold text-chocolate-900 group-hover:text-caramel-600 transition-colors">
                             {n.title}
                           </p>
-                          <p className="text-[11px] text-chocolate-400 mt-0.5 leading-snug">
+                          <p className="text-[11px] text-stone-500 mt-0.5 leading-snug">
                             {n.desc}
                           </p>
                         </div>
@@ -287,7 +287,7 @@ export const TopNav: React.FC = () => {
                             e.stopPropagation();
                             removeNotification(n.id);
                           }}
-                          className="text-chocolate-500 hover:text-cream-200 p-1 text-xs"
+                          className="text-stone-400 hover:text-stone-700 p-1 text-xs"
                           title="Dismiss"
                         >
                           ✕
@@ -304,23 +304,23 @@ export const TopNav: React.FC = () => {
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setProfileOpen(prev => !prev)}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-chocolate-900 hover:bg-chocolate-800 border border-chocolate-700/80 transition-all text-left"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 transition-all text-left"
             >
-              <div className="w-7 h-7 rounded-lg bg-caramel-500 text-chocolate-950 font-bold text-xs flex items-center justify-center font-serif">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-caramel-500 to-caramel-600 text-white font-bold text-xs flex items-center justify-center font-serif shadow-xs">
                 CR
               </div>
               <div className="hidden sm:block">
-                <div className="text-xs font-bold text-cream-100 leading-tight">Chef Rasool</div>
-                <div className="text-[10px] text-caramel-400 leading-tight">{activeRole} • Owner</div>
+                <div className="text-xs font-bold text-chocolate-950 leading-tight">Chef Rasool</div>
+                <div className="text-[10px] text-caramel-600 font-medium leading-tight">{activeRole} • Owner</div>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-chocolate-400 ml-1 hidden sm:block" />
+              <ChevronDown className="w-3.5 h-3.5 text-stone-400 ml-1 hidden sm:block" />
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-chocolate-950 border border-chocolate-700 rounded-2xl shadow-2xl z-50 overflow-hidden text-xs py-1">
-                <div className="px-3.5 py-2.5 border-b border-chocolate-800 bg-chocolate-900/60">
-                  <div className="font-bold text-cream-50">Signed in as Chef Rasool</div>
-                  <div className="text-[11px] text-caramel-400">admin@rasolicious.com</div>
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-stone-200 rounded-2xl shadow-2xl z-50 overflow-hidden text-xs py-1">
+                <div className="px-3.5 py-2.5 border-b border-stone-100 bg-stone-50">
+                  <div className="font-bold text-chocolate-950">Signed in as Chef Rasool</div>
+                  <div className="text-[11px] text-caramel-600 font-medium">admin@rasolicious.com</div>
                 </div>
 
                 <button
@@ -328,9 +328,9 @@ export const TopNav: React.FC = () => {
                     setCurrentScreen('delivery-slots');
                     setProfileOpen(false);
                   }}
-                  className="w-full text-left px-3.5 py-2 hover:bg-chocolate-900 text-cream-200 flex items-center gap-2.5 transition-colors"
+                  className="w-full text-left px-3.5 py-2 hover:bg-stone-50 text-chocolate-800 flex items-center gap-2.5 transition-colors"
                 >
-                  <Sliders className="w-4 h-4 text-caramel-400" />
+                  <Sliders className="w-4 h-4 text-caramel-600" />
                   <span>Delivery Rates & Pincodes</span>
                 </button>
 
@@ -339,20 +339,20 @@ export const TopNav: React.FC = () => {
                     setCurrentScreen('roles');
                     setProfileOpen(false);
                   }}
-                  className="w-full text-left px-3.5 py-2 hover:bg-chocolate-900 text-cream-200 flex items-center gap-2.5 transition-colors"
+                  className="w-full text-left px-3.5 py-2 hover:bg-stone-50 text-chocolate-800 flex items-center gap-2.5 transition-colors"
                 >
-                  <ShieldCheck className="w-4 h-4 text-caramel-400" />
+                  <ShieldCheck className="w-4 h-4 text-caramel-600" />
                   <span>Role Permissions Matrix</span>
                 </button>
 
-                <div className="border-t border-chocolate-800 my-1"></div>
+                <div className="border-t border-stone-100 my-1"></div>
 
                 <button
                   onClick={() => {
                     showToast('Admin session refreshed', 'info');
                     setProfileOpen(false);
                   }}
-                  className="w-full text-left px-3.5 py-2 hover:bg-chocolate-900 text-terracotta-400 flex items-center gap-2.5 transition-colors"
+                  className="w-full text-left px-3.5 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2.5 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out Session</span>

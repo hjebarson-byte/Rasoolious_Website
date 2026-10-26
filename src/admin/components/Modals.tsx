@@ -36,11 +36,11 @@ export const Modals: React.FC = () => {
       {/* Backdrop */}
       <div 
         onClick={closeModal} 
-        className="fixed inset-0 bg-chocolate-950/75 backdrop-blur-xs transition-opacity" 
+        className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs transition-opacity" 
       />
 
       {/* Modal Containers */}
-      <div className="relative z-10 w-full max-w-2xl bg-chocolate-950 text-cream-50 border border-chocolate-850 rounded-3xl shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative z-10 w-full max-w-2xl bg-white text-chocolate-950 border border-stone-200 rounded-3xl shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-200">
         
         {/* 1. PRODUCT MODAL (ADD / EDIT) */}
         {(activeModal === 'addProduct' || activeModal === 'editProduct') && (
@@ -181,43 +181,43 @@ const ProductModalForm: React.FC<{
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-chocolate-900/60">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-caramel-500/20 text-caramel-400">
+          <div className="p-2 rounded-xl bg-caramel-50 text-caramel-600 border border-caramel-200">
             <Package className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-lg text-cream-50">
+            <h3 className="font-serif font-bold text-lg text-chocolate-950">
               {isEdit ? `Edit Treat: ${initialData?.name}` : '+ Add New Bakery Treat'}
             </h3>
-            <p className="text-xs text-chocolate-400">Specify batch portions, daily kitchen limit and artisan pricing.</p>
+            <p className="text-xs text-stone-500">Specify batch portions, daily kitchen limit and artisan pricing.</p>
           </div>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-chocolate-400 hover:text-white">
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
 
       <div className="p-6 space-y-4 text-xs max-h-[75vh] overflow-y-auto">
         <div>
-          <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Treat Title *</label>
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Treat Title *</label>
           <input
             type="text"
             required
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="e.g. Belgian Dark Chocolate Molten Slab"
-            className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+            className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Category</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Category</label>
             <select
               value={category}
               onChange={e => setCategory(e.target.value)}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             >
               <option value="Brownies">Brownies</option>
               <option value="Cookies">Cookies</option>
@@ -228,86 +228,86 @@ const ProductModalForm: React.FC<{
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Portion / Weight</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Portion / Weight</label>
             <input
               type="text"
               value={weight}
               onChange={e => setWeight(e.target.value)}
               placeholder="e.g. 500 g or 4 pcs (440 g)"
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Regular Price (₹) *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Regular Price (₹) *</label>
             <input
               type="number"
               required
               min="0"
               value={price}
               onChange={e => setPrice(Number(e.target.value))}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Offer Price (₹)</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Offer Price (₹)</label>
             <input
               type="number"
               min="0"
               value={salePrice}
               onChange={e => setSalePrice(Number(e.target.value))}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Daily Limit (Trays) *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Daily Limit (Trays) *</label>
             <input
               type="number"
               required
               min="1"
               value={dailyLimit}
               onChange={e => setDailyLimit(Number(e.target.value))}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Artisan Description</label>
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Artisan Description</label>
           <textarea
             rows={2}
             value={description}
             onChange={e => setDescription(e.target.value)}
             placeholder="Tasting notes, cocoa percentage and texture..."
-            className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+            className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Ingredients</label>
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Ingredients</label>
           <input
             type="text"
             value={ingredients}
             onChange={e => setIngredients(e.target.value)}
             placeholder="e.g. 70% Callebaut Dark Chocolate, French Cultured Butter, Organic Sugar"
-            className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+            className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-2">Allergens</label>
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-2">Allergens</label>
           <div className="flex flex-wrap gap-3">
             {['Eggs', 'Dairy', 'Gluten', 'Nuts', 'Soy'].map(allergen => (
-              <label key={allergen} className="flex items-center gap-1.5 cursor-pointer text-chocolate-200">
+              <label key={allergen} className="flex items-center gap-1.5 cursor-pointer text-stone-700">
                 <input
                   type="checkbox"
                   checked={allergens.includes(allergen)}
                   onChange={() => toggleAllergen(allergen)}
-                  className="rounded border-chocolate-700 text-caramel-500 focus:ring-caramel-400"
+                  className="rounded border-stone-300 text-caramel-500 focus:ring-caramel-400"
                 />
                 <span>{allergen}</span>
               </label>
@@ -316,29 +316,29 @@ const ProductModalForm: React.FC<{
         </div>
 
         <div className="pt-1">
-          <label className="flex items-center gap-2 cursor-pointer text-chocolate-200">
+          <label className="flex items-center gap-2 cursor-pointer text-stone-800">
             <input
               type="checkbox"
               checked={featured}
               onChange={e => setFeatured(e.target.checked)}
-              className="rounded border-chocolate-700 text-caramel-500 focus:ring-caramel-400"
+              className="rounded border-stone-300 text-caramel-500 focus:ring-caramel-400"
             />
-            <span className="font-semibold text-cream-100">Feature this treat prominently on storefront showcase</span>
+            <span className="font-semibold text-chocolate-900">Feature this treat prominently on storefront showcase</span>
           </label>
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex items-center justify-end gap-3">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-end gap-3">
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-200 font-semibold transition-colors"
+          className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-400 text-chocolate-950 font-bold transition-colors shadow-sm"
+          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold transition-colors shadow-sm"
         >
           {isEdit ? 'Save Changes' : 'Create Treat'}
         </button>
@@ -360,31 +360,31 @@ const SlotCapacityModalForm: React.FC<{
 
   return (
     <div>
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-chocolate-900/60">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+          <div className="p-2 rounded-xl bg-amber-50 text-amber-600 border border-amber-200">
             <Clock className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-lg text-cream-50">Edit Delivery Slot Capacity</h3>
-            <p className="text-xs text-chocolate-400">{slot.name} ({slot.timeWindow})</p>
+            <h3 className="font-serif font-bold text-lg text-chocolate-950">Edit Delivery Slot Capacity</h3>
+            <p className="text-xs text-stone-500">{slot.name} ({slot.timeWindow})</p>
           </div>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-chocolate-400 hover:text-white">
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
 
       <div className="p-6 space-y-4 text-xs">
-        <div className="bg-chocolate-900 border border-chocolate-800 rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 flex items-center justify-between">
           <div>
-            <div className="text-chocolate-400">Current Booked for Today</div>
-            <div className="text-xl font-bold font-mono text-caramel-300">{slot.booked} orders</div>
+            <div className="text-stone-500">Current Booked for Today</div>
+            <div className="text-xl font-bold font-mono text-chocolate-950">{slot.booked} orders</div>
           </div>
           <div className="text-right">
-            <div className="text-chocolate-400">Status</div>
+            <div className="text-stone-500">Status</div>
             <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-              slot.booked >= slot.capacity ? 'bg-terracotta-500/20 text-terracotta-300' : 'bg-emerald-500/20 text-emerald-300'
+              slot.booked >= slot.capacity ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
             }`}>
               {slot.booked >= slot.capacity ? 'FULL' : 'AVAILABLE'}
             </span>
@@ -392,7 +392,7 @@ const SlotCapacityModalForm: React.FC<{
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">
             Maximum Order Capacity (Per Day)
           </label>
           <input
@@ -401,38 +401,38 @@ const SlotCapacityModalForm: React.FC<{
             max="100"
             value={capacity}
             onChange={e => setCapacity(Number(e.target.value))}
-            className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none font-mono text-sm"
+            className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none font-mono text-sm transition-colors"
           />
-          <p className="text-[11px] text-chocolate-400 mt-1">
+          <p className="text-[11px] text-stone-500 mt-1">
             Once orders reach this ceiling, the customer storefront automatically marks this slot SOLD OUT.
           </p>
         </div>
 
         <div className="pt-2">
-          <label className="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer text-stone-800">
             <input
               type="checkbox"
               checked={active}
               onChange={e => setActive(e.target.checked)}
-              className="rounded border-chocolate-700 text-caramel-500 focus:ring-caramel-400"
+              className="rounded border-stone-300 text-caramel-500 focus:ring-caramel-400"
             />
-            <span className="font-semibold text-cream-100">Enable this slot for online customer checkout</span>
+            <span className="font-semibold text-chocolate-900">Enable this slot for online customer checkout</span>
           </label>
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex items-center justify-end gap-3">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-end gap-3">
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-200 font-semibold"
+          className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold transition-colors"
         >
           Cancel
         </button>
         <button
           type="button"
           onClick={() => onSave(capacity, active)}
-          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-400 text-chocolate-950 font-bold shadow-sm"
+          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold shadow-sm transition-colors"
         >
           Update Capacity
         </button>
@@ -468,17 +468,17 @@ const AddZoneModalForm: React.FC<{
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-chocolate-900/60">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-caramel-500/20 text-caramel-400">
+          <div className="p-2 rounded-xl bg-caramel-50 text-caramel-600 border border-caramel-200">
             <MapPin className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-lg text-cream-50">+ Add Kanniyakumari Delivery Zone</h3>
-            <p className="text-xs text-chocolate-400">Configure serviceable pincode and delivery courier fee tier.</p>
+            <h3 className="font-serif font-bold text-lg text-chocolate-950">+ Add Kanniyakumari Delivery Zone</h3>
+            <p className="text-xs text-stone-500">Configure serviceable pincode and delivery courier fee tier.</p>
           </div>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-chocolate-400 hover:text-white">
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -486,7 +486,7 @@ const AddZoneModalForm: React.FC<{
       <div className="p-6 space-y-4 text-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Postal Pincode *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Postal Pincode *</label>
             <input
               type="text"
               required
@@ -494,70 +494,70 @@ const AddZoneModalForm: React.FC<{
               value={pincode}
               onChange={e => setPincode(e.target.value)}
               placeholder="e.g. 629165"
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none font-mono"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none font-mono transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Locality / Town Name *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Locality / Town Name *</label>
             <input
               type="text"
               required
               value={locality}
               onChange={e => setLocality(e.target.value)}
               placeholder="e.g. Kuzhithurai & Kaliakkavilai"
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Standard Delivery Fee (₹)</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Standard Delivery Fee (₹)</label>
             <input
               type="number"
               min="0"
               value={standardFee}
               onChange={e => setStandardFee(Number(e.target.value))}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none font-mono"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none font-mono transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Express Delivery Fee (₹)</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Express Delivery Fee (₹)</label>
             <input
               type="number"
               min="0"
               value={expressFee}
               onChange={e => setExpressFee(Number(e.target.value))}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none font-mono"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none font-mono transition-colors"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Estimated Courier Transit Time</label>
+          <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Estimated Courier Transit Time</label>
           <input
             type="text"
             value={deliveryTime}
             onChange={e => setDeliveryTime(e.target.value)}
             placeholder="e.g. 40–55 mins"
-            className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+            className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
           />
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex items-center justify-end gap-3">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-end gap-3">
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-200 font-semibold"
+          className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-400 text-chocolate-950 font-bold shadow-sm"
+          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold shadow-sm transition-colors"
         >
           Add Delivery Zone
         </button>
@@ -597,19 +597,19 @@ const UserModalForm: React.FC<{
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-chocolate-900/60">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+          <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200">
             <UserPlus className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-lg text-cream-50">
+            <h3 className="font-serif font-bold text-lg text-chocolate-950">
               {isEdit ? `Edit User: ${initialData?.name}` : 'Create New Bakery Portal User'}
             </h3>
-            <p className="text-xs text-chocolate-400">Assign role access and bakery management permissions.</p>
+            <p className="text-xs text-stone-500">Assign role access and bakery management permissions.</p>
           </div>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-chocolate-400 hover:text-white">
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -617,45 +617,45 @@ const UserModalForm: React.FC<{
       <div className="p-6 space-y-4 text-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Full Name *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Full Name *</label>
             <input
               type="text"
               required
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="e.g. Arun Kumar P"
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Email Address *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Email Address *</label>
             <input
               type="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="e.g. arun@example.com"
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Password</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder={isEdit ? 'Leave blank to keep unchanged' : 'Enter secure password'}
-                className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 pr-10 text-cream-50 focus:border-caramel-400 focus:outline-none"
+                className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 pr-10 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(p => !p)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-chocolate-400 hover:text-cream-100"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -663,11 +663,11 @@ const UserModalForm: React.FC<{
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Role Position *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Role Position *</label>
             <select
               value={role}
               onChange={e => setRole(e.target.value as any)}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             >
               <option value="Super Admin">Super Admin</option>
               <option value="Admin">Admin</option>
@@ -679,11 +679,11 @@ const UserModalForm: React.FC<{
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Account Status</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Account Status</label>
             <select
               value={status}
               onChange={e => setStatus(e.target.value as any)}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
@@ -691,29 +691,29 @@ const UserModalForm: React.FC<{
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Phone Number</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Phone Number</label>
             <input
               type="text"
               value={phone}
               onChange={e => setPhone(e.target.value)}
               placeholder="+91 98421 88390"
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none font-mono"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none font-mono transition-colors"
             />
           </div>
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex items-center justify-end gap-3">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-end gap-3">
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-200 font-semibold"
+          className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-sm"
+          className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm transition-colors"
         >
           {isEdit ? 'Save User Changes' : 'Create User'}
         </button>
@@ -784,7 +784,7 @@ const RoleMatrixModalForm: React.FC<{
 
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl">
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-teal-800 text-white">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-teal-800 text-white">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <ShieldCheck className="w-5 h-5 text-white" />
@@ -798,7 +798,7 @@ const RoleMatrixModalForm: React.FC<{
             </div>
           </div>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10">
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -806,47 +806,47 @@ const RoleMatrixModalForm: React.FC<{
       <div className="p-6 space-y-5 text-xs max-h-[75vh] overflow-y-auto">
         <div className="space-y-3">
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Role Name *</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Role Name *</label>
             <input
               type="text"
               required
               value={name}
               onChange={e => setName(e.target.value)}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-chocolate-300 uppercase mb-1">Role Description</label>
+            <label className="block text-[11px] font-bold text-stone-600 uppercase mb-1">Role Description</label>
             <input
               type="text"
               value={description}
               onChange={e => setDescription(e.target.value)}
-              className="w-full bg-chocolate-900 border border-chocolate-750 rounded-xl px-3.5 py-2.5 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-chocolate-950 focus:border-caramel-500 focus:bg-white focus:outline-none transition-colors"
             />
           </div>
         </div>
 
         {/* Permission Matrix Card */}
-        <div className="border border-chocolate-800 rounded-2xl overflow-hidden bg-chocolate-900/60 shadow-inner">
-          <div className="p-3 bg-chocolate-900 border-b border-chocolate-800 flex items-center justify-between">
-            <div className="flex items-center gap-2 font-bold text-cream-100">
-              <Lock className="w-4 h-4 text-teal-400" />
+        <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white shadow-sm">
+          <div className="p-3 bg-stone-50 border-b border-stone-200 flex items-center justify-between">
+            <div className="flex items-center gap-2 font-bold text-chocolate-950">
+              <Lock className="w-4 h-4 text-teal-600" />
               <span>Permission Matrix (8 Modules × 6 Capabilities)</span>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
               <button
                 type="button"
                 onClick={() => toggleAll(true)}
-                className="text-teal-400 hover:text-teal-300 font-semibold"
+                className="text-teal-700 hover:text-teal-900 font-semibold"
               >
                 Select All
               </button>
-              <span className="text-chocolate-600">|</span>
+              <span className="text-stone-300">|</span>
               <button
                 type="button"
                 onClick={() => toggleAll(false)}
-                className="text-chocolate-400 hover:text-white font-semibold"
+                className="text-stone-500 hover:text-stone-800 font-semibold"
               >
                 Deselect All
               </button>
@@ -856,8 +856,8 @@ const RoleMatrixModalForm: React.FC<{
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-chocolate-800 text-[10px] text-chocolate-400 uppercase tracking-wider bg-chocolate-950/40">
-                  <th className="py-2.5 px-4 font-bold text-cream-200">MODULE</th>
+                <tr className="border-b border-stone-200 text-[10px] text-stone-500 uppercase tracking-wider bg-stone-100/60">
+                  <th className="py-2.5 px-4 font-bold text-stone-800">MODULE</th>
                   <th className="py-2.5 px-3 text-center">LIST</th>
                   <th className="py-2.5 px-3 text-center">VIEW</th>
                   <th className="py-2.5 px-3 text-center">CREATE</th>
@@ -866,10 +866,10 @@ const RoleMatrixModalForm: React.FC<{
                   <th className="py-2.5 px-3 text-center">EXPORT</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-chocolate-850">
+              <tbody className="divide-y divide-stone-100">
                 {modules.map(m => (
-                  <tr key={m.key} className="hover:bg-chocolate-850/40 transition-colors">
-                    <td className="py-2.5 px-4 font-bold text-cream-100 font-mono text-[11px]">
+                  <tr key={m.key} className="hover:bg-stone-50 transition-colors">
+                    <td className="py-2.5 px-4 font-bold text-stone-900 font-mono text-[11px]">
                       {m.label}
                     </td>
                     {actions.map(act => {
@@ -880,7 +880,7 @@ const RoleMatrixModalForm: React.FC<{
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => togglePermission(m.key, act)}
-                            className="rounded border-chocolate-700 text-teal-600 focus:ring-teal-400 cursor-pointer"
+                            className="rounded border-stone-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
                           />
                         </td>
                       );
@@ -893,17 +893,17 @@ const RoleMatrixModalForm: React.FC<{
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex items-center justify-end gap-3">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-end gap-3">
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-200 font-semibold"
+          className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-6 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold shadow-sm"
+          className="px-6 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold shadow-sm transition-colors"
         >
           Save Permissions Matrix
         </button>
@@ -930,24 +930,24 @@ const GiftCardModalView: React.FC<{
 
   return (
     <div>
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-chocolate-900/60">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-caramel-500/20 text-caramel-400">
+          <div className="p-2 rounded-xl bg-caramel-50 text-caramel-600 border border-caramel-200">
             <Gift className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-lg text-cream-50">Print Handcrafted Gift Card</h3>
-            <p className="text-xs text-chocolate-400">Parchment greeting card for order #{order.id}</p>
+            <h3 className="font-serif font-bold text-lg text-chocolate-950">Print Handcrafted Gift Card</h3>
+            <p className="text-xs text-stone-500">Parchment greeting card for order #{order.id}</p>
           </div>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-chocolate-400 hover:text-white">
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
 
-      <div className="p-6 flex justify-center bg-chocolate-950">
+      <div className="p-6 flex justify-center bg-stone-100/70 border-y border-stone-200">
         {/* Luxury Gold Border Card Preview */}
-        <div className="w-full max-w-md bg-[#FFFDF9] text-[#2C1810] p-8 rounded-2xl border-4 border-[#C68037]/60 shadow-2xl relative">
+        <div className="w-full max-w-md bg-[#FFFDF9] text-[#2C1810] p-8 rounded-2xl border-4 border-[#C68037]/60 shadow-xl relative">
           <div className="text-center pb-4 border-b border-[#C68037]/30">
             <span className="font-serif font-bold text-xl tracking-wider text-[#2C1810]">Rasolicious</span>
             <div className="text-[10px] uppercase tracking-widest text-[#A46322] font-semibold">Artisanal Bakery • Kanniyakumari</div>
@@ -976,18 +976,18 @@ const GiftCardModalView: React.FC<{
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex items-center justify-between gap-3">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-200 font-semibold text-xs"
+          className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs transition-colors"
         >
           Close
         </button>
         <button
           type="button"
           onClick={handlePrint}
-          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-400 text-chocolate-950 font-bold text-xs flex items-center gap-2 shadow-sm"
+          className="px-5 py-2 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-colors"
         >
           <Printer className="w-4 h-4" />
           <span>Print Card Now</span>
@@ -1006,15 +1006,15 @@ const ViewUserProfileModal: React.FC<{
 }> = ({ user, onClose }) => {
   return (
     <div>
-      <div className="p-5 border-b border-chocolate-850 flex items-center justify-between bg-chocolate-900/60">
-        <h3 className="font-serif font-bold text-lg text-cream-50">User Profile & Access Level</h3>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-chocolate-400 hover:text-white">
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
+        <h3 className="font-serif font-bold text-lg text-chocolate-950">User Profile & Access Level</h3>
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-stone-400 hover:text-stone-800 transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
 
       <div className="p-6 space-y-4 text-xs">
-        <div className="flex items-center gap-4 bg-chocolate-900/80 p-4 rounded-2xl border border-chocolate-800">
+        <div className="flex items-center gap-4 bg-stone-50 p-4 rounded-2xl border border-stone-200">
           <div 
             className="w-14 h-14 rounded-2xl font-serif font-bold text-lg flex items-center justify-center shrink-0 shadow-sm"
             style={{ backgroundColor: user.avatarBg || '#E0F2FE', color: user.avatarColor || '#0369A1' }}
@@ -1022,14 +1022,14 @@ const ViewUserProfileModal: React.FC<{
             {user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
           </div>
           <div>
-            <h4 className="font-bold text-base text-cream-50">{user.name}</h4>
-            <div className="text-chocolate-400 text-xs">{user.email}</div>
+            <h4 className="font-bold text-base text-chocolate-950">{user.name}</h4>
+            <div className="text-stone-500 text-xs">{user.email}</div>
             <div className="flex items-center gap-2 mt-1.5">
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-caramel-500/20 text-caramel-300">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-caramel-50 text-caramel-700 border border-caramel-200">
                 {user.role}
               </span>
               <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                user.status === 'Active' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-chocolate-800 text-chocolate-400'
+                user.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-stone-200 text-stone-600'
               }`}>
                 {user.status}
               </span>
@@ -1038,22 +1038,22 @@ const ViewUserProfileModal: React.FC<{
         </div>
 
         <div className="grid grid-cols-2 gap-3 pt-2">
-          <div className="bg-chocolate-900/40 p-3 rounded-xl border border-chocolate-850">
-            <span className="text-[10px] font-bold text-chocolate-400 uppercase block">Phone Contact</span>
-            <span className="font-mono text-cream-100 font-semibold">{user.phone || 'Not provided'}</span>
+          <div className="bg-stone-50 p-3 rounded-xl border border-stone-200">
+            <span className="text-[10px] font-bold text-stone-500 uppercase block">Phone Contact</span>
+            <span className="font-mono text-chocolate-950 font-semibold">{user.phone || 'Not provided'}</span>
           </div>
-          <div className="bg-chocolate-900/40 p-3 rounded-xl border border-chocolate-850">
-            <span className="text-[10px] font-bold text-chocolate-400 uppercase block">Member Since</span>
-            <span className="font-mono text-cream-100 font-semibold">{user.joined}</span>
+          <div className="bg-stone-50 p-3 rounded-xl border border-stone-200">
+            <span className="text-[10px] font-bold text-stone-500 uppercase block">Member Since</span>
+            <span className="font-mono text-chocolate-950 font-semibold">{user.joined}</span>
           </div>
         </div>
       </div>
 
-      <div className="p-4 border-t border-chocolate-850 bg-chocolate-900/60 flex justify-end">
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex justify-end">
         <button
           type="button"
           onClick={onClose}
-          className="px-5 py-2 rounded-xl bg-chocolate-800 hover:bg-chocolate-700 text-cream-100 font-semibold text-xs"
+          className="px-5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs transition-colors"
         >
           Close Profile
         </button>

@@ -27,10 +27,10 @@ export const RolesScreen: React.FC = () => {
       
       {/* Header */}
       <div>
-        <h1 className="font-serif font-bold text-2xl sm:text-3xl text-cream-50">
+        <h1 className="font-serif font-bold text-2xl sm:text-3xl text-chocolate-950">
           Role & Access Governance
         </h1>
-        <p className="text-xs sm:text-sm text-chocolate-300 mt-1">
+        <p className="text-xs sm:text-sm text-chocolate-600 mt-1">
           Manage system roles and fine-tune granular permission matrix capabilities across all 8 modules.
         </p>
       </div>
@@ -48,17 +48,17 @@ export const RolesScreen: React.FC = () => {
           return (
             <div
               key={role.id}
-              className="bg-chocolate-950 border border-chocolate-850 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between hover:border-chocolate-700 transition-all"
+              className="bg-white border border-stone-200/90 rounded-3xl p-5 shadow-xs space-y-4 flex flex-col justify-between hover:border-caramel-300 hover:shadow-sm transition-all"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2.5 rounded-2xl bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                    <div className="p-2.5 rounded-2xl bg-caramel-50 text-caramel-700 border border-caramel-200">
                       <ShieldCheck className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="font-serif font-bold text-base text-cream-50">{role.name}</h3>
-                      <div className="flex items-center gap-2 text-[10px] text-chocolate-400 mt-0.5">
+                      <h3 className="font-serif font-bold text-base text-chocolate-950">{role.name}</h3>
+                      <div className="flex items-center gap-2 text-[10px] text-stone-500 mt-0.5">
                         <span>Created: {role.created}</span>
                         <span>•</span>
                         <span className="font-mono">{role.id}</span>
@@ -66,18 +66,18 @@ export const RolesScreen: React.FC = () => {
                     </div>
                   </div>
 
-                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-chocolate-900 border border-chocolate-800 text-caramel-300">
+                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-stone-100 border border-stone-200 text-stone-700">
                     {userCount} members
                   </span>
                 </div>
 
-                <p className="text-xs text-chocolate-300 leading-relaxed">
+                <p className="text-xs text-stone-600 leading-relaxed">
                   {role.description}
                 </p>
 
                 {/* Module Access Badges */}
-                <div className="pt-2 border-t border-chocolate-850">
-                  <span className="text-[10px] uppercase font-bold text-chocolate-400 block mb-2">
+                <div className="pt-2 border-t border-stone-100">
+                  <span className="text-[10px] uppercase font-bold text-stone-400 block mb-2">
                     Enabled Module Scope ({totalPerms}/48 capabilities)
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -88,11 +88,11 @@ export const RolesScreen: React.FC = () => {
                           key={m.key}
                           className={`text-[10px] font-medium px-2 py-0.5 rounded-lg flex items-center gap-1 ${
                             hasAny
-                              ? 'bg-chocolate-900 text-teal-300 border border-teal-500/30'
-                              : 'bg-chocolate-900/40 text-chocolate-600 line-through'
+                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold'
+                              : 'bg-stone-50 text-stone-400 line-through'
                           }`}
                         >
-                          {hasAny && <Check className="w-2.5 h-2.5 text-teal-400" />}
+                          {hasAny && <Check className="w-2.5 h-2.5 text-emerald-600" />}
                           <span>{m.label.split(' ')[0]}</span>
                         </span>
                       );
@@ -102,14 +102,14 @@ export const RolesScreen: React.FC = () => {
               </div>
 
               {/* Action Button */}
-              <div className="pt-3 border-t border-chocolate-850 flex items-center justify-between">
-                <span className="text-[11px] text-chocolate-400">
+              <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                <span className="text-[11px] text-stone-500 font-medium">
                   {role.isSystem ? 'System Guarded Role' : 'Custom Configured'}
                 </span>
 
                 <button
                   onClick={() => openModal('editRole', role)}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-teal-800 hover:bg-teal-700 text-white font-bold text-xs transition-colors shadow-sm"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs transition-colors shadow-xs"
                 >
                   <Sliders className="w-3.5 h-3.5" />
                   <span>Configure Permission Matrix</span>
@@ -121,32 +121,32 @@ export const RolesScreen: React.FC = () => {
       </div>
 
       {/* Global Permission Matrix Summary Table */}
-      <div className="bg-chocolate-950 border border-chocolate-850 rounded-3xl p-5 shadow-sm space-y-4">
+      <div className="bg-white border border-stone-200/90 rounded-3xl p-5 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Lock className="w-4 h-4 text-teal-400" />
-            <h3 className="font-serif font-bold text-base text-cream-50">
+            <Lock className="w-4 h-4 text-caramel-700" />
+            <h3 className="font-serif font-bold text-base text-chocolate-950">
               Cross-Role Permissions Overview Matrix
             </h3>
           </div>
-          <span className="text-xs text-chocolate-400">Quick capability view</span>
+          <span className="text-xs text-stone-500 font-medium">Quick capability view</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-chocolate-850 text-[10px] text-chocolate-400 uppercase tracking-wider bg-chocolate-900/40">
-                <th className="py-2.5 px-4 font-bold text-cream-200">MODULE</th>
-                <th className="py-2.5 px-4 font-bold text-emerald-400 text-center">SUPER ADMIN</th>
-                <th className="py-2.5 px-4 font-bold text-caramel-400 text-center">ADMIN</th>
-                <th className="py-2.5 px-4 font-bold text-amber-400 text-center">KITCHEN STAFF</th>
-                <th className="py-2.5 px-4 font-bold text-sky-400 text-center">USER</th>
+              <tr className="border-b border-stone-100 text-[10px] text-stone-400 uppercase tracking-wider bg-stone-50/70">
+                <th className="py-2.5 px-4 font-bold text-chocolate-900">MODULE</th>
+                <th className="py-2.5 px-4 font-bold text-emerald-700 text-center">SUPER ADMIN</th>
+                <th className="py-2.5 px-4 font-bold text-caramel-700 text-center">ADMIN</th>
+                <th className="py-2.5 px-4 font-bold text-amber-700 text-center">KITCHEN STAFF</th>
+                <th className="py-2.5 px-4 font-bold text-sky-700 text-center">USER</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-chocolate-850/60">
+            <tbody className="divide-y divide-stone-100">
               {modulesList.map(m => (
-                <tr key={m.key} className="hover:bg-chocolate-900/40 transition-colors">
-                  <td className="py-3 px-4 font-semibold text-cream-100">
+                <tr key={m.key} className="hover:bg-stone-50 transition-colors">
+                  <td className="py-3 px-4 font-semibold text-chocolate-950">
                     {m.label}
                   </td>
                   {roles.map(r => {
@@ -157,15 +157,15 @@ export const RolesScreen: React.FC = () => {
                     return (
                       <td key={r.id} className="py-3 px-4 text-center">
                         {hasWrite ? (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                             Full Control
                           </span>
                         ) : hasRead ? (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
                             Read Only
                           </span>
                         ) : (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-chocolate-900 text-chocolate-500">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">
                             Restricted
                           </span>
                         )}

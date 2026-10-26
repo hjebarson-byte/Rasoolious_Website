@@ -65,15 +65,15 @@ export const KitchenOrdersScreen: React.FC = () => {
   const getStatusBadge = (status: OrderStatus) => {
     switch (status) {
       case 'received':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300">RECEIVED</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">RECEIVED</span>;
       case 'oven':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-500/20 text-orange-300">IN OVEN</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-200">IN OVEN</span>;
       case 'cooling':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300">COOLING</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-200">COOLING</span>;
       case 'delivery':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300">DISPATCHED</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">DISPATCHED</span>;
       case 'completed':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300">DELIVERED</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">DELIVERED</span>;
     }
   };
 
@@ -83,10 +83,10 @@ export const KitchenOrdersScreen: React.FC = () => {
       {/* Screen Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif font-bold text-2xl sm:text-3xl text-cream-50">
+          <h1 className="font-serif font-bold text-2xl sm:text-3xl text-chocolate-950">
             Live Kitchen Orders
           </h1>
-          <p className="text-xs sm:text-sm text-chocolate-300 mt-1">
+          <p className="text-xs sm:text-sm text-chocolate-600 mt-1">
             Manage every confection order from payment confirmation to hot oven and doorstep delivery.
           </p>
         </div>
@@ -94,16 +94,16 @@ export const KitchenOrdersScreen: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => showToast('Kitchen orders queue refreshed', 'info')}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-chocolate-900 hover:bg-chocolate-850 text-cream-200 font-semibold text-xs border border-chocolate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-stone-50 text-chocolate-800 font-semibold text-xs border border-stone-200 transition-colors shadow-xs"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-caramel-400" />
+            <RefreshCw className="w-3.5 h-3.5 text-caramel-600" />
             <span>Refresh Queue</span>
           </button>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-chocolate-950 border border-chocolate-850 rounded-3xl p-4 sm:p-5 shadow-sm space-y-4">
+      <div className="bg-white border border-stone-200/90 rounded-3xl p-4 sm:p-5 shadow-xs space-y-4">
         
         {/* Status Stage Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -119,13 +119,13 @@ export const KitchenOrdersScreen: React.FC = () => {
                 onClick={() => setOrderFilters(prev => ({ ...prev, status: tab.id }))}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
                   isActive
-                    ? 'bg-gradient-to-r from-caramel-500 to-caramel-600 text-chocolate-950 shadow-sm font-bold'
-                    : 'bg-chocolate-900 hover:bg-chocolate-850 text-chocolate-300 hover:text-cream-100'
+                    ? 'bg-caramel-500 text-white shadow-sm font-bold'
+                    : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200/70'
                 }`}
               >
                 <span>{tab.label}</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                  isActive ? 'bg-chocolate-950/20 text-chocolate-950 font-bold' : 'bg-chocolate-800 text-chocolate-400'
+                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
+                  isActive ? 'bg-white/20 text-white' : 'bg-stone-200 text-stone-600'
                 }`}>
                   {count}
                 </span>
@@ -139,13 +139,13 @@ export const KitchenOrdersScreen: React.FC = () => {
           
           {/* Search */}
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-chocolate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={orderFilters.search}
               onChange={e => setOrderFilters(prev => ({ ...prev, search: e.target.value }))}
               placeholder="Search ID, customer, locality..."
-              className="w-full bg-chocolate-900 border border-chocolate-800 rounded-xl pl-9 pr-3.5 py-2 text-cream-50 focus:border-caramel-400 focus:outline-none"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl pl-9 pr-3.5 py-2 text-chocolate-900 placeholder:text-stone-400 focus:bg-white focus:border-caramel-500 focus:outline-none"
             />
           </div>
 
@@ -154,7 +154,7 @@ export const KitchenOrdersScreen: React.FC = () => {
             <select
               value={orderFilters.slot}
               onChange={e => setOrderFilters(prev => ({ ...prev, slot: e.target.value }))}
-              className="w-full bg-chocolate-900 border border-chocolate-800 rounded-xl px-3 py-2 text-cream-100 focus:border-caramel-400 focus:outline-none cursor-pointer"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none cursor-pointer"
             >
               <option value="all">All Delivery Slots</option>
               <option value="slot-morning">Morning Slot (9 AM–1 PM)</option>
@@ -168,7 +168,7 @@ export const KitchenOrdersScreen: React.FC = () => {
             <select
               value={orderFilters.payment}
               onChange={e => setOrderFilters(prev => ({ ...prev, payment: e.target.value }))}
-              className="w-full bg-chocolate-900 border border-chocolate-800 rounded-xl px-3 py-2 text-cream-100 focus:border-caramel-400 focus:outline-none cursor-pointer"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none cursor-pointer"
             >
               <option value="all">All Payment Methods</option>
               <option value="UPI">UPI (GooglePay / PhonePe)</option>
@@ -181,7 +181,7 @@ export const KitchenOrdersScreen: React.FC = () => {
           {(orderFilters.search || orderFilters.status !== 'all' || orderFilters.slot !== 'all' || orderFilters.payment !== 'all') && (
             <button
               onClick={() => setOrderFilters({ search: '', status: 'all', slot: 'all', payment: 'all' })}
-              className="px-3 py-2 rounded-xl bg-chocolate-850 hover:bg-chocolate-800 text-chocolate-300 hover:text-white transition-colors"
+              className="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors font-medium"
             >
               Reset Filters
             </button>
@@ -192,40 +192,40 @@ export const KitchenOrdersScreen: React.FC = () => {
       </div>
 
       {/* Orders Table & Cards */}
-      <div className="bg-chocolate-950 border border-chocolate-850 rounded-3xl overflow-hidden shadow-sm">
+      <div className="bg-white border border-stone-200/90 rounded-3xl overflow-hidden shadow-xs">
         
         {filteredOrders.length === 0 ? (
-          <div className="p-12 text-center text-chocolate-400 text-sm space-y-2">
-            <p className="font-semibold text-cream-200">No kitchen orders found</p>
+          <div className="p-12 text-center text-stone-400 text-sm space-y-2">
+            <p className="font-semibold text-chocolate-900">No kitchen orders found</p>
             <p className="text-xs">Try adjusting your status or search filters above.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-chocolate-850 text-[10px] text-chocolate-400 uppercase tracking-wider bg-chocolate-900/40">
-                  <th className="py-3.5 px-4 font-bold text-cream-200">ORDER</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200">CUSTOMER & LOCALITY</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200">TREATS & ITEMS</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200">SLOT</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200">PAYMENT</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200">TOTAL</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200">STATUS</th>
-                  <th className="py-3.5 px-4 font-bold text-cream-200 text-right">ACTIONS</th>
+                <tr className="border-b border-stone-100 text-[10px] text-stone-400 uppercase tracking-wider bg-stone-50/70">
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">ORDER</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">CUSTOMER & LOCALITY</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">TREATS & ITEMS</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">SLOT</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">PAYMENT</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">TOTAL</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">STATUS</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900 text-right">ACTIONS</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-chocolate-850/70">
+              <tbody className="divide-y divide-stone-100">
                 {filteredOrders.map(order => (
                   <tr
                     key={order.id}
-                    className="hover:bg-chocolate-900/50 transition-colors group cursor-pointer"
+                    className="hover:bg-stone-50 transition-colors group cursor-pointer"
                     onClick={() => openOrderDrawer(order)}
                   >
                     {/* Order ID */}
-                    <td className="py-3.5 px-4 font-mono font-bold text-caramel-300">
+                    <td className="py-3.5 px-4 font-mono font-bold text-caramel-700">
                       #{order.id}
                       {order.hasGiftMessage && (
-                        <span className="block mt-0.5 text-[9px] text-caramel-400 font-sans">
+                        <span className="block mt-0.5 text-[9px] text-caramel-600 font-sans font-medium">
                           🎁 Gift Card
                         </span>
                       )}
@@ -233,43 +233,43 @@ export const KitchenOrdersScreen: React.FC = () => {
 
                     {/* Customer */}
                     <td className="py-3.5 px-4">
-                      <div className="font-semibold text-cream-100 group-hover:text-caramel-300 transition-colors">
+                      <div className="font-semibold text-chocolate-950 group-hover:text-caramel-700 transition-colors">
                         {order.customerName}
                       </div>
-                      <div className="text-[11px] text-chocolate-400 flex items-center gap-1 mt-0.5">
-                        <MapPin className="w-3 h-3 text-caramel-500" />
+                      <div className="text-[11px] text-stone-500 flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3 h-3 text-caramel-600" />
                         <span>{order.locality}</span>
                       </div>
                     </td>
 
                     {/* Items */}
                     <td className="py-3.5 px-4 max-w-xs">
-                      <div className="text-cream-200 truncate font-medium">
+                      <div className="text-chocolate-800 truncate font-medium">
                         {order.items.map(i => `${i.quantity}× ${i.name}`).join(', ')}
                       </div>
-                      <div className="text-[10px] text-chocolate-400">
+                      <div className="text-[10px] text-stone-400">
                         {order.items.reduce((s, i) => s + i.quantity, 0)} boxes total
                       </div>
                     </td>
 
                     {/* Slot */}
                     <td className="py-3.5 px-4">
-                      <div className="text-cream-100 font-medium">{order.slot.split(',')[0]}</div>
-                      <div className="text-[10px] text-chocolate-400">{order.slot.split(',')[1] || ''}</div>
+                      <div className="text-chocolate-900 font-medium">{order.slot.split(',')[0]}</div>
+                      <div className="text-[10px] text-stone-400">{order.slot.split(',')[1] || ''}</div>
                     </td>
 
                     {/* Payment */}
                     <td className="py-3.5 px-4">
-                      <div className="text-cream-200 font-medium">{order.paymentMethod}</div>
+                      <div className="text-chocolate-800 font-medium">{order.paymentMethod}</div>
                       <span className={`text-[10px] font-semibold ${
-                        order.paymentMethod === 'COD' ? 'text-amber-400' : 'text-emerald-400'
+                        order.paymentMethod === 'COD' ? 'text-amber-700' : 'text-emerald-700'
                       }`}>
                         {order.paymentStatus}
                       </span>
                     </td>
 
                     {/* Total */}
-                    <td className="py-3.5 px-4 font-mono font-bold text-cream-50 text-sm">
+                    <td className="py-3.5 px-4 font-mono font-bold text-chocolate-950 text-sm">
                       ₹{order.total}
                     </td>
 
@@ -284,7 +284,7 @@ export const KitchenOrdersScreen: React.FC = () => {
                         {order.status !== 'completed' && (
                           <button
                             onClick={() => advanceOrderStatus(order.id)}
-                            className="p-1.5 rounded-lg bg-caramel-500 hover:bg-caramel-400 text-chocolate-950 font-bold transition-colors"
+                            className="p-1.5 rounded-lg bg-caramel-500 hover:bg-caramel-600 text-white font-bold transition-colors shadow-xs"
                             title="Advance to Next Stage"
                           >
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -293,7 +293,7 @@ export const KitchenOrdersScreen: React.FC = () => {
 
                         <button
                           onClick={() => openOrderDrawer(order)}
-                          className="p-1.5 rounded-lg bg-chocolate-900 hover:bg-chocolate-800 text-cream-200 transition-colors"
+                          className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
                           title="View Details Drawer"
                         >
                           <Eye className="w-3.5 h-3.5" />
@@ -302,7 +302,7 @@ export const KitchenOrdersScreen: React.FC = () => {
                         {order.hasGiftMessage && (
                           <button
                             onClick={() => openModal('printGiftCard', order)}
-                            className="p-1.5 rounded-lg bg-chocolate-900 hover:bg-chocolate-800 text-caramel-300 transition-colors"
+                            className="p-1.5 rounded-lg bg-caramel-50 hover:bg-caramel-100 text-caramel-700 transition-colors border border-caramel-200"
                             title="Print Gift Card"
                           >
                             <Gift className="w-3.5 h-3.5" />

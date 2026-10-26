@@ -38,7 +38,7 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-chocolate-950 text-cream-50 font-sans flex flex-col selection:bg-caramel-400 selection:text-chocolate-950">
+    <div className="min-h-screen bg-[#FBF9F6] text-chocolate-950 font-sans flex flex-col selection:bg-caramel-200 selection:text-chocolate-950">
       {/* Top Application Header */}
       <TopNav />
 
@@ -48,7 +48,7 @@ export const AdminLayout: React.FC = () => {
         <Sidebar />
 
         {/* Primary Content Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-gradient-to-b from-chocolate-950 via-[#180C08] to-chocolate-950">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#FBF9F6]">
           <div className="max-w-7xl mx-auto">
             {renderScreen()}
           </div>
