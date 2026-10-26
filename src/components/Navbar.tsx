@@ -7,7 +7,8 @@ import {
   Menu, 
   X, 
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck
 } from 'lucide-react';
 import { BRAND_CONFIG } from '../config/brand';
 import { useCart } from '../context/CartContext';
@@ -173,6 +174,16 @@ export const Navbar: React.FC = () => {
               )}
             </Link>
 
+            {/* Admin Atelier Link */}
+            <Link
+              to="/admin"
+              aria-label="Admin Atelier Portal"
+              title="Admin Atelier Dashboard"
+              className="p-2.5 rounded-full text-chocolate-800 hover:text-caramel-600 hover:bg-cream-100 transition-colors"
+            >
+              <ShieldCheck className="w-5 h-5" />
+            </Link>
+
             {/* Cart Trigger */}
             <button
               type="button"
@@ -301,6 +312,13 @@ export const Navbar: React.FC = () => {
                 >
                   <span>My Wishlist ({wishlistCount})</span>
                   <Heart className="w-4 h-4 text-rose-600" />
+                </Link>
+                <Link
+                  to="/admin"
+                  className="flex items-center justify-between text-base font-medium text-caramel-600 hover:text-caramel-700 py-1 border-t border-cream-200 pt-3"
+                >
+                  <span className="font-semibold">Admin Atelier Portal</span>
+                  <ShieldCheck className="w-4 h-4 text-caramel-600" />
                 </Link>
               </div>
             </div>

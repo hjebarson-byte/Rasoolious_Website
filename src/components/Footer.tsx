@@ -140,6 +140,12 @@ export const Footer: React.FC = () => {
                   Custom Event Catering
                 </Link>
               </li>
+              <li className="pt-1">
+                <Link to="/admin" className="text-caramel-400 hover:text-caramel-300 transition-colors font-semibold flex items-center gap-1.5">
+                  <span>Admin Atelier</span>
+                  <span className="text-[10px] bg-caramel-500/20 text-caramel-300 px-1.5 py-0.5 rounded font-mono">Staff</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -23,3 +23,19 @@ Generated Video*.mp4
 *.njsproj
 *.sln
 *.sw?
+
+# Legacy standalone prototypes and archives
+*.bak
+*_static.html
+*.zip
+screen.png
+Html *
+Rasoolicious Project.html
+landing Page.html
+Admin_final.html
+/admin/
+/assets/
+/css/
+/js/
+
+

@@ -16,6 +16,7 @@ import { Checkout } from './pages/Checkout';
 import { OrderSuccess } from './pages/OrderSuccess';
 import { Wishlist } from './pages/Wishlist';
 import { NotFound } from './pages/NotFound';
+import { AdminApp } from './admin/AdminApp';
 
 // Auto scroll to top on route transition
 const ScrollToTop: React.FC = () => {
@@ -30,6 +31,51 @@ const ScrollToTop: React.FC = () => {
   }, [pathname]);
 
   return null;
+};
+
+const AppRoutes: React.FC = () => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
+  if (isAdmin) {
+    return (
+      <Routes>
+        <Route path="/admin/*" element={<AdminApp />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-cream-50 text-chocolate-900 font-sans selection:bg-caramel-300 selection:text-chocolate-950 relative">
+      <ScrollToTop />
+      
+      {/* Ambient 3D floating cocoa & golden crumb atmosphere */}
+      <Ambient3DParticles />
+
+      {/* Sticky/Fixed Navigation */}
+      <Navbar />
+
+      {/* Slide-out Cart Drawer */}
+      <CartDrawer />
+
+      {/* Main Page Views */}
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-success" element={<OrderSuccess />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+
+      {/* Boutique Footer */}
+      <Footer />
+    </div>
+  );
 };
 
 export const App: React.FC = () => {
@@ -47,7 +93,7 @@ export const App: React.FC = () => {
     <Router>
       <CartProvider>
         <WishlistProvider>
-          {/* Branded Rasoolicious Splash Loader */}
+          {/* Branded Rasoolicious Splash Loader (Storefront) */}
           <AnimatePresence>
             {initialLoading && (
               <motion.div
@@ -61,35 +107,7 @@ export const App: React.FC = () => {
             )}
           </AnimatePresence>
 
-          <div className="min-h-screen flex flex-col bg-cream-50 text-chocolate-900 font-sans selection:bg-caramel-300 selection:text-chocolate-950 relative">
-            <ScrollToTop />
-            
-            {/* Ambient 3D floating cocoa & golden crumb atmosphere */}
-            <Ambient3DParticles />
-
-            {/* Sticky/Fixed Navigation */}
-            <Navbar />
-
-            {/* Slide-out Cart Drawer */}
-            <CartDrawer />
-
-            {/* Main Page Views */}
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/product/:id" element={<ProductDetails />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order-success" element={<OrderSuccess />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-
-            {/* Boutique Footer */}
-            <Footer />
-          </div>
+          <AppRoutes />
         </WishlistProvider>
       </CartProvider>
     </Router>
