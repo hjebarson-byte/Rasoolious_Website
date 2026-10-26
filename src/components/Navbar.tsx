@@ -55,10 +55,8 @@ export const Navbar: React.FC = () => {
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'All Brownies', path: '/shop' },
-    { label: 'Classic Fudgy', path: '/shop?category=Classic+Fudgy' },
-    { label: 'Molten Centers', path: '/shop?category=Molten+Centers' },
-    { label: 'Nut & Crunch', path: '/shop?category=Nut+%26+Crunch' },
     { label: 'Our Story', path: '/our-story' },
+    { label: 'About Us', path: '/about' },
   ];
 
   return (
