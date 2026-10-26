@@ -15,6 +15,7 @@ import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
 import { OrderSuccess } from './pages/OrderSuccess';
 import { Wishlist } from './pages/Wishlist';
+import { OurStory } from './pages/OurStory';
 import { NotFound } from './pages/NotFound';
 import { AdminApp } from './admin/AdminApp';
 
@@ -68,6 +69,8 @@ const AppRoutes: React.FC = () => {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/our-story" element={<OurStory />} />
+          <Route path="/about" element={<OurStory />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

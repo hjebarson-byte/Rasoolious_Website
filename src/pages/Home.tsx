@@ -10,7 +10,8 @@ import {
   Star, 
   ShoppingBag,
   Flame,
-  CheckCircle2
+  CheckCircle2,
+  Heart
 } from 'lucide-react';
 import { BRAND_CONFIG } from '../config/brand';
 import { PRODUCTS, CATEGORIES_LIST, TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
@@ -299,6 +300,80 @@ export const Home: React.FC = () => {
             <span>Explore All Brownie Slabs</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
+        </div>
+      </section>
+
+      {/* ================= ABOUT / LOVE STORY SECTION ================= */}
+      <section id="about" className="py-16 md:py-24 bg-[#FAF6F0] border-y border-stone-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/5] bg-chocolate-900">
+                <img
+                  src="https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=800&q=80"
+                  alt="Rasoolicious Handcrafted Brownies"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-chocolate-950/80 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white text-xs">
+                  <span className="font-serif font-bold text-base block text-caramel-300">Where Love Meets Deliciousness</span>
+                  <span>Handcrafted in small daily batches for the ones you cherish.</span>
+                </div>
+              </div>
+
+              <div className="absolute -bottom-5 -right-5 hidden sm:flex items-center gap-3 bg-white p-3.5 rounded-2xl shadow-xl border border-stone-200">
+                <div className="w-9 h-9 rounded-xl bg-caramel-500 text-white flex items-center justify-center font-serif text-base font-bold">
+                  R
+                </div>
+                <div className="text-left text-xs">
+                  <div className="font-bold text-chocolate-950">It started with a brownie</div>
+                  <div className="text-stone-500 text-[11px]">It became a love story</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
+                <Heart className="w-3.5 h-3.5 text-caramel-600 fill-caramel-600" />
+                <span>About Rasoolicious</span>
+              </div>
+
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-chocolate-950 leading-tight">
+                It started with a brownie. <br />
+                <span className="italic text-caramel-700 font-serif">It became a love story.</span>
+              </h2>
+
+              <p className="text-chocolate-800 text-base sm:text-lg leading-relaxed font-medium">
+                Rasoolicious began with something simple — a batch of brownies made for my wife, <strong>Rasool</strong>. It was the very first thing I ever made for her, and she loved them so much that I kept making them again and again.
+              </p>
+
+              <p className="text-chocolate-600 text-sm sm:text-base leading-relaxed">
+                What started as a small gesture of love slowly became a passion for creating brownies that bring the exact same feeling of warmth, joy, and comfort to everyone who tastes them.
+              </p>
+
+              <div className="p-5 rounded-2xl bg-white border border-stone-200/90 shadow-xs space-y-2 text-xs sm:text-sm">
+                <span className="font-bold text-chocolate-950 block font-serif text-base">The Meaning Behind Our Name</span>
+                <p className="text-stone-600 leading-relaxed">
+                  <strong>“Rasool”</strong> means <em>Messenger</em>, while <strong>“Delicious”</strong> represents <em>Great Taste</em>. Together, Rasoolicious represents our desire to be a <strong>messenger of deliciousness</strong> — sharing happiness, love, and unforgettable taste through every brownie.
+                </p>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/our-story"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-chocolate-900 hover:bg-caramel-600 text-cream-50 text-xs font-semibold uppercase tracking-wider transition-colors shadow-soft"
+                >
+                  <span>Read Our Full Story</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <span className="text-xs text-caramel-700 font-medium italic">
+                  One brownie. One story. One delicious feeling.
+                </span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
