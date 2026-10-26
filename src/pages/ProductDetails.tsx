@@ -337,7 +337,7 @@ export const ProductDetails: React.FC = () => {
                 <p className="font-semibold text-chocolate-900">How to keep it fresh:</p>
                 <p>{product.storageInfo}</p>
                 <div className="p-4 rounded-2xl bg-caramel-50 border border-caramel-200 text-xs text-chocolate-800">
-                  💡 <strong>Chef's Pro Tip:</strong> Pop your brownie or cookie in the microwave for 12–15 seconds or a preheated oven at 160°C for 3 minutes before eating. The chocolate chunks will liquefy into an irresistible molten core!
+                  💡 <strong>Chef's Pro Tip:</strong> Pop your brownie slab in the microwave for 12–15 seconds or a preheated oven at 160°C for 3 minutes before eating. The chocolate chunks will liquefy into an irresistible molten core!
                 </div>
               </div>
             )}

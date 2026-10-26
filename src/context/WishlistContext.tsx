@@ -21,9 +21,9 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem(WISHLIST_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : ['br-01', 'ck-cookie-01']; // default 2 favorites for immediate rich UX
+      return saved ? JSON.parse(saved) : ['br-01', 'br-02']; // default 2 brownie favorites for immediate rich UX
     } catch {
-      return ['br-01', 'ck-cookie-01'];
+      return ['br-01', 'br-02'];
     }
   });
 

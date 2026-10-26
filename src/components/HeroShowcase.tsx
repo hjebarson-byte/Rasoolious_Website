@@ -32,11 +32,11 @@ interface StarTreat {
 const STAR_TREATS: StarTreat[] = [
   {
     id: 'br-01',
-    name: '70% Dark Chocolate Fudge Brownie',
+    name: 'Belgian Dark Chocolate Fudge Slab',
     category: 'Signature Brownie',
     badge: 'OVEN STAR',
-    price: 180,
-    originalPrice: 200,
+    price: 450,
+    originalPrice: 480,
     rating: 4.9,
     reviews: 142,
     tagline: 'Molten Belgian core with paper-thin crinkle crust & Maldon sea salt',
@@ -46,33 +46,34 @@ const STAR_TREATS: StarTreat[] = [
     freshness: 'Fresh Morning Batch #042',
   },
   {
-    id: 'ck-02',
-    name: 'Basque Burnt Caramel Cheesecake',
-    category: 'Celebration Cake',
-    badge: 'CHEF PRIDE',
-    price: 920,
+    id: 'br-02',
+    name: 'Lotus Biscoff Swirl Brownie Slab',
+    category: 'Molten Centers',
+    badge: 'BEST SELLER',
+    price: 480,
+    originalPrice: 510,
     rating: 4.9,
-    reviews: 142,
-    tagline: 'Caramelized outer crust with rich custardy Philadelphia cream center',
-    image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1000&q=85',
-    textureNote: 'Silky Custard Melt',
-    cocoaOrigin: 'Pure Bourbon Vanilla',
-    freshness: 'Chilled Daily Batch',
+    reviews: 130,
+    tagline: 'Caramelized Belgian speculoos spread marbled through dark chocolate fudge',
+    image: 'https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=1000&q=85',
+    textureNote: 'Caramelized & Gooey',
+    cocoaOrigin: 'Belgian 64% Cocoa',
+    freshness: 'Fresh Morning Batch #043',
   },
   {
-    id: 'ck-cookie-01',
-    name: 'NYC Style Monster Choc Chip Cookie',
-    category: 'Monster Cookie (120g)',
-    badge: 'BEST SELLER',
-    price: 130,
-    originalPrice: 150,
-    rating: 4.9,
-    reviews: 180,
-    tagline: 'Crisp golden edge with giant flowing Callebaut chocolate puddles',
-    image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=85',
-    textureNote: 'Crisp Edge • Gooey Center',
-    cocoaOrigin: 'Dark Chocolate Buttons',
-    freshness: 'Baked Fresh All Day',
+    id: 'br-03',
+    name: 'Nutella Hazelnut Molten Lava Brownie',
+    category: 'Molten Centers',
+    badge: 'CHEF SPECIAL',
+    price: 520,
+    originalPrice: 550,
+    rating: 4.8,
+    reviews: 86,
+    tagline: 'Slow-roasted hazelnuts with a continuous molten river of pure Italian Nutella',
+    image: 'https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=1000&q=85',
+    textureNote: 'Molten Nutella River',
+    cocoaOrigin: 'Piedmont Hazelnut Cocoa',
+    freshness: 'Fresh Morning Batch #044',
   },
 ];
 
@@ -109,7 +110,7 @@ export const HeroShowcase: React.FC = () => {
                   : 'text-chocolate-700 hover:text-chocolate-950 hover:bg-cream-200/60'
               }`}
             >
-              {idx === 0 ? 'Fudge Brownie' : idx === 1 ? 'Basque Cake' : 'NYC Cookie'}
+              {idx === 0 ? 'Classic Fudge' : idx === 1 ? 'Lotus Biscoff' : 'Nutella Lava'}
             </button>
           ))}
         </div>

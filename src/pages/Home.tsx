@@ -391,7 +391,7 @@ export const Home: React.FC = () => {
               {
                 icon: Clock,
                 title: 'Freshly Baked',
-                description: 'Made in small daily batches so you receive confections at their absolute peak flavour and texture.',
+                description: 'Made in small daily batches so you receive artisanal brownies at their absolute peak flavour and texture.',
               },
               {
                 icon: Award,
@@ -401,12 +401,12 @@ export const Home: React.FC = () => {
               {
                 icon: HeartHandshake,
                 title: 'Handmade Craft',
-                description: 'Prepared with meticulous attention to detail by classically trained pastry chefs in our studio.',
+                description: 'Prepared with meticulous attention to detail by Chef Rasool in our Marthandam brownie atelier.',
               },
               {
                 icon: Truck,
                 title: 'Delivered Fresh',
-                description: 'Packed carefully in custom insulated crates to ensure your cakes and brownies arrive in pristine condition.',
+                description: 'Packed carefully in custom insulated crates to ensure your handcrafted brownie slabs arrive in pristine condition.',
               },
             ].map((feature, i) => {
               const Icon = feature.icon;

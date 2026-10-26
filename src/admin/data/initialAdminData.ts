@@ -81,7 +81,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     booked: 24,
     status: "In Stock",
     image: "/images/fudge_brownie.jpg",
-    description: "Rich dark cocoa brownie slab with thick melted Belgian Lotus Biscoff speculoos ribbons and crunchy cookie dust.",
+    description: "Rich dark cocoa brownie slab with thick melted Belgian Lotus Biscoff speculoos ribbons and crunchy speculoos dust.",
     ingredients: "Lotus Biscoff Spread, 60% Dark Chocolate, Caramelized Biscuit Crumb, Butter, Eggs, Flour",
     allergens: ["Eggs", "Dairy", "Gluten"],
     freshToday: true,
@@ -183,7 +183,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     booked: 9,
     status: "In Stock",
     image: "/images/fudge_brownie.jpg",
-    description: "Vibrant crimson cocoa brownie crowned with delicate artisan swirls of tangy Philadelphia cream cheese cheesecake.",
+    description: "Vibrant crimson cocoa brownie crowned with delicate artisan swirls of tangy Philadelphia cream cheese.",
     ingredients: "Pure Cocoa, Philadelphia Cream Cheese, Buttermilk, Pure Vanilla, Eggs, Flour",
     allergens: ["Eggs", "Dairy", "Gluten"],
     freshToday: true,
@@ -369,9 +369,9 @@ export const INITIAL_ORDERS: Order[] = [
         totalPrice: 900
       },
       {
-        name: "NYC Chocolate Chip Cookie Box",
+        name: "Lotus Biscoff Swirl Brownie Slab",
         quantity: 1,
-        weight: "4 pcs (440 g)",
+        weight: "500 g",
         unitPrice: 380,
         totalPrice: 380
       }
@@ -445,24 +445,24 @@ export const INITIAL_ORDERS: Order[] = [
     },
     items: [
       {
-        name: "Basque Burnt Cheesecake",
+        name: "Red Velvet Cream Cheese Brownie Slab",
         quantity: 2,
-        weight: "600 g each",
+        weight: "500 g each",
         unitPrice: 650,
         totalPrice: 1300
       },
       {
-        name: "NYC Chocolate Chip Cookie Box",
+        name: "Nutella Hazelnut Molten Lava Brownie",
         quantity: 1,
-        weight: "4 pcs",
+        weight: "500 g",
         unitPrice: 380,
         totalPrice: 380
       }
     ],
-    notes: "Keep cheesecake chilled in cooling bag during transport.",
+    notes: "Keep brownie slabs insulated and freshly sealed during transport.",
     timeline: [
       { time: "08:30 AM", title: "Order Placed", desc: "Visa Credit Card verified" },
-      { time: "09:15 AM", title: "Baking Commenced", desc: "Cheesecake in Convection Oven #1" }
+      { time: "09:15 AM", title: "Baking Commenced", desc: "Brownie Slabs in Deck Oven #1" }
     ]
   },
   {
@@ -532,9 +532,9 @@ export const INITIAL_ORDERS: Order[] = [
     giftMessage: null,
     items: [
       {
-        name: "NYC Chocolate Chip Cookie Box",
+        name: "Slow-Roasted Kashmiri Walnut Brownie",
         quantity: 2,
-        weight: "4 pcs each",
+        weight: "500 g each",
         unitPrice: 380,
         totalPrice: 760
       }
@@ -579,9 +579,9 @@ export const INITIAL_ORDERS: Order[] = [
         totalPrice: 890
       },
       {
-        name: "Basque Burnt Cheesecake",
+        name: "Sea Salt Amber Caramel Brownie Slab",
         quantity: 1,
-        weight: "600 g",
+        weight: "500 g",
         unitPrice: 650,
         totalPrice: 650
       }
@@ -664,9 +664,9 @@ export const INITIAL_ORDERS: Order[] = [
         totalPrice: 900
       },
       {
-        name: "NYC Chocolate Chip Cookie Box",
+        name: "Lotus Biscoff Swirl Brownie Slab",
         quantity: 1,
-        weight: "4 pcs",
+        weight: "500 g",
         unitPrice: 380,
         totalPrice: 380
       }
@@ -736,9 +736,9 @@ export const INITIAL_ORDERS: Order[] = [
     giftMessage: null,
     items: [
       {
-        name: "NYC Chocolate Chip Cookie Box",
+        name: "Lotus Biscoff Swirl Brownie Slab",
         quantity: 2,
-        weight: "4 pcs each",
+        weight: "500 g each",
         unitPrice: 380,
         totalPrice: 760
       }
@@ -829,7 +829,7 @@ export const INITIAL_ANALYTICS: AnalyticsData = {
     {
       type: "warning",
       title: "Products Near Batch Limits",
-      text: "NYC Chocolate Chip Cookie Box has 32/40 booked (8 remaining). Classic Walnut Brownie is fully booked & sold out for today.",
+      text: "Lotus Biscoff Swirl Brownie Slab has 32/40 booked (8 remaining). Classic Walnut Brownie is fully booked & sold out for today.",
       icon: "Package"
     },
     {

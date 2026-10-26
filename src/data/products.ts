@@ -38,7 +38,7 @@ export const PRODUCTS: Product[] = [
     rating: 4.9,
     reviews: 130,
     shortDescription: 'Layered with molten spiced Lotus Biscoff speculoos ribbons & biscuit dust.',
-    description: 'Our proprietary dark chocolate fudge slab with warm Belgian Lotus Biscoff speculoos spread marbled generously through the center and crusted with crispy caramelized cookie crumbs.',
+    description: 'Our proprietary dark chocolate fudge slab with warm Belgian Lotus Biscoff speculoos spread marbled generously through the center and crusted with crispy caramelized speculoos crumbs.',
     image: 'https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=800&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=800&q=80',
@@ -157,7 +157,7 @@ export const PRODUCTS: Product[] = [
     price: 520,
     rating: 4.8,
     reviews: 62,
-    shortDescription: 'Crimson cocoa batter marbled with tangy Philadelphia cream cheese cheesecake.',
+    shortDescription: 'Crimson cocoa batter marbled with tangy Philadelphia cream cheese swirls.',
     description: 'Vibrant crimson cocoa brownie crowned with delicate artisan swirls of rich Philadelphia cream cheese. Delicately tart and supremely fudgy.',
     image: 'https://images.unsplash.com/photo-1534432182912-63863115e106?auto=format&fit=crop&w=800&q=80',
     gallery: [

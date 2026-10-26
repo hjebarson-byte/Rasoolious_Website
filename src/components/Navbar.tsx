@@ -232,7 +232,7 @@ export const Navbar: React.FC = () => {
 
             <div className="mt-4 pt-4 border-t border-cream-100 flex flex-wrap items-center gap-2 text-xs text-chocolate-600">
               <span className="font-semibold text-chocolate-800">Popular:</span>
-              {['Fudge Brownie', 'Red Velvet', 'Biscoff', 'NYC Cookie', 'Cheesecake'].map(
+              {['Belgian Fudge', 'Lotus Biscoff', 'Nutella Lava', 'Kashmiri Walnut', 'Red Velvet Swirl'].map(
                 (term) => (
                   <button
                     key={term}
