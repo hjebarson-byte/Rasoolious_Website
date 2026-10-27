@@ -7,6 +7,31 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: '#40251F',
+        secondary: '#795548',
+        espresso: '#2B1B17',
+        surface: '#FAF7F2',
+        caramel: {
+          DEFAULT: '#D5A15E',
+          100: '#FDF4EB',
+          200: '#F7E2CD',
+          300: '#ECC59F',
+          400: '#DDA15E',
+          500: '#C68037',
+          600: '#A46322',
+        },
+        border: '#EAE2D8',
+        success: '#56836B',
+        warning: '#D99A35',
+        error: '#C65D52',
+        'surface-card': '#FFFFFF',
+        'warm-cream': '#F5EFE6',
+        'warm-cream-dark': '#EDE4D6',
+        'primary-container': '#40251F',
+        'secondary-fixed': '#ffdbcf',
+        'on-secondary-fixed': '#2e150b',
+        'tertiary-fixed': '#ffddb6',
+        'on-tertiary-fixed': '#2a1800',
         cream: {
           50: '#FDFBF7',
           100: '#FAF6F0',
@@ -26,14 +51,6 @@ export default {
           900: '#1C100B',
           950: '#120A06',
         },
-        caramel: {
-          100: '#FDF4EB',
-          200: '#F7E2CD',
-          300: '#ECC59F',
-          400: '#DDA15E',
-          500: '#C68037',
-          600: '#A46322',
-        },
         terracotta: {
           500: '#C4622D',
           600: '#A84D1E',
@@ -41,10 +58,17 @@ export default {
         warmwhite: '#FFFDF9',
       },
       fontFamily: {
+        headline: ['"Playfair Display"', 'Georgia', 'serif'],
+        body: ['"Manrope"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        manrope: ['"Manrope"', 'sans-serif'],
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
+        'warm-sm': '0 1px 3px rgba(43, 27, 23, 0.04), 0 1px 2px rgba(43, 27, 23, 0.03)',
+        'warm-md': '0 4px 16px -2px rgba(43, 27, 23, 0.06), 0 2px 6px -1px rgba(43, 27, 23, 0.04)',
+        'warm-lg': '0 10px 25px -4px rgba(43, 27, 23, 0.08), 0 4px 10px -2px rgba(43, 27, 23, 0.04)',
+        'warm-glow': '0 0 20px rgba(213, 161, 94, 0.18)',
         'soft-sm': '0 2px 8px -2px rgba(44, 24, 16, 0.05)',
         'soft': '0 6px 20px -4px rgba(44, 24, 16, 0.07)',
         'soft-lg': '0 12px 32px -6px rgba(44, 24, 16, 0.1)',
@@ -52,6 +76,8 @@ export default {
         'card-hover': '0 16px 36px -4px rgba(44, 24, 16, 0.12)',
       },
       borderRadius: {
+        'artisan': '14px',
+        'artisan-lg': '18px',
         '2xl': '1rem',
         '3xl': '1.5rem',
         '4xl': '2rem',

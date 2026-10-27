@@ -34,6 +34,56 @@
     background-image: radial-gradient(rgba(44, 24, 16, 0.03) 1px, transparent 0);
     background-size: 24px 24px;
   }
+  .card-artisan {
+    background-color: #FFFFFF;
+    border: 1px solid #EAE2D8;
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(43, 27, 23, 0.04), 0 1px 2px rgba(43, 27, 23, 0.03);
+    transition: all 0.25s ease;
+  }
+  .card-artisan:hover {
+    box-shadow: 0 4px 16px -2px rgba(43, 27, 23, 0.06), 0 2px 6px -1px rgba(43, 27, 23, 0.04);
+  }
+  .badge-artisan {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  /* Core Confectionery Color Classes */
+  .bg-primary { background-color: #40251F !important; }
+  .text-primary { color: #40251F !important; }
+  .text-secondary { color: #795548 !important; }
+  .text-espresso { color: #2B1B17 !important; }
+  .bg-espresso { background-color: #2B1B17 !important; }
+  .border-espresso { border-color: #2B1B17 !important; }
+  .text-caramel { color: #D5A15E !important; }
+  .bg-caramel { background-color: #D5A15E !important; }
+  .bg-surface { background-color: #FAF7F2 !important; }
+  .bg-warm-cream { background-color: #F5EFE6 !important; }
+  .border-border { border-color: #EAE2D8 !important; }
+  .font-headline { font-family: 'Playfair Display', Georgia, serif !important; }
+  .font-body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif !important; }
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Reduced motion support */
