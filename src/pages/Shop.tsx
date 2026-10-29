@@ -1,23 +1,22 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, X, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Search, X, SlidersHorizontal, ArrowUpDown, Gift, Heart } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 import type { CategoryType, Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { ProductQuickView } from '../components/ProductQuickView';
+import { BuildYourOwnBoxModal } from '../components/BuildYourOwnBoxModal';
 
 const CATEGORIES: CategoryType[] = [
   'All',
-  'Classic Fudgy',
-  'Molten Centers',
-  'Nut & Crunch',
-  'Artisan Slabs',
-  'Special Editions',
+  'Signature Brownies',
+  'Gift Boxes',
 ];
 
 export const Shop: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [isBoxModalOpen, setIsBoxModalOpen] = useState(false);
 
   // Read initial states from URL params
   const categoryParam = (searchParams.get('category') as CategoryType) || 'All';
@@ -120,14 +119,15 @@ export const Shop: React.FC = () => {
         
         {/* Header Title */}
         <div className="text-center max-w-2xl mx-auto mb-10 pt-4">
-          <span className="inline-block px-3.5 py-1 mb-3 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
-            Fresh From The Oven
-          </span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-3 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
+            <Heart className="w-3.5 h-3.5 text-caramel-600 fill-caramel-600" />
+            <span>A Little Love in Every Bite</span>
+          </div>
           <h1 className="font-serif text-4xl sm:text-5xl text-chocolate-950 font-normal tracking-tight">
-            Artisanal Brownie Slabs
+            Our Signature Brownies
           </h1>
           <p className="mt-3 text-chocolate-600 text-base sm:text-lg">
-            Handcrafted with 70% Callebaut dark chocolate and pure French cultured butter.
+            Every brownie has a story. Discover yours with our five signature flavours.
           </p>
         </div>
 
@@ -139,7 +139,7 @@ export const Shop: React.FC = () => {
               <Search className="w-5 h-5 text-chocolate-400 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search brownies, molten fudge slabs, biscoff, walnuts..."
+                placeholder="Search The Original, The Rasool, Nutella, Biscoff..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-11 pr-10 py-3 rounded-full bg-cream-50 border border-cream-200 text-sm text-chocolate-900 placeholder:text-chocolate-400 focus:outline-none focus:ring-2 focus:ring-caramel-500"
@@ -298,6 +298,12 @@ export const Shop: React.FC = () => {
       <ProductQuickView
         product={quickViewProduct}
         onClose={() => setQuickViewProduct(null)}
+      />
+
+      {/* Build Your Own Box Modal */}
+      <BuildYourOwnBoxModal
+        isOpen={isBoxModalOpen}
+        onClose={() => setIsBoxModalOpen(false)}
       />
     </div>
   );

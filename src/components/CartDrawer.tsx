@@ -128,8 +128,8 @@ export const CartDrawer: React.FC = () => {
               </button>
             </div>
           ) : (
-            cartItems.map(({ product, quantity }) => (
-              <div key={product.id} className="pt-4 first:pt-0 flex gap-3.5 items-center">
+            cartItems.map(({ product, quantity, selectedFlavours }, index) => (
+              <div key={`${product.id}-${index}`} className="pt-4 first:pt-0 flex gap-3.5 items-start">
                 {/* Product thumbnail */}
                 <Link
                   to={`/product/${product.id}`}
@@ -156,11 +156,25 @@ export const CartDrawer: React.FC = () => {
                     ₹{product.price} each
                   </div>
 
+                  {/* Display selected 4 flavours if it's a gift box */}
+                  {selectedFlavours && selectedFlavours.length > 0 && (
+                    <div className="mt-1.5 p-1.5 rounded-lg bg-cream-100/80 border border-cream-200 text-[10px] space-y-0.5 text-chocolate-700">
+                      <span className="font-semibold text-caramel-700 block">Chosen 4 Flavours:</span>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedFlavours.map((flv, idx) => (
+                          <span key={idx} className="bg-white/90 border border-caramel-200 px-1.5 py-0.5 rounded text-[10px]">
+                            {flv}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="mt-2 flex items-center justify-between">
                     <QuantitySelector
                       quantity={quantity}
-                      onIncrease={() => increaseQuantity(product.id)}
-                      onDecrease={() => decreaseQuantity(product.id)}
+                      onIncrease={() => increaseQuantity(product.id, selectedFlavours)}
+                      onDecrease={() => decreaseQuantity(product.id, selectedFlavours)}
                       size="sm"
                     />
                     <span className="font-semibold text-sm text-chocolate-900">
@@ -172,7 +186,7 @@ export const CartDrawer: React.FC = () => {
                 {/* Remove button */}
                 <button
                   type="button"
-                  onClick={() => removeFromCart(product.id)}
+                  onClick={() => removeFromCart(product.id, selectedFlavours)}
                   aria-label={`Remove ${product.name} from cart`}
                   className="p-1.5 text-chocolate-400 hover:text-rose-600 transition-colors self-start"
                 >

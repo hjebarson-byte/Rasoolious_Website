@@ -4,7 +4,7 @@ export type UserRole = 'Super Admin' | 'Admin' | 'Kitchen Staff' | 'User';
 
 export type ProductStatus = 'In Stock' | 'Limited Stock' | 'Sold Out';
 
-export type ProductCategory = 'All' | 'Classic Fudgy' | 'Molten Centers' | 'Nut & Crunch' | 'Artisan Slabs' | 'Special Editions';
+export type ProductCategory = 'All' | 'Signature Brownies' | 'Gift Boxes';
 
 export interface GiftMessage {
   to: string;
