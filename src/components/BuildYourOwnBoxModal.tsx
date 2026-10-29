@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { X, Check, Gift, Sparkles, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { X, Check, Gift, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS, SIGNATURE_FLAVOURS } from '../data/products';
+import { PRODUCTS } from '../data/products';
 
 interface BuildYourOwnBoxModalProps {
   isOpen: boolean;

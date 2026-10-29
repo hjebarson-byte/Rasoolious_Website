@@ -15,7 +15,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { QuantitySelector } from '../components/QuantitySelector';
 import { ProductCard } from '../components/ProductCard';
-import { Gift, Plus, Minus } from 'lucide-react';
+import { Gift } from 'lucide-react';
 
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

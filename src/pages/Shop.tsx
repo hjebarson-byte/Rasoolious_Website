@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, X, SlidersHorizontal, ArrowUpDown, Gift, Heart } from 'lucide-react';
+import { Search, X, SlidersHorizontal, ArrowUpDown, Heart } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 import type { CategoryType, Product } from '../types';
 import { ProductCard } from '../components/ProductCard';

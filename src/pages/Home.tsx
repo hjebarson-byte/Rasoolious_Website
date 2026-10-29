@@ -9,14 +9,12 @@ import {
   Truck, 
   Star, 
   ShoppingBag, 
-  Flame, 
   CheckCircle2, 
   Heart,
-  Gift,
-  Plus
+  Gift
 } from 'lucide-react';
 import { BRAND_CONFIG } from '../config/brand';
-import { PRODUCTS, CATEGORIES_LIST, TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
+import { PRODUCTS, TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
 import type { Product } from '../types';
 import { SectionHeading } from '../components/SectionHeading';
 import { ProductCard } from '../components/ProductCard';

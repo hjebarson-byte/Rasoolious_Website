@@ -17,7 +17,7 @@ export const InventoryScreen: React.FC = () => {
     toggleProductStatus 
   } = useAdmin();
 
-  const categories = ['All', 'Classic Fudgy', 'Molten Centers', 'Nut & Crunch', 'Artisan Slabs', 'Special Editions'];
+  const categories = ['All', 'Signature Brownies', 'Gift Boxes'];
 
   // Metrics
   const inStockCount = products.filter(p => p.status === 'In Stock').length;
