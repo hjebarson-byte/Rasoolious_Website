@@ -216,7 +216,7 @@ export const Navbar: React.FC = () => {
               <input
                 type="text"
                 autoFocus
-                placeholder="Search brownies, molten slabs, biscoff, walnuts..."
+                placeholder="Search The Original, The Rasool, Nutella, Biscoff, Double Chocolate..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-14 pr-12 py-4 rounded-2xl bg-cream-50 text-chocolate-900 placeholder:text-chocolate-400 border border-cream-300 focus:outline-none focus:ring-2 focus:ring-caramel-400 text-base md:text-lg"
@@ -232,7 +232,7 @@ export const Navbar: React.FC = () => {
 
             <div className="mt-4 pt-4 border-t border-cream-100 flex flex-wrap items-center gap-2 text-xs text-chocolate-600">
               <span className="font-semibold text-chocolate-800">Popular:</span>
-              {['Belgian Fudge', 'Lotus Biscoff', 'Nutella Lava', 'Kashmiri Walnut', 'Red Velvet Swirl'].map(
+              {['The Original', 'The Rasool', 'Double Chocolate', 'Nutella', 'Biscoff', 'Gift Box'].map(
                 (term) => (
                   <button
                     key={term}

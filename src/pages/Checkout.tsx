@@ -393,19 +393,24 @@ export const Checkout: React.FC = () => {
 
               {/* Mini item list */}
               <div className="max-h-60 overflow-y-auto divide-y divide-cream-100 pr-1 space-y-2">
-                {cartItems.map(({ product, quantity }) => (
-                  <div key={product.id} className="pt-2 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2.5">
+                {cartItems.map(({ product, quantity, selectedFlavours }, idx) => (
+                  <div key={`${product.id}-${idx}`} className="pt-2 flex items-start justify-between text-xs">
+                    <div className="flex items-start gap-2.5">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-10 h-10 rounded-lg object-cover bg-cream-100 border border-cream-200"
+                        className="w-10 h-10 rounded-lg object-cover bg-cream-100 border border-cream-200 shrink-0 mt-0.5"
                       />
                       <div>
-                        <span className="font-medium text-chocolate-900 block truncate max-w-[140px]">
+                        <span className="font-medium text-chocolate-900 block truncate max-w-[150px]">
                           {product.name}
                         </span>
                         <span className="text-chocolate-400">Qty: {quantity}</span>
+                        {selectedFlavours && selectedFlavours.length > 0 && (
+                          <span className="text-[10px] text-caramel-700 block line-clamp-1">
+                            {selectedFlavours.join(', ')}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <span className="font-semibold text-chocolate-900">

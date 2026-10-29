@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Sparkles, ArrowRight } from 'lucide-react';
+import { Heart, Sparkles, ArrowRight, Gift } from 'lucide-react';
+import { BRAND_CONFIG } from '../config/brand';
 
 export const OurStory: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ export const OurStory: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-50 text-rose-900 border border-rose-200 text-xs font-semibold tracking-wider uppercase shadow-xs">
             <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
-            <span>The Personal Love Story</span>
+            <span>{BRAND_CONFIG.tagline}</span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-chocolate-950 leading-tight">
@@ -52,7 +53,7 @@ export const OurStory: React.FC = () => {
                 R
               </div>
               <div className="text-left text-xs">
-                <div className="font-bold text-chocolate-950">A Love Story in Every Bite</div>
+                <div className="font-bold text-chocolate-950">A Little Love in Every Bite</div>
                 <div className="text-stone-500">Chef Rasool & Rasool</div>
               </div>
             </div>
@@ -133,8 +134,83 @@ export const OurStory: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 4. CLOSING REFLECTION & TRANSITION ================= */}
-      <section className="py-16 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+      {/* ================= 4. OUR SIGNATURE COLLECTION ================= */}
+      <section className="py-16 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <span className="text-xs font-bold uppercase tracking-widest text-caramel-600">Chapter 03 • The Collection</span>
+          <h2 className="font-serif text-3xl sm:text-4xl text-chocolate-950">
+            Our Signature Brownies
+          </h2>
+          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            Every brownie has a story. Discover yours with our five signature flavours.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[
+            {
+              name: 'The Original',
+              desc: 'Classic chocolate indulgence.',
+              tag: 'The Classic'
+            },
+            {
+              name: 'The Rasool',
+              desc: 'Our special creation, inspired by the love story behind our brand.',
+              tag: 'Our Heart & Soul'
+            },
+            {
+              name: 'Double Chocolate',
+              desc: 'Double the chocolate, double the delight.',
+              tag: 'Pure Cocoa'
+            },
+            {
+              name: 'Nutella',
+              desc: 'A rich chocolate-hazelnut treat.',
+              tag: 'Molten Core'
+            },
+            {
+              name: 'Biscoff',
+              desc: 'Chocolate brownies with a caramelised biscuit twist.',
+              tag: 'Speculoos Crunch'
+            },
+            {
+              name: 'The Rasoolicious Gift Box',
+              desc: "Share a little happiness with a box of brownies made for life's sweetest moments. Build Your Own Box: choose any four brownies from our signature collection.",
+              tag: 'Build Your Own Box',
+              isGift: true
+            }
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className={`p-6 rounded-3xl border transition-all ${
+                item.isGift
+                  ? 'bg-chocolate-950 text-white border-chocolate-800'
+                  : 'bg-white border-stone-200/90 hover:border-caramel-400'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span
+                  className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                    item.isGift
+                      ? 'bg-caramel-500 text-white'
+                      : 'bg-caramel-100 text-caramel-800'
+                  }`}
+                >
+                  {item.tag}
+                </span>
+                {item.isGift && <Gift className="w-4 h-4 text-caramel-300" />}
+              </div>
+              <h3 className="font-serif font-bold text-lg mb-1">{item.name}</h3>
+              <p className={`text-xs leading-relaxed ${item.isGift ? 'text-cream-200/80' : 'text-stone-600'}`}>
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= 5. CLOSING REFLECTION & TRANSITION ================= */}
+      <section className="py-16 sm:py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 border-t border-stone-200/80">
         <span className="text-xs font-bold uppercase tracking-widest text-caramel-600">The Journey Continues</span>
 
         <h2 className="font-serif text-3xl sm:text-5xl text-chocolate-950 leading-tight">
@@ -148,17 +224,17 @@ export const OurStory: React.FC = () => {
 
         <div className="pt-4 flex flex-wrap justify-center items-center gap-4">
           <Link
-            to="/about"
+            to="/shop"
             className="px-8 py-3.5 rounded-full bg-chocolate-900 hover:bg-caramel-600 text-white font-semibold text-sm transition-all shadow-md inline-flex items-center gap-2"
           >
-            <span>Learn About Our Craft & Atelier</span>
+            <span>Explore 5 Signature Flavours</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            to="/shop"
+            to="/about"
             className="px-6 py-3.5 rounded-full bg-stone-100 hover:bg-stone-200 text-chocolate-900 font-semibold text-sm transition-all border border-stone-300"
           >
-            Explore Brownies
+            About Rasoolicious Atelier
           </Link>
         </div>
       </section>

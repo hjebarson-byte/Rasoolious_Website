@@ -24,7 +24,7 @@ export const ScrollVideoStory: React.FC = () => {
   const [isAdded, setIsAdded] = useState(false);
 
   const { addToCart } = useCart();
-  const matchedProduct = PRODUCTS.find((p) => p.id === 'br-01') || PRODUCTS[0];
+  const matchedProduct = PRODUCTS.find((p) => p.id === 'br-rasool') || PRODUCTS[0];
 
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
@@ -311,7 +311,7 @@ export const ScrollVideoStory: React.FC = () => {
             <div className="pt-2 flex items-center gap-3 text-xs text-amber-200/90 font-bold uppercase tracking-wider">
               <span>🔥 Fresh Morning Batch #042</span>
               <span>•</span>
-              <span>Baked Daily in Mumbai</span>
+              <span>Baked Daily in Kanniyakumari</span>
             </div>
           </div>
         </div>
@@ -332,24 +332,26 @@ export const ScrollVideoStory: React.FC = () => {
               </span>
               <div className="flex items-center gap-1.5 text-xs font-semibold text-cream-200">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                <span>4.9</span>
-                <span className="text-cream-400 text-[11px]">(142 reviews)</span>
+                <span>{matchedProduct.rating}</span>
+                <span className="text-cream-400 text-[11px]">({matchedProduct.reviews} reviews)</span>
               </div>
             </div>
 
             <div>
               <h3 className="font-serif text-xl sm:text-2xl font-bold leading-snug text-cream-50">
-                70% Dark Chocolate Fudge Brownie
+                {matchedProduct.name}
               </h3>
               <p className="text-xs text-cream-200/80 mt-1 line-clamp-2">
-                Fresh out of the deck oven. Molten Belgian core, paper-thin crinkle crust, and Maldon flakes.
+                {matchedProduct.shortDescription}
               </p>
             </div>
 
             <div className="flex items-baseline justify-between pt-1 border-t border-white/10">
               <div className="flex items-baseline gap-2">
-                <span className="font-bold text-2xl text-caramel-300">₹180</span>
-                <span className="text-xs text-cream-400 line-through">₹200</span>
+                <span className="font-bold text-2xl text-caramel-300">₹{matchedProduct.price}</span>
+                {matchedProduct.originalPrice && (
+                  <span className="text-xs text-cream-400 line-through">₹{matchedProduct.originalPrice}</span>
+                )}
               </div>
               <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

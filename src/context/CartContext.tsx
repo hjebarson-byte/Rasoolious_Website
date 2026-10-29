@@ -10,11 +10,11 @@ interface AppliedCoupon {
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, quantity?: number) => void;
-  removeFromCart: (productId: string) => void;
-  increaseQuantity: (productId: string) => void;
-  decreaseQuantity: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  addToCart: (product: Product, quantity?: number, selectedFlavours?: string[]) => void;
+  removeFromCart: (productId: string, selectedFlavours?: string[]) => void;
+  increaseQuantity: (productId: string, selectedFlavours?: string[]) => void;
+  decreaseQuantity: (productId: string, selectedFlavours?: string[]) => void;
+  updateQuantity: (productId: string, quantity: number, selectedFlavours?: string[]) => void;
   clearCart: () => void;
   getCartSubtotal: () => number;
   getCartTotal: () => number;
@@ -76,41 +76,51 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [appliedCoupon]);
 
-  const addToCart = (product: Product, quantity = 1) => {
+  const areFlavoursEqual = (a?: string[], b?: string[]) => {
+    return JSON.stringify(a || []) === JSON.stringify(b || []);
+  };
+
+  const addToCart = (product: Product, quantity = 1, selectedFlavours?: string[]) => {
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
+      const existing = prev.find(
+        (item) => item.product.id === product.id && areFlavoursEqual(item.selectedFlavours, selectedFlavours)
+      );
       if (existing) {
         return prev.map((item) =>
-          item.product.id === product.id
+          item.product.id === product.id && areFlavoursEqual(item.selectedFlavours, selectedFlavours)
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product, quantity, selectedFlavours }];
     });
     setLastAddedProduct(product);
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId: string) => {
-    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+  const removeFromCart = (productId: string, selectedFlavours?: string[]) => {
+    setCartItems((prev) =>
+      prev.filter(
+        (item) => !(item.product.id === productId && areFlavoursEqual(item.selectedFlavours, selectedFlavours))
+      )
+    );
   };
 
-  const increaseQuantity = (productId: string) => {
+  const increaseQuantity = (productId: string, selectedFlavours?: string[]) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.product.id === productId
+        item.product.id === productId && areFlavoursEqual(item.selectedFlavours, selectedFlavours)
           ? { ...item, quantity: item.quantity + 1 }
           : item
       )
     );
   };
 
-  const decreaseQuantity = (productId: string) => {
+  const decreaseQuantity = (productId: string, selectedFlavours?: string[]) => {
     setCartItems((prev) =>
       prev
         .map((item) => {
-          if (item.product.id === productId) {
+          if (item.product.id === productId && areFlavoursEqual(item.selectedFlavours, selectedFlavours)) {
             return { ...item, quantity: Math.max(0, item.quantity - 1) };
           }
           return item;
@@ -119,14 +129,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: string, quantity: number, selectedFlavours?: string[]) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productId, selectedFlavours);
       return;
     }
     setCartItems((prev) =>
       prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.product.id === productId && areFlavoursEqual(item.selectedFlavours, selectedFlavours)
+          ? { ...item, quantity }
+          : item
       )
     );
   };

@@ -117,15 +117,15 @@ export const Cart: React.FC = () => {
 
             {/* Items */}
             <div className="divide-y divide-cream-100">
-              {cartItems.map(({ product, quantity }) => (
+              {cartItems.map(({ product, quantity, selectedFlavours }, index) => (
                 <div
-                  key={product.id}
+                  key={`${product.id}-${index}`}
                   className="py-5 first:pt-0 last:pb-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-start gap-4">
                     <Link
                       to={`/product/${product.id}`}
-                      className="w-20 h-20 rounded-2xl overflow-hidden bg-cream-100 shrink-0 border border-cream-200"
+                      className="w-20 h-20 rounded-2xl overflow-hidden bg-cream-100 shrink-0 border border-cream-200 mt-1 sm:mt-0"
                     >
                       <img
                         src={product.image}
@@ -147,14 +147,33 @@ export const Cart: React.FC = () => {
                       <div className="text-xs text-chocolate-500 mt-0.5">
                         ₹{product.price} each {product.weight ? `• ${product.weight}` : ''}
                       </div>
+
+                      {/* Display selected 4 flavours if gift box */}
+                      {selectedFlavours && selectedFlavours.length > 0 && (
+                        <div className="mt-2 p-2 rounded-xl bg-cream-50 border border-cream-200 text-xs text-chocolate-700">
+                          <span className="font-semibold text-caramel-700 block text-[11px] mb-1">
+                            Chosen 4 Brownie Flavours:
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {selectedFlavours.map((flv, idx) => (
+                              <span
+                                key={idx}
+                                className="bg-white border border-caramel-200 px-2 py-0.5 rounded text-[11px] font-medium"
+                              >
+                                {flv}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between w-full sm:w-auto gap-6 ml-auto">
                     <QuantitySelector
                       quantity={quantity}
-                      onIncrease={() => increaseQuantity(product.id)}
-                      onDecrease={() => decreaseQuantity(product.id)}
+                      onIncrease={() => increaseQuantity(product.id, selectedFlavours)}
+                      onDecrease={() => decreaseQuantity(product.id, selectedFlavours)}
                       size="sm"
                     />
 
@@ -164,7 +183,7 @@ export const Cart: React.FC = () => {
 
                     <button
                       type="button"
-                      onClick={() => removeFromCart(product.id)}
+                      onClick={() => removeFromCart(product.id, selectedFlavours)}
                       aria-label="Remove item"
                       className="p-2 text-chocolate-400 hover:text-rose-600 transition-colors"
                     >

@@ -27,7 +27,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-sm text-chocolate-300 max-w-sm leading-relaxed">
-              Handcrafted in small batches using 70% single-origin Belgian chocolate, French cultured butter, and pure organic vanilla. No shortcuts, no artificial preservatives.
+              Handcrafted in small batches using single-origin Belgian chocolate, French cultured butter, and pure organic vanilla. A little love in every bite.
             </p>
 
             <div className="space-y-2 text-xs text-chocolate-300 pt-2">
@@ -78,32 +78,37 @@ export const Footer: React.FC = () => {
           {/* Shop Column */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold tracking-widest text-caramel-400 uppercase">
-              Brownie Collections
+              Our 5 Signature Flavours
             </h4>
             <ul className="space-y-2 text-sm text-chocolate-300">
               <li>
-                <Link to="/shop?category=Classic+Fudgy" className="hover:text-cream-50 transition-colors">
-                  Classic Fudgy Slabs
+                <Link to="/product/the-original" className="hover:text-cream-50 transition-colors">
+                  The Original
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Molten+Centers" className="hover:text-cream-50 transition-colors">
-                  Molten Centers (Nutella & Biscoff)
+                <Link to="/product/the-rasool" className="hover:text-cream-50 transition-colors">
+                  The Rasool
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Nut+%26+Crunch" className="hover:text-cream-50 transition-colors">
-                  Nut & Crunch Brownies
+                <Link to="/product/double-chocolate" className="hover:text-cream-50 transition-colors">
+                  Double Chocolate
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Artisan+Slabs" className="hover:text-cream-50 transition-colors">
-                  Artisan Slabs
+                <Link to="/product/nutella" className="hover:text-cream-50 transition-colors">
+                  Nutella
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Special+Editions" className="hover:text-cream-50 transition-colors">
-                  Special Editions
+                <Link to="/product/biscoff" className="hover:text-cream-50 transition-colors">
+                  Biscoff
+                </Link>
+              </li>
+              <li className="pt-1">
+                <Link to="/product/the-rasoolicious-gift-box" className="text-caramel-300 hover:text-white transition-colors font-semibold flex items-center gap-1.5">
+                  <span>🎁 The Rasoolicious Gift Box</span>
                 </Link>
               </li>
             </ul>
@@ -136,13 +141,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/#faq" className="hover:text-cream-50 transition-colors">
-                  Frequently Asked Questions
-                </Link>
-              </li>
-              <li>
-                <Link to="/#custom-orders" className="hover:text-cream-50 transition-colors">
-                  Custom Event Catering
+                <Link to="/shop" className="hover:text-cream-50 transition-colors">
+                  All Brownies
                 </Link>
               </li>
               <li className="pt-1">
@@ -196,7 +196,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-chocolate-400 gap-4">
-          <p>© 2026 {BRAND_CONFIG.name}. Handcrafted with love and lots of chocolate.</p>
+          <p>© 2026 {BRAND_CONFIG.name}. A Little Love in Every Bite.</p>
           <div className="flex items-center gap-6">
             <span>Free Shipping Over ₹999</span>
             <span>100% Secure Checkout</span>

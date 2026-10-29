@@ -31,49 +31,79 @@ interface StarTreat {
 
 const STAR_TREATS: StarTreat[] = [
   {
-    id: 'br-01',
-    name: 'Belgian Dark Chocolate Fudge Slab',
-    category: 'Signature Brownie',
-    badge: 'OVEN STAR',
+    id: 'br-rasool',
+    name: 'The Rasool',
+    category: 'Signature Brownies',
+    badge: 'CHEF SPECIAL',
+    price: 490,
+    originalPrice: 520,
+    rating: 5.0,
+    reviews: 198,
+    tagline: 'Our special creation, inspired by the love story behind our brand.',
+    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=1000&q=85',
+    textureNote: 'Bourbon Vanilla & Sea Salt',
+    cocoaOrigin: 'Belgian 72% Couverture',
+    freshness: 'Fresh Morning Batch #041',
+  },
+  {
+    id: 'br-original',
+    name: 'The Original',
+    category: 'Signature Brownies',
+    badge: 'BEST SELLER',
     price: 450,
     originalPrice: 480,
     rating: 4.9,
-    reviews: 142,
-    tagline: 'Molten Belgian core with paper-thin crinkle crust & Maldon sea salt',
+    reviews: 154,
+    tagline: 'Classic chocolate indulgence.',
     image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1000&q=85',
-    textureNote: 'Ultra Fudgy & Molten',
-    cocoaOrigin: 'Belgian 70% Callebaut',
+    textureNote: 'Ultra Fudgy & Crinkle Top',
+    cocoaOrigin: 'Belgian 70% Dark Chocolate',
     freshness: 'Fresh Morning Batch #042',
   },
   {
-    id: 'br-02',
-    name: 'Lotus Biscoff Swirl Brownie Slab',
-    category: 'Molten Centers',
-    badge: 'BEST SELLER',
+    id: 'br-double-chocolate',
+    name: 'Double Chocolate',
+    category: 'Signature Brownies',
+    badge: 'NEW',
     price: 480,
     originalPrice: 510,
     rating: 4.9,
-    reviews: 130,
-    tagline: 'Caramelized Belgian speculoos spread marbled through dark chocolate fudge',
-    image: 'https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=1000&q=85',
-    textureNote: 'Caramelized & Gooey',
-    cocoaOrigin: 'Belgian 64% Cocoa',
+    reviews: 112,
+    tagline: 'Double the chocolate, double the delight.',
+    image: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?auto=format&fit=crop&w=1000&q=85',
+    textureNote: 'Molten Chocolate Pockets',
+    cocoaOrigin: 'Swiss Milk & Belgian Dark',
     freshness: 'Fresh Morning Batch #043',
   },
   {
-    id: 'br-03',
-    name: 'Nutella Hazelnut Molten Lava Brownie',
-    category: 'Molten Centers',
-    badge: 'CHEF SPECIAL',
+    id: 'br-nutella',
+    name: 'Nutella',
+    category: 'Signature Brownies',
+    badge: 'BEST SELLER',
     price: 520,
     originalPrice: 550,
-    rating: 4.8,
-    reviews: 86,
-    tagline: 'Slow-roasted hazelnuts with a continuous molten river of pure Italian Nutella',
+    rating: 4.9,
+    reviews: 167,
+    tagline: 'A rich chocolate-hazelnut treat.',
     image: 'https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=1000&q=85',
     textureNote: 'Molten Nutella River',
-    cocoaOrigin: 'Piedmont Hazelnut Cocoa',
+    cocoaOrigin: 'Roasted Hazelnuts & Cocoa',
     freshness: 'Fresh Morning Batch #044',
+  },
+  {
+    id: 'br-biscoff',
+    name: 'Biscoff',
+    category: 'Signature Brownies',
+    badge: 'BEST SELLER',
+    price: 490,
+    originalPrice: 520,
+    rating: 4.9,
+    reviews: 145,
+    tagline: 'Chocolate brownies with a caramelised biscuit twist.',
+    image: 'https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=1000&q=85',
+    textureNote: 'Caramelised Speculoos Ribbon',
+    cocoaOrigin: 'Belgian 64% Cocoa',
+    freshness: 'Fresh Morning Batch #045',
   },
 ];
 
@@ -98,19 +128,19 @@ export const HeroShowcase: React.FC = () => {
       
       {/* 1. Header / Switcher Pills */}
       <div className="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-cream-100">
-        <div className="flex items-center gap-1.5 p-1 bg-cream-100 rounded-full">
+        <div className="flex items-center gap-1 p-1 bg-cream-100 rounded-full overflow-x-auto max-w-[calc(100%-80px)] sm:max-w-none no-scrollbar">
           {STAR_TREATS.map((t, idx) => (
             <button
               key={t.id}
               type="button"
               onClick={() => setSelectedIndex(idx)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                 selectedIndex === idx
                   ? 'bg-chocolate-900 text-cream-50 shadow-soft-sm'
                   : 'text-chocolate-700 hover:text-chocolate-950 hover:bg-cream-200/60'
               }`}
             >
-              {idx === 0 ? 'Classic Fudge' : idx === 1 ? 'Lotus Biscoff' : 'Nutella Lava'}
+              {t.name}
             </button>
           ))}
         </div>

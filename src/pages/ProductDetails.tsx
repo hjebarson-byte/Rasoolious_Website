@@ -10,11 +10,12 @@ import {
   Sparkles, 
   AlertCircle
 } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
+import { PRODUCTS, SIGNATURE_FLAVOURS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { QuantitySelector } from '../components/QuantitySelector';
 import { ProductCard } from '../components/ProductCard';
+import { Gift } from 'lucide-react';
 
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +29,12 @@ export const ProductDetails: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [activeTab, setActiveTab] = useState<'ingredients' | 'storage' | 'delivery' | 'reviews'>('ingredients');
+  const [selectedFlavours, setSelectedFlavours] = useState<string[]>([
+    'The Original',
+    'The Rasool',
+    'Nutella',
+    'Biscoff',
+  ]);
 
   useEffect(() => {
     if (product) {
@@ -60,7 +67,11 @@ export const ProductDetails: React.FC = () => {
   const wishlisted = isWishlisted(product.id);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart(
+      product,
+      quantity,
+      product.id === 'rasoolicious-gift-box' ? selectedFlavours : undefined
+    );
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
@@ -68,7 +79,11 @@ export const ProductDetails: React.FC = () => {
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity);
+    addToCart(
+      product,
+      quantity,
+      product.id === 'rasoolicious-gift-box' ? selectedFlavours : undefined
+    );
     navigate('/checkout');
   };
 
@@ -213,6 +228,121 @@ export const ProductDetails: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* If Gift Box: Interactive 4-Brownie Selector */}
+            {product.id === 'rasoolicious-gift-box' && (
+              <div className="pt-4 border-t border-cream-100 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-serif text-lg font-bold text-chocolate-950 flex items-center gap-2">
+                      <Gift className="w-4 h-4 text-caramel-600" />
+                      <span>Build Your Own Box</span>
+                    </h4>
+                    <p className="text-xs text-chocolate-600">
+                      Choose any four brownies from our signature collection
+                    </p>
+                  </div>
+                  <span
+                    className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                      selectedFlavours.length === 4
+                        ? 'bg-emerald-50 text-emerald-700'
+                        : 'bg-caramel-50 text-caramel-700'
+                    }`}
+                  >
+                    {selectedFlavours.length} / 4 Selected
+                  </span>
+                </div>
+
+                {/* 4 Chosen Slots */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {[0, 1, 2, 3].map((slotIdx) => {
+                    const flv = selectedFlavours[slotIdx];
+                    return (
+                      <div
+                        key={slotIdx}
+                        className={`h-16 rounded-xl border-2 flex flex-col items-center justify-center p-1 text-center relative transition-all ${
+                          flv
+                            ? 'bg-cream-50 border-caramel-300'
+                            : 'border-dashed border-cream-300 text-chocolate-300'
+                        }`}
+                      >
+                        {flv ? (
+                          <>
+                            <span className="text-[11px] font-bold text-chocolate-900 leading-tight">
+                              {flv}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...selectedFlavours];
+                                updated.splice(slotIdx, 1);
+                                setSelectedFlavours(updated);
+                              }}
+                              className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px]"
+                            >
+                              ×
+                            </button>
+                          </>
+                        ) : (
+                          <span className="text-[10px] text-chocolate-400">Slot {slotIdx + 1}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Pick From 5 Signature Flavours */}
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[11px] font-semibold text-chocolate-700 uppercase tracking-wider block">
+                    Tap to add flavours:
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {SIGNATURE_FLAVOURS.map((name) => {
+                      const count = selectedFlavours.filter((f) => f === name).length;
+                      const isFull = selectedFlavours.length >= 4;
+                      return (
+                        <div
+                          key={name}
+                          className="flex items-center justify-between p-2 rounded-xl bg-white border border-cream-200 text-xs"
+                        >
+                          <span className="font-medium text-chocolate-900 truncate pr-1">{name}</span>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const idx = selectedFlavours.lastIndexOf(name);
+                                if (idx !== -1) {
+                                  const updated = [...selectedFlavours];
+                                  updated.splice(idx, 1);
+                                  setSelectedFlavours(updated);
+                                }
+                              }}
+                              disabled={count === 0}
+                              className="w-5 h-5 rounded-full bg-cream-100 flex items-center justify-center text-chocolate-700 disabled:opacity-30"
+                            >
+                              -
+                            </button>
+                            <span className="w-3 text-center font-bold text-chocolate-900">{count}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (selectedFlavours.length < 4) {
+                                  setSelectedFlavours([...selectedFlavours, name]);
+                                }
+                              }}
+                              disabled={isFull}
+                              className="w-5 h-5 rounded-full bg-chocolate-900 text-white flex items-center justify-center disabled:opacity-30"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Quantity and Actions */}
             <div className="pt-4 border-t border-cream-100 space-y-4">

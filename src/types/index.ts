@@ -1,10 +1,7 @@
 export type CategoryType = 
   | 'All' 
-  | 'Classic Fudgy' 
-  | 'Molten Centers' 
-  | 'Nut & Crunch' 
-  | 'Artisan Slabs' 
-  | 'Special Editions';
+  | 'Signature Brownies' 
+  | 'Gift Boxes';
 
 export interface Product {
   id: string;
@@ -34,6 +31,7 @@ export interface Product {
 export interface CartItem {
   product: Product;
   quantity: number;
+  selectedFlavours?: string[];
 }
 
 export interface WishlistItem {

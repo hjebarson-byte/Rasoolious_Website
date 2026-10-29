@@ -8,13 +8,13 @@ import {
   HeartHandshake, 
   Truck, 
   Star, 
-  ShoppingBag,
-  Flame,
-  CheckCircle2,
-  Heart
+  ShoppingBag, 
+  CheckCircle2, 
+  Heart,
+  Gift
 } from 'lucide-react';
 import { BRAND_CONFIG } from '../config/brand';
-import { PRODUCTS, CATEGORIES_LIST, TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
+import { PRODUCTS, TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
 import type { Product } from '../types';
 import { SectionHeading } from '../components/SectionHeading';
 import { ProductCard } from '../components/ProductCard';
@@ -22,14 +22,15 @@ import { ProductQuickView } from '../components/ProductQuickView';
 import { Newsletter } from '../components/Newsletter';
 import { HeroShowcase } from '../components/HeroShowcase';
 import { ScrollVideoStory } from '../components/ScrollVideoStory';
+import { BuildYourOwnBoxModal } from '../components/BuildYourOwnBoxModal';
 
 export const Home: React.FC = () => {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [isBoxModalOpen, setIsBoxModalOpen] = useState(false);
 
-  // Filter specific product sets
-  const bestSellers = PRODUCTS.filter((p) => p.badge === 'BEST SELLER').slice(0, 4);
-  const signatureBrownies = PRODUCTS.slice(0, 4);
-  const moltenBrownies = PRODUCTS.filter((p) => p.category === 'Molten Centers' || p.category === 'Classic Fudgy').slice(0, 6);
+  // 5 Signature Flavours
+  const signatureBrownies = PRODUCTS.filter((p) => p.category === 'Signature Brownies');
+  const giftBoxProduct = PRODUCTS.find((p) => p.id === 'rasoolicious-gift-box') || PRODUCTS[0];
 
   return (
     <div className="pt-24 sm:pt-28">
@@ -45,19 +46,19 @@ export const Home: React.FC = () => {
             {/* Hero Text */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-caramel-100/80 border border-caramel-300/60 text-chocolate-800 text-xs font-semibold tracking-wider uppercase shadow-soft-sm">
-                <Sparkles className="w-3.5 h-3.5 text-caramel-600" />
-                <span>Small Batch Artisanal Brownies</span>
+                <Heart className="w-3.5 h-3.5 text-caramel-600 fill-caramel-600" />
+                <span>{BRAND_CONFIG.tagline}</span>
               </div>
 
               <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-chocolate-950 font-normal leading-[1.08] tracking-tight">
-                Baked to make <br className="hidden sm:inline" />
+                Our Signature <br className="hidden sm:inline" />
                 <span className="italic font-serif font-medium text-caramel-600">
-                  your day better.
+                  Brownies.
                 </span>
               </h1>
 
-              <p className="text-chocolate-600 text-base sm:text-lg max-w-lg mx-auto lg:mx-0 leading-relaxed font-normal">
-                {BRAND_CONFIG.subheadline} Melt-in-the-mouth textures, single-origin Belgian chocolate, and pure butter warmth in every bite.
+              <p className="text-chocolate-700 text-base sm:text-lg max-w-lg mx-auto lg:mx-0 leading-relaxed font-normal">
+                {BRAND_CONFIG.subheadline}
               </p>
 
               {/* CTAs */}
@@ -67,17 +68,18 @@ export const Home: React.FC = () => {
                   className="w-full sm:w-auto px-8 py-4 rounded-full bg-chocolate-900 hover:bg-caramel-600 text-cream-50 font-semibold text-sm transition-all duration-300 shadow-soft hover:shadow-card-hover flex items-center justify-center gap-2 active:scale-95"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>Shop Treats</span>
+                  <span>Explore 5 Flavours</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
-                <a
-                  href="#best-sellers"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-cream-100 text-chocolate-900 border border-cream-300 font-semibold text-sm transition-all duration-200 shadow-soft-sm flex items-center justify-center gap-2"
+                <button
+                  type="button"
+                  onClick={() => setIsBoxModalOpen(true)}
+                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-cream-100 text-chocolate-900 border border-caramel-300 font-semibold text-sm transition-all duration-200 shadow-soft-sm flex items-center justify-center gap-2"
                 >
-                  <Flame className="w-4 h-4 text-caramel-500" />
-                  <span>Explore Best Sellers</span>
-                </a>
+                  <Gift className="w-4 h-4 text-caramel-600" />
+                  <span>Build Your Own Box</span>
+                </button>
               </div>
 
               {/* Social Proof Mini Bar */}
@@ -117,107 +119,23 @@ export const Home: React.FC = () => {
       {/* ================= 1.5 CINEMATIC SCROLL VIDEO STORY ================= */}
       <ScrollVideoStory />
 
-      {/* ================= 2. FEATURED CATEGORIES ================= */}
-      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeading
-          badge="Atelier Menu"
-          title="Explore Our Brownie Collections"
-          subtitle="From 70% Callebaut dark chocolate molten slabs to roasted walnut crunches, every brownie is baked in small daily batches."
-        />
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-5">
-          {CATEGORIES_LIST.map((category) => (
-            <Link
-              key={category.id}
-              to={`/shop?category=${encodeURIComponent(category.id)}`}
-              className="group relative flex flex-col rounded-3xl overflow-hidden bg-white border border-cream-200 shadow-soft hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5"
-            >
-              <div className="aspect-[4/5] w-full overflow-hidden bg-cream-100 relative">
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80';
-                  }}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-chocolate-950/80 via-chocolate-950/20 to-transparent group-hover:from-chocolate-950/90 transition-colors" />
-                
-                <div className="absolute inset-0 p-4 flex flex-col justify-end text-white">
-                  <span className="text-[10px] uppercase tracking-wider font-semibold text-caramel-300 mb-0.5">
-                    {category.count} items
-                  </span>
-                  <h3 className="font-serif text-base sm:text-lg font-medium leading-snug group-hover:text-caramel-200 transition-colors flex items-center justify-between">
-                    <span>{category.title}</span>
-                    <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
-                  </h3>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ================= 3. BEST SELLERS ================= */}
-      <section id="best-sellers" className="py-16 md:py-24 bg-cream-100/60 border-y border-cream-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14">
-            <div>
-              <span className="inline-block px-3.5 py-1 mb-3 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
-                Customer Favorites
-              </span>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-chocolate-900 leading-tight">
-                Our Most Craved Treats
-              </h2>
-              <p className="mt-2 text-chocolate-600 text-sm sm:text-base">
-                The recipes that put Rasoolicious on the map.
-              </p>
-            </div>
-            <Link
-              to="/shop?sort=best-selling"
-              className="mt-4 md:mt-0 inline-flex items-center gap-1.5 text-xs font-semibold text-caramel-600 hover:text-chocolate-900 transition-colors uppercase tracking-wider"
-            >
-              <span>View All Best Sellers</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+      {/* ================= 2. OUR SIGNATURE BROWNIES ================= */}
+      <section id="signature-brownies" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-3 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
+            <Heart className="w-3.5 h-3.5 text-caramel-600 fill-caramel-600" />
+            <span>A Little Love in Every Bite</span>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bestSellers.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onQuickView={(p) => setQuickViewProduct(p)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ================= 4. SIGNATURE BROWNIE SPOTLIGHT ================= */}
-      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14">
-          <div>
-            <span className="inline-block px-3.5 py-1 mb-3 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
-              The Chocolate Craft
-            </span>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-chocolate-900 leading-tight">
-              Meet your new favourite brownie.
-            </h2>
-            <p className="mt-2 text-chocolate-600 text-sm sm:text-base max-w-xl">
-              Thick paper-thin crinkle tops, dense fudgy interiors, and real European butter. Baked fresh every morning.
-            </p>
-          </div>
-          <Link
-            to="/shop"
-            className="mt-4 md:mt-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-caramel-300 text-chocolate-800 text-xs font-semibold hover:bg-caramel-50 transition-colors shadow-soft-sm"
-          >
-            <span>View All Brownies (12)</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-chocolate-950 font-normal tracking-tight">
+            Our Signature Brownies
+          </h2>
+          <p className="mt-3 text-chocolate-600 text-base sm:text-lg leading-relaxed">
+            Every brownie has a story. Discover yours with our five signature flavours.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 5 Signature Flavour Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {signatureBrownies.map((product) => (
             <ProductCard
               key={product.id}
@@ -228,83 +146,84 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 5. PROMOTIONAL BOX BUILDER BANNER ================= */}
-      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="relative rounded-4xl overflow-hidden bg-chocolate-900 text-cream-50 p-8 sm:p-12 lg:p-16 shadow-2xl border border-chocolate-800">
-          {/* Subtle noise and warm glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-caramel-600/20 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-            <div className="lg:col-span-7 space-y-4">
-              <span className="px-3.5 py-1 text-xs font-bold tracking-widest uppercase rounded-full bg-caramel-500 text-white inline-block">
-                Artisan Brownie Box
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-cream-50 leading-tight">
-                Sweet box. Pure indulgence.
-              </h2>
-              <p className="text-chocolate-200 text-sm sm:text-base max-w-lg leading-relaxed">
-                Build your own box of handcrafted brownies and save 10%. Mix & match dark chocolate fudge, molten Lotus Biscoff slabs, and roasted Kashmiri walnut brownies in an embossed gift box with a satin ribbon.
-              </p>
-              
-              <div className="pt-2 flex flex-wrap items-center gap-4">
-                <Link
-                  to="/shop"
-                  className="px-8 py-3.5 rounded-full bg-cream-50 hover:bg-caramel-200 text-chocolate-950 text-sm font-semibold transition-all shadow-soft active:scale-95 inline-flex items-center gap-2"
-                >
-                  <ShoppingBag className="w-4 h-4 text-caramel-600" />
-                  <span>Choose Your Brownies</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <span className="text-xs text-caramel-300 font-medium">
-                  Use coupon code <strong className="text-white underline">SWEETBOX</strong> for ₹150 off!
+      {/* ================= 3. THE RASOOLICIOUS GIFT BOX & BUILD YOUR OWN BOX ================= */}
+      <section className="py-12 md:py-20 bg-cream-100/70 border-y border-cream-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="relative rounded-4xl overflow-hidden bg-chocolate-900 text-cream-50 p-8 sm:p-12 lg:p-16 shadow-2xl border border-chocolate-800">
+            {/* Soft Warm Glow */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-caramel-600/25 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+              <div className="lg:col-span-7 space-y-5">
+                <span className="px-3.5 py-1 text-xs font-bold tracking-widest uppercase rounded-full bg-caramel-500 text-white inline-flex items-center gap-1.5">
+                  <Gift className="w-3.5 h-3.5" />
+                  <span>The Rasoolicious Gift Box</span>
                 </span>
-              </div>
-            </div>
+                
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-cream-50 leading-tight">
+                  Share a little happiness with a box of brownies made for life's sweetest moments.
+                </h2>
+                
+                <div className="p-4 rounded-2xl bg-chocolate-800/80 border border-chocolate-700/80 space-y-2">
+                  <div className="flex items-center gap-2 text-caramel-300 font-serif font-bold text-lg">
+                    <Sparkles className="w-4 h-4 text-caramel-400" />
+                    <span>Build Your Own Box</span>
+                  </div>
+                  <p className="text-chocolate-200 text-sm sm:text-base leading-relaxed">
+                    Choose any four brownies from our signature collection and create your own delicious combination. Handcrafted, freshly baked, and sealed in our gold-embossed keepsake gift box with a satin bow.
+                  </p>
+                </div>
+                
+                <div className="pt-2 flex flex-wrap items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setIsBoxModalOpen(true)}
+                    className="px-8 py-4 rounded-full bg-cream-50 hover:bg-caramel-200 text-chocolate-950 text-sm font-semibold transition-all shadow-soft active:scale-95 inline-flex items-center gap-2"
+                  >
+                    <Gift className="w-4 h-4 text-caramel-600" />
+                    <span>Build Your Own Box (Pick 4)</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
 
-            <div className="lg:col-span-5 relative">
-              <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-card-hover border-2 border-chocolate-700 bg-chocolate-800">
-                <img
-                  src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80"
-                  alt="Curated Rasoolicious luxury gift box"
-                  className="w-full h-full object-cover"
-                />
+                  <Link
+                    to={`/product/${giftBoxProduct.id}`}
+                    className="px-6 py-4 rounded-full border border-chocolate-700 text-cream-200 hover:text-white hover:bg-chocolate-800 text-sm font-semibold transition-colors"
+                  >
+                    Box Details & Pricing
+                  </Link>
+                </div>
+
+                <div className="text-xs text-caramel-300 font-medium pt-1">
+                  Use coupon code <strong className="text-white underline">RASOOL10</strong> for 10% off your entire gift order!
+                </div>
+              </div>
+
+              <div className="lg:col-span-5 relative">
+                <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-card-hover border-2 border-chocolate-700 bg-chocolate-800 relative group">
+                  <img
+                    src={giftBoxProduct.image}
+                    alt="The Rasoolicious Gift Box"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-chocolate-950/70 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4 text-white text-xs flex justify-between items-end">
+                    <div>
+                      <span className="font-serif font-bold text-base block text-caramel-300">Curated 4-Pack</span>
+                      <span>Mix & match any 4 signature bakes</span>
+                    </div>
+                    <span className="text-lg font-bold text-white bg-chocolate-900/90 px-3 py-1 rounded-full border border-caramel-500/40">
+                      ₹{giftBoxProduct.price}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= 6. MOLTEN & LOADED BROWNIE SLABS ================= */}
-      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeading
-          badge="Chef's Selection"
-          title="Molten & Loaded Brownie Slabs"
-          subtitle="Thick 500g whole uncut slabs featuring molten Nutella cores, golden salted caramel, and crunchy caramelized almonds."
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {moltenBrownies.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onQuickView={(p) => setQuickViewProduct(p)}
-            />
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-chocolate-900 hover:bg-caramel-600 text-cream-50 text-xs font-semibold uppercase tracking-wider transition-colors shadow-soft"
-          >
-            <span>Explore All Brownie Slabs</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ================= ABOUT / LOVE STORY SECTION ================= */}
-      <section id="about" className="py-16 md:py-24 bg-[#FAF6F0] border-y border-stone-200/80">
+      {/* ================= 4. ABOUT / LOVE STORY SECTION ================= */}
+      <section id="about" className="py-16 md:py-24 bg-[#FAF6F0] border-b border-stone-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -317,7 +236,7 @@ export const Home: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-chocolate-950/80 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white text-xs">
-                  <span className="font-serif font-bold text-base block text-caramel-300">Where Love Meets Deliciousness</span>
+                  <span className="font-serif font-bold text-base block text-caramel-300">A Little Love in Every Bite</span>
                   <span>Handcrafted in small daily batches for the ones you cherish.</span>
                 </div>
               </div>
@@ -336,7 +255,7 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-semibold tracking-wider uppercase rounded-full bg-caramel-100 text-chocolate-800 border border-caramel-300">
                 <Heart className="w-3.5 h-3.5 text-caramel-600 fill-caramel-600" />
-                <span>About Rasoolicious</span>
+                <span>Our Heritage</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-chocolate-950 leading-tight">
@@ -377,12 +296,12 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 7. WHY CHOOSE US ================= */}
-      <section id="why-us" className="py-16 md:py-24 bg-cream-100/60 border-y border-cream-200">
+      {/* ================= 5. WHY CHOOSE US ================= */}
+      <section id="why-us" className="py-16 md:py-24 bg-cream-100/60 border-b border-cream-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
           <SectionHeading
             badge="The Rasoolicious Standard"
-            title="Why Our Bakes Taste Different"
+            title="A Little Love in Every Bite"
             subtitle="We believe real desserts demand real ingredients, honest patience, and zero compromises."
           />
 
@@ -390,8 +309,8 @@ export const Home: React.FC = () => {
             {[
               {
                 icon: Clock,
-                title: 'Freshly Baked',
-                description: 'Made in small daily batches so you receive artisanal brownies at their absolute peak flavour and texture.',
+                title: 'Freshly Baked Daily',
+                description: 'Made in small morning batches so you receive artisanal brownies at their absolute peak flavour and texture.',
               },
               {
                 icon: Award,
@@ -401,12 +320,12 @@ export const Home: React.FC = () => {
               {
                 icon: HeartHandshake,
                 title: 'Handmade Craft',
-                description: 'Prepared with meticulous attention to detail by Chef Rasool in our Marthandam brownie atelier.',
+                description: 'Every brownie slab is prepared with meticulous care and dedication in our artisanal atelier.',
               },
               {
                 icon: Truck,
                 title: 'Delivered Fresh',
-                description: 'Packed carefully in custom insulated crates to ensure your handcrafted brownie slabs arrive in pristine condition.',
+                description: 'Packed carefully in custom insulated keepsake boxes to ensure your bakes arrive in pristine condition.',
               },
             ].map((feature, i) => {
               const Icon = feature.icon;
@@ -431,7 +350,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 8. TESTIMONIALS ================= */}
+      {/* ================= 6. TESTIMONIALS ================= */}
       <section id="testimonials" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeading
           badge="Praise from Dessert Lovers"
@@ -470,7 +389,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 9. INSTAGRAM GALLERY ================= */}
+      {/* ================= 7. INSTAGRAM GALLERY ================= */}
       <section className="py-16 bg-cream-100/50 border-t border-cream-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 mb-8 text-center">
           <span className="text-xs font-bold uppercase tracking-widest text-caramel-600">
@@ -509,13 +428,19 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ================= 10. NEWSLETTER SIGNUP ================= */}
+      {/* ================= 8. NEWSLETTER SIGNUP ================= */}
       <Newsletter />
 
       {/* Quick View Modal */}
       <ProductQuickView
         product={quickViewProduct}
         onClose={() => setQuickViewProduct(null)}
+      />
+
+      {/* Build Your Own Box Modal */}
+      <BuildYourOwnBoxModal
+        isOpen={isBoxModalOpen}
+        onClose={() => setIsBoxModalOpen(false)}
       />
     </div>
   );
