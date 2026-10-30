@@ -1,4 +1,4 @@
-export type OrderStatus = 'received' | 'oven' | 'cooling' | 'delivery' | 'completed';
+export type OrderStatus = 'pending' | 'completed' | 'cancelled' | 'received' | 'oven' | 'cooling' | 'delivery';
 
 export type UserRole = 'Super Admin' | 'Admin' | 'Kitchen Staff' | 'User';
 

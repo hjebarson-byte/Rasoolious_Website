@@ -3,12 +3,15 @@ import {
   Search, 
   MapPin, 
   Eye, 
-  ArrowRight, 
   Gift, 
-  RefreshCw 
+  RefreshCw, 
+  CheckCircle2, 
+  Clock, 
+  MessageSquare,
+  Send
 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
-import type { OrderStatus } from '../types/adminTypes';
+import { getCustomerWhatsAppUrl, getOwnerWhatsAppOrderSlip } from '../utils/whatsapp';
 
 export const KitchenOrdersScreen: React.FC = () => {
   const { 
@@ -21,12 +24,11 @@ export const KitchenOrdersScreen: React.FC = () => {
     showToast 
   } = useAdmin();
 
-  const statusList: { id: string; label: string }[] = [
+  const isOrderPending = (status: string) => status !== 'completed' && status !== 'cancelled';
+
+  const statusList = [
     { id: 'all', label: 'All Orders' },
-    { id: 'received', label: 'Received' },
-    { id: 'oven', label: 'In Oven' },
-    { id: 'cooling', label: 'Cooling & Slicing' },
-    { id: 'delivery', label: 'Out for Delivery' },
+    { id: 'pending', label: 'Pending Delivery' },
     { id: 'completed', label: 'Delivered' }
   ];
 
@@ -45,13 +47,12 @@ export const KitchenOrdersScreen: React.FC = () => {
     }
 
     // Status filter
-    if (orderFilters.status !== 'all' && ord.status !== orderFilters.status) {
-      return false;
-    }
-
-    // Slot filter
-    if (orderFilters.slot !== 'all' && ord.slotId !== orderFilters.slot) {
-      return false;
+    if (orderFilters.status !== 'all') {
+      if (orderFilters.status === 'pending') {
+        if (!isOrderPending(ord.status)) return false;
+      } else if (orderFilters.status === 'completed') {
+        if (ord.status !== 'completed') return false;
+      }
     }
 
     // Payment filter
@@ -62,42 +63,30 @@ export const KitchenOrdersScreen: React.FC = () => {
     return true;
   });
 
-  const getStatusBadge = (status: OrderStatus) => {
-    switch (status) {
-      case 'received':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">RECEIVED</span>;
-      case 'oven':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-200">IN OVEN</span>;
-      case 'cooling':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-200">COOLING</span>;
-      case 'delivery':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">DISPATCHED</span>;
-      case 'completed':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">DELIVERED</span>;
-    }
-  };
+  const pendingCount = orders.filter(o => isOrderPending(o.status)).length;
+  const deliveredCount = orders.filter(o => o.status === 'completed').length;
 
   return (
     <div className="space-y-6">
       
-      {/* Screen Title */}
+      {/* Screen Title & Quick Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="font-serif font-bold text-2xl sm:text-3xl text-chocolate-950">
-            Live Kitchen Orders
+            Orders & Delivery Inbox
           </h1>
           <p className="text-xs sm:text-sm text-chocolate-600 mt-1">
-            Manage every confection order from payment confirmation to hot oven and doorstep delivery.
+            Review incoming customer orders, send instant WhatsApp updates, and manage dispatches across Kanniyakumari.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => showToast('Kitchen orders queue refreshed', 'info')}
+            onClick={() => showToast('Orders list refreshed', 'info')}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-stone-50 text-chocolate-800 font-semibold text-xs border border-stone-200 transition-colors shadow-xs"
           >
             <RefreshCw className="w-3.5 h-3.5 text-caramel-600" />
-            <span>Refresh Queue</span>
+            <span>Refresh</span>
           </button>
         </div>
       </div>
@@ -106,26 +95,28 @@ export const KitchenOrdersScreen: React.FC = () => {
       <div className="bg-white border border-stone-200/90 rounded-3xl p-4 sm:p-5 shadow-xs space-y-4">
         
         {/* Status Stage Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           {statusList.map(tab => {
             const count = tab.id === 'all' 
               ? orders.length 
-              : orders.filter(o => o.status === tab.id).length;
+              : tab.id === 'pending'
+              ? pendingCount
+              : deliveredCount;
             const isActive = orderFilters.status === tab.id;
 
             return (
               <button
                 key={tab.id}
                 onClick={() => setOrderFilters(prev => ({ ...prev, status: tab.id }))}
-                className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
                   isActive
-                    ? 'bg-caramel-500 text-white shadow-sm font-bold'
+                    ? 'bg-chocolate-900 text-white shadow-sm font-bold'
                     : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200/70'
                 }`}
               >
                 <span>{tab.label}</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
-                  isActive ? 'bg-white/20 text-white' : 'bg-stone-200 text-stone-600'
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold ${
+                  isActive ? 'bg-caramel-500 text-white' : 'bg-stone-200 text-stone-600'
                 }`}>
                   {count}
                 </span>
@@ -135,32 +126,18 @@ export const KitchenOrdersScreen: React.FC = () => {
         </div>
 
         {/* Input Filters Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           
           {/* Search */}
-          <div className="relative">
+          <div className="relative sm:col-span-2">
             <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={orderFilters.search}
               onChange={e => setOrderFilters(prev => ({ ...prev, search: e.target.value }))}
-              placeholder="Search ID, customer, locality..."
+              placeholder="Search by order ID, customer name, phone, locality, treats..."
               className="w-full bg-stone-50 border border-stone-200 rounded-xl pl-9 pr-3.5 py-2 text-chocolate-900 placeholder:text-stone-400 focus:bg-white focus:border-caramel-500 focus:outline-none"
             />
-          </div>
-
-          {/* Slot filter */}
-          <div>
-            <select
-              value={orderFilters.slot}
-              onChange={e => setOrderFilters(prev => ({ ...prev, slot: e.target.value }))}
-              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none cursor-pointer"
-            >
-              <option value="all">All Delivery Slots</option>
-              <option value="slot-morning">Morning Slot (9 AM–1 PM)</option>
-              <option value="slot-afternoon">Afternoon Slot (1 PM–5 PM)</option>
-              <option value="slot-evening">Evening Slot (5 PM–9 PM)</option>
-            </select>
           </div>
 
           {/* Payment filter */}
@@ -171,23 +148,25 @@ export const KitchenOrdersScreen: React.FC = () => {
               className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none cursor-pointer"
             >
               <option value="all">All Payment Methods</option>
-              <option value="UPI">UPI (GooglePay / PhonePe)</option>
+              <option value="UPI">UPI (GooglePay / PhonePe / Paytm)</option>
               <option value="Card">Credit / Debit Card</option>
               <option value="COD">Cash on Delivery (COD)</option>
             </select>
           </div>
 
-          {/* Clear Filters */}
-          {(orderFilters.search || orderFilters.status !== 'all' || orderFilters.slot !== 'all' || orderFilters.payment !== 'all') && (
+        </div>
+
+        {/* Reset Filters */}
+        {(orderFilters.search || orderFilters.status !== 'all' || orderFilters.payment !== 'all') && (
+          <div className="pt-1">
             <button
               onClick={() => setOrderFilters({ search: '', status: 'all', slot: 'all', payment: 'all' })}
-              className="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors font-medium"
+              className="text-xs text-caramel-700 font-semibold hover:underline"
             >
               Reset Filters
             </button>
-          )}
-
-        </div>
+          </div>
+        )}
 
       </div>
 
@@ -196,8 +175,8 @@ export const KitchenOrdersScreen: React.FC = () => {
         
         {filteredOrders.length === 0 ? (
           <div className="p-12 text-center text-stone-400 text-sm space-y-2">
-            <p className="font-semibold text-chocolate-900">No kitchen orders found</p>
-            <p className="text-xs">Try adjusting your status or search filters above.</p>
+            <p className="font-semibold text-chocolate-900">No orders found</p>
+            <p className="text-xs">Try adjusting your search or status filter above.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -205,113 +184,156 @@ export const KitchenOrdersScreen: React.FC = () => {
               <thead>
                 <tr className="border-b border-stone-100 text-[10px] text-stone-400 uppercase tracking-wider bg-stone-50/70">
                   <th className="py-3.5 px-4 font-bold text-chocolate-900">ORDER</th>
-                  <th className="py-3.5 px-4 font-bold text-chocolate-900">CUSTOMER & LOCALITY</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">CUSTOMER</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">DESTINATION</th>
                   <th className="py-3.5 px-4 font-bold text-chocolate-900">TREATS & ITEMS</th>
-                  <th className="py-3.5 px-4 font-bold text-chocolate-900">SLOT</th>
                   <th className="py-3.5 px-4 font-bold text-chocolate-900">PAYMENT</th>
                   <th className="py-3.5 px-4 font-bold text-chocolate-900">TOTAL</th>
-                  <th className="py-3.5 px-4 font-bold text-chocolate-900">STATUS</th>
-                  <th className="py-3.5 px-4 font-bold text-chocolate-900 text-right">ACTIONS</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900">DELIVERY</th>
+                  <th className="py-3.5 px-4 font-bold text-chocolate-900 text-right">WHATSAPP & ACTIONS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {filteredOrders.map(order => (
-                  <tr
-                    key={order.id}
-                    className="hover:bg-stone-50 transition-colors group cursor-pointer"
-                    onClick={() => openOrderDrawer(order)}
-                  >
-                    {/* Order ID */}
-                    <td className="py-3.5 px-4 font-mono font-bold text-caramel-700">
-                      #{order.id}
-                      {order.hasGiftMessage && (
-                        <span className="block mt-0.5 text-[9px] text-caramel-600 font-sans font-medium">
-                          🎁 Gift Card
+                {filteredOrders.map(order => {
+                  const isDelivered = order.status === 'completed';
+
+                  return (
+                    <tr
+                      key={order.id}
+                      className="hover:bg-stone-50 transition-colors group cursor-pointer"
+                      onClick={() => openOrderDrawer(order)}
+                    >
+                      {/* Order ID */}
+                      <td className="py-3.5 px-4 font-mono font-bold text-caramel-700">
+                        #{order.id}
+                        {order.hasGiftMessage && (
+                          <span className="block mt-0.5 text-[9px] text-caramel-600 font-sans font-semibold">
+                            🎁 Gift Card
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Customer */}
+                      <td className="py-3.5 px-4">
+                        <div className="font-semibold text-chocolate-950 group-hover:text-caramel-700 transition-colors">
+                          {order.customerName}
+                        </div>
+                        <div className="text-[11px] text-stone-500 font-mono mt-0.5">
+                          {order.phone}
+                        </div>
+                      </td>
+
+                      {/* Locality */}
+                      <td className="py-3.5 px-4">
+                        <div className="text-chocolate-900 font-medium flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-caramel-600 shrink-0" />
+                          <span>{order.locality}</span>
+                        </div>
+                        <div className="text-[10px] text-stone-400">PIN: {order.pincode}</div>
+                      </td>
+
+                      {/* Items */}
+                      <td className="py-3.5 px-4 max-w-xs">
+                        <div className="text-chocolate-800 truncate font-medium">
+                          {order.items.map(i => `${i.quantity}× ${i.name}`).join(', ')}
+                        </div>
+                        <div className="text-[10px] text-stone-400">
+                          {order.items.reduce((s, i) => s + i.quantity, 0)} boxes total
+                        </div>
+                      </td>
+
+                      {/* Payment */}
+                      <td className="py-3.5 px-4">
+                        <div className="text-chocolate-800 font-medium">{order.paymentMethod}</div>
+                        <span className={`text-[10px] font-semibold ${
+                          order.paymentMethod === 'COD' ? 'text-amber-700' : 'text-emerald-700'
+                        }`}>
+                          {order.paymentStatus}
                         </span>
-                      )}
-                    </td>
+                      </td>
 
-                    {/* Customer */}
-                    <td className="py-3.5 px-4">
-                      <div className="font-semibold text-chocolate-950 group-hover:text-caramel-700 transition-colors">
-                        {order.customerName}
-                      </div>
-                      <div className="text-[11px] text-stone-500 flex items-center gap-1 mt-0.5">
-                        <MapPin className="w-3 h-3 text-caramel-600" />
-                        <span>{order.locality}</span>
-                      </div>
-                    </td>
+                      {/* Total */}
+                      <td className="py-3.5 px-4 font-mono font-bold text-chocolate-950 text-sm">
+                        ₹{order.total}
+                      </td>
 
-                    {/* Items */}
-                    <td className="py-3.5 px-4 max-w-xs">
-                      <div className="text-chocolate-800 truncate font-medium">
-                        {order.items.map(i => `${i.quantity}× ${i.name}`).join(', ')}
-                      </div>
-                      <div className="text-[10px] text-stone-400">
-                        {order.items.reduce((s, i) => s + i.quantity, 0)} boxes total
-                      </div>
-                    </td>
+                      {/* Status */}
+                      <td className="py-3.5 px-4">
+                        {isDelivered ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                            <span>DELIVERED</span>
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                            <Clock className="w-3 h-3 text-amber-600" />
+                            <span>PENDING</span>
+                          </span>
+                        )}
+                      </td>
 
-                    {/* Slot */}
-                    <td className="py-3.5 px-4">
-                      <div className="text-chocolate-900 font-medium">{order.slot.split(',')[0]}</div>
-                      <div className="text-[10px] text-stone-400">{order.slot.split(',')[1] || ''}</div>
-                    </td>
+                      {/* Actions */}
+                      <td className="py-3.5 px-4 text-right" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center justify-end gap-1.5">
+                          {/* WhatsApp Customer */}
+                          <a
+                            href={getCustomerWhatsAppUrl(order.phone, order.id, order.customerName)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-colors shadow-2xs"
+                            title="Chat with Customer on WhatsApp"
+                          >
+                            <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                          </a>
 
-                    {/* Payment */}
-                    <td className="py-3.5 px-4">
-                      <div className="text-chocolate-800 font-medium">{order.paymentMethod}</div>
-                      <span className={`text-[10px] font-semibold ${
-                        order.paymentMethod === 'COD' ? 'text-amber-700' : 'text-emerald-700'
-                      }`}>
-                        {order.paymentStatus}
-                      </span>
-                    </td>
+                          {/* WhatsApp Owner Order Slip */}
+                          <a
+                            href={getOwnerWhatsAppOrderSlip(order)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-chocolate-800 border border-stone-200 transition-colors shadow-2xs"
+                            title="Send WhatsApp Order Slip to Owner"
+                          >
+                            <Send className="w-3.5 h-3.5 text-caramel-600" />
+                          </a>
 
-                    {/* Total */}
-                    <td className="py-3.5 px-4 font-mono font-bold text-chocolate-950 text-sm">
-                      ₹{order.total}
-                    </td>
-
-                    {/* Status */}
-                    <td className="py-3.5 px-4">
-                      {getStatusBadge(order.status)}
-                    </td>
-
-                    {/* Actions */}
-                    <td className="py-3.5 px-4 text-right" onClick={e => e.stopPropagation()}>
-                      <div className="flex items-center justify-end gap-1.5">
-                        {order.status !== 'completed' && (
+                          {/* Toggle Delivered */}
                           <button
                             onClick={() => advanceOrderStatus(order.id)}
-                            className="p-1.5 rounded-lg bg-caramel-500 hover:bg-caramel-600 text-white font-bold transition-colors shadow-xs"
-                            title="Advance to Next Stage"
+                            className={`p-1.5 rounded-lg transition-colors font-bold shadow-2xs ${
+                              isDelivered
+                                ? 'bg-stone-100 hover:bg-stone-200 text-stone-600'
+                                : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            }`}
+                            title={isDelivered ? 'Re-open Order' : 'Mark as Delivered'}
                           >
-                            <ArrowRight className="w-3.5 h-3.5" />
+                            <CheckCircle2 className="w-3.5 h-3.5" />
                           </button>
-                        )}
 
-                        <button
-                          onClick={() => openOrderDrawer(order)}
-                          className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
-                          title="View Details Drawer"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-
-                        {order.hasGiftMessage && (
+                          {/* View Drawer */}
                           <button
-                            onClick={() => openModal('printGiftCard', order)}
-                            className="p-1.5 rounded-lg bg-caramel-50 hover:bg-caramel-100 text-caramel-700 transition-colors border border-caramel-200"
-                            title="Print Gift Card"
+                            onClick={() => openOrderDrawer(order)}
+                            className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
+                            title="View Order Details"
                           >
-                            <Gift className="w-3.5 h-3.5" />
+                            <Eye className="w-3.5 h-3.5" />
                           </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+
+                          {/* Gift Card Print */}
+                          {order.hasGiftMessage && (
+                            <button
+                              onClick={() => openModal('printGiftCard', order)}
+                              className="p-1.5 rounded-lg bg-caramel-50 hover:bg-caramel-100 text-caramel-700 transition-colors border border-caramel-200"
+                              title="Print Gift Card"
+                            >
+                              <Gift className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

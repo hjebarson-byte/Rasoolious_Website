@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Clock, MapPin, Package, ArrowRight, Home } from 'lucide-react';
+import { CheckCircle2, Clock, MapPin, Package, ArrowRight, Home, MessageSquare } from 'lucide-react';
 import { BRAND_CONFIG } from '../config/brand';
 
 export const OrderSuccess: React.FC = () => {
@@ -14,22 +14,56 @@ export const OrderSuccess: React.FC = () => {
       } else {
         // Fallback demo order if visited directly
         setOrder({
-          id: 'MC10248',
+          id: 'RAS1042',
           date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
           total: 850,
           customer: {
             fullName: 'Ananya Sharma',
+            phone: '9842188390',
             address: '402, Sea Green Apartments, Perry Cross Road',
-            city: 'Mumbai',
-            pincode: '400050',
+            city: 'Nagercoil',
+            pincode: '629001',
             deliveryOption: 'standard',
           },
+          items: [
+            { name: 'The Rasool (500g slab)', quantity: 1, price: 490 },
+            { name: 'The Original (500g slab)', quantity: 1, price: 360 }
+          ]
         });
       }
     } catch {
       // ignore
     }
   }, []);
+
+  const getOwnerWhatsAppUrl = (ord: any) => {
+    const rawPhone = BRAND_CONFIG.contact.phone || '9489201823';
+    const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+    const phoneWithCountry = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
+
+    const itemsSummary = ord.items && Array.isArray(ord.items)
+      ? ord.items.map((i: any) => `• ${i.quantity}x ${i.name} - ₹${i.price * i.quantity}`).join('\n')
+      : 'Signature Brownies';
+
+    const customerInfo = ord.customer
+      ? `👤 *Customer:* ${ord.customer.fullName}\n📞 *Phone:* ${ord.customer.phone || 'N/A'}\n📍 *Address:* ${ord.customer.address}, ${ord.customer.city} - ${ord.customer.pincode}`
+      : '';
+
+    const text = `🍫 *NEW ORDER CONFIRMATION - ${BRAND_CONFIG.name}*
+
+📦 *Order ID:* #${ord.id}
+${customerInfo}
+
+🛒 *Items:*
+${itemsSummary}
+
+💰 *Total Amount:* ₹${ord.total}
+🕒 *Date:* ${ord.date || new Date().toLocaleDateString('en-IN')}
+
+_Please confirm my order preparation and delivery slot!_`;
+
+    return `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(text)}`;
+  };
 
   return (
     <div className="pt-32 pb-24 bg-cream-50 min-h-screen">
@@ -92,6 +126,35 @@ export const OrderSuccess: React.FC = () => {
                   <span>Custom thermal insulated box with dry cold pads</span>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* WhatsApp Owner Alert Block */}
+          {order && (
+            <div className="bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl p-5 text-left space-y-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-chocolate-950">
+                    Send Order Slip to Chef Rasool on WhatsApp
+                  </h3>
+                  <p className="text-[11px] text-chocolate-700">
+                    Notify our bakery directly ({BRAND_CONFIG.contact.phone}) to get instant order confirmation on WhatsApp.
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href={getOwnerWhatsAppUrl(order)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-soft flex items-center justify-center gap-2"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Send WhatsApp Order Confirmation to Bakery</span>
+              </a>
             </div>
           )}
 

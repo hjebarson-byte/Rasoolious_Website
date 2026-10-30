@@ -22,7 +22,7 @@ export const Sidebar: React.FC = () => {
     }
   };
 
-  const inOvenCount = orders.filter(o => o.status === 'oven').length;
+  const pendingCount = orders.filter(o => o.status !== 'completed' && o.status !== 'cancelled').length;
   const lowStockCount = products.filter(p => p.status === 'Limited Stock' || p.booked >= p.dailyLimit - 6).length;
 
   const navItems = [
@@ -34,27 +34,21 @@ export const Sidebar: React.FC = () => {
     },
     {
       id: 'kitchen-orders' as AdminScreen,
-      label: 'Kitchen Orders',
-      icon: 'skillet',
-      badge: `${inOvenCount || 6} IN OVEN`,
+      label: 'Orders & Delivery',
+      icon: 'receipt_long',
+      badge: pendingCount > 0 ? `${pendingCount} Pending` : null,
       badgeStyle: 'bg-[#FFDDB6] text-[#402600]'
     },
     {
       id: 'inventory' as AdminScreen,
-      label: 'Brownie Inventory',
+      label: 'Brownies & Stock',
       icon: 'inventory_2',
-      badge: `${lowStockCount || 2} Low`,
+      badge: lowStockCount > 0 ? `${lowStockCount} Low` : null,
       badgeStyle: 'bg-[#FFDBCF] text-[#603F33]'
     },
     {
-      id: 'delivery-slots' as AdminScreen,
-      label: 'Delivery & Zones',
-      icon: 'local_shipping',
-      badge: null
-    },
-    {
       id: 'analytics' as AdminScreen,
-      label: 'Analytics & Sales',
+      label: 'Sales Summary',
       icon: 'query_stats',
       badge: null
     }
