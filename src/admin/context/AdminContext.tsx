@@ -187,12 +187,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Mutations
   const updateOrderStatus = (orderId: string, newStatus: OrderStatus) => {
-    const statusMapTitle: Record<OrderStatus, string> = {
+    const statusMapTitle: Record<string, string> = {
+      pending: 'Order Confirmed & Pending',
       received: 'Order Confirmed',
-      oven: 'Baking in Oven',
-      cooling: 'Cooling & Slicing',
+      oven: 'In Progress',
+      cooling: 'In Progress',
       delivery: 'Out for Delivery',
-      completed: 'Delivered Successfully'
+      completed: 'Delivered Successfully',
+      cancelled: 'Order Cancelled'
     };
 
     setOrders(prev =>
@@ -204,7 +206,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           ...ord.timeline,
           {
             time: timeStr,
-            title: statusMapTitle[newStatus],
+            title: statusMapTitle[newStatus] || String(newStatus),
             desc: `Status updated by ${activeRole}`
           }
         ];
@@ -218,16 +220,16 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Also update selectedOrder if open
     setSelectedOrder(prev => (prev && prev.id === orderId ? { ...prev, status: newStatus } : prev));
-    showToast(`Order ${orderId} status changed to ${newStatus.toUpperCase()}`, 'success');
+    showToast(`Order #${orderId} marked as ${newStatus === 'completed' ? 'DELIVERED' : 'PENDING'}`, 'success');
   };
 
   const advanceOrderStatus = (orderId: string) => {
     const order = orders.find(o => o.id === orderId);
     if (!order) return;
-    const stages: OrderStatus[] = ['received', 'oven', 'cooling', 'delivery', 'completed'];
-    const idx = stages.indexOf(order.status);
-    if (idx < stages.length - 1) {
-      updateOrderStatus(orderId, stages[idx + 1]);
+    if (order.status !== 'completed') {
+      updateOrderStatus(orderId, 'completed');
+    } else {
+      updateOrderStatus(orderId, 'pending');
     }
   };
 

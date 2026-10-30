@@ -8,42 +8,36 @@ import {
   CreditCard, 
   Gift, 
   Printer, 
-  Flame, 
   CheckCircle2, 
-  Truck, 
-  Snowflake, 
-  Receipt,
-  ArrowRight
+  Send
 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
-import type { OrderStatus } from '../types/adminTypes';
+import { getCustomerWhatsAppUrl, getOwnerWhatsAppOrderSlip } from '../utils/whatsapp';
 
 export const OrderDrawer: React.FC = () => {
   const { 
     selectedOrder, 
     closeOrderDrawer, 
     updateOrderStatus, 
-    advanceOrderStatus, 
     openModal,
     showToast
   } = useAdmin();
 
   if (!selectedOrder) return null;
 
-  const statusConfig: Record<OrderStatus, { label: string; bg: string; text: string; icon: any }> = {
-    received: { label: 'Received', bg: 'bg-amber-100 text-amber-800 border border-amber-200', text: 'text-amber-800', icon: Receipt },
-    oven: { label: 'In the Oven', bg: 'bg-orange-100 text-orange-800 border border-orange-200', text: 'text-orange-800', icon: Flame },
-    cooling: { label: 'Cooling & Slicing', bg: 'bg-sky-100 text-sky-800 border border-sky-200', text: 'text-sky-800', icon: Snowflake },
-    delivery: { label: 'Out for Delivery', bg: 'bg-purple-100 text-purple-800 border border-purple-200', text: 'text-purple-800', icon: Truck },
-    completed: { label: 'Completed', bg: 'bg-emerald-100 text-emerald-800 border border-emerald-200', text: 'text-emerald-800', icon: CheckCircle2 }
-  };
-
-  const currStatus = statusConfig[selectedOrder.status];
-  const StatusIcon = currStatus.icon;
+  const isDelivered = selectedOrder.status === 'completed';
 
   const handlePrintSlip = () => {
     window.print();
-    showToast(`Printed kitchen packaging slip for ${selectedOrder.id}`, 'info');
+    showToast(`Printed packaging slip for #${selectedOrder.id}`, 'info');
+  };
+
+  const handleToggleDelivered = () => {
+    if (isDelivered) {
+      updateOrderStatus(selectedOrder.id, 'pending');
+    } else {
+      updateOrderStatus(selectedOrder.id, 'completed');
+    }
   };
 
   return (
@@ -60,16 +54,26 @@ export const OrderDrawer: React.FC = () => {
           {/* Header */}
           <div className="p-5 border-b border-stone-200 bg-stone-50/70 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-white text-caramel-600 border border-stone-200 shadow-2xs">
-                <StatusIcon className="w-5 h-5" />
+              <div className={`p-2.5 rounded-xl border shadow-2xs ${
+                isDelivered ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-amber-50 text-amber-600 border-amber-200'
+              }`}>
+                {isDelivered ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                ) : (
+                  <Clock className="w-5 h-5 text-amber-600" />
+                )}
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-serif font-bold text-lg text-chocolate-950">
                     Order #{selectedOrder.id}
                   </h3>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${currStatus.bg}`}>
-                    {currStatus.label}
+                  <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
+                    isDelivered 
+                      ? 'bg-emerald-100 text-emerald-800 border-emerald-200' 
+                      : 'bg-amber-100 text-amber-800 border-amber-200'
+                  }`}>
+                    {isDelivered ? 'DELIVERED' : 'PENDING'}
                   </span>
                 </div>
                 <p className="text-xs text-stone-500 font-medium">
@@ -82,7 +86,7 @@ export const OrderDrawer: React.FC = () => {
               <button
                 onClick={handlePrintSlip}
                 className="p-2 rounded-xl bg-white hover:bg-stone-100 text-stone-700 border border-stone-200 shadow-2xs transition-colors"
-                title="Print Kitchen Slip"
+                title="Print Order Packaging Slip"
               >
                 <Printer className="w-4 h-4 text-caramel-600" />
               </button>
@@ -96,71 +100,79 @@ export const OrderDrawer: React.FC = () => {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-6 text-xs">
+          <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
             
-            {/* Quick Status Pipeline Controls */}
-            <div className="bg-stone-50/80 border border-stone-200/90 rounded-2xl p-4 space-y-3">
-              <span className="block text-[11px] font-bold uppercase tracking-wider text-caramel-700">
-                Baking & Dispatch Pipeline
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
-                {(['received', 'oven', 'cooling', 'delivery', 'completed'] as OrderStatus[]).map((st) => {
-                  const isCurrent = selectedOrder.status === st;
-                  const stInfo = statusConfig[st];
-                  return (
-                    <button
-                      key={st}
-                      onClick={() => updateOrderStatus(selectedOrder.id, st)}
-                      className={`px-2 py-2 rounded-xl text-[10px] font-bold uppercase transition-all flex flex-col items-center justify-center gap-1 ${
-                        isCurrent
-                          ? 'bg-caramel-500 text-white shadow-sm font-extrabold ring-2 ring-caramel-300'
-                          : 'bg-white hover:bg-stone-100 text-stone-700 border border-stone-200/70'
-                      }`}
-                    >
-                      <span>{stInfo.label.split(' ')[0]}</span>
-                    </button>
-                  );
-                })}
+            {/* Quick Delivery Status Action Card */}
+            <div className="bg-stone-50/90 border border-stone-200/90 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div>
+                <span className="block text-[11px] font-bold uppercase tracking-wider text-caramel-700">
+                  Order Status
+                </span>
+                <p className="text-xs text-stone-600 mt-0.5">
+                  {isDelivered 
+                    ? 'This order has been handed over and marked delivered.'
+                    : 'Order confirmed and ready for packing & delivery.'}
+                </p>
               </div>
 
-              {selectedOrder.status !== 'completed' && (
-                <button
-                  onClick={() => advanceOrderStatus(selectedOrder.id)}
-                  className="w-full mt-2 py-2 px-3 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-xs"
-                >
-                  <span>Advance to Next Stage</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              )}
+              <button
+                onClick={handleToggleDelivered}
+                className={`w-full sm:w-auto px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs shrink-0 ${
+                  isDelivered
+                    ? 'bg-stone-200 hover:bg-stone-300 text-stone-800'
+                    : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                }`}
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>{isDelivered ? 'Mark as Pending' : 'Mark as Delivered'}</span>
+              </button>
             </div>
 
-            {/* Customer Details & Actions */}
+            {/* Direct WhatsApp & Calling Actions */}
             <div className="bg-white border border-stone-200 rounded-2xl p-4 space-y-3 shadow-2xs">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-sm text-chocolate-950">{selectedOrder.customerName}</h4>
-                  <span className="text-stone-500 font-mono">{selectedOrder.phone}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`tel:${selectedOrder.phone.replace(/[^0-9+]/g, '')}`}
-                    className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-chocolate-900 flex items-center gap-1.5 transition-colors font-medium"
-                    title="Call Customer"
-                  >
-                    <Phone className="w-3.5 h-3.5 text-caramel-600" />
-                    <span className="text-[11px] font-semibold">Call</span>
-                  </a>
-                  <a
-                    href={`https://wa.me/${selectedOrder.phone.replace(/[^0-9]/g, '')}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 flex items-center gap-1.5 transition-colors font-medium"
-                    title="WhatsApp Customer"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-[11px] font-semibold">WhatsApp</span>
-                  </a>
-                </div>
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-caramel-700">
+                Customer Contact & WhatsApp Alerts
+              </span>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                {/* 1. Chat with Customer on WhatsApp */}
+                <a
+                  href={getCustomerWhatsAppUrl(selectedOrder.phone, selectedOrder.id, selectedOrder.customerName)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 transition-colors font-semibold shadow-xs"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Chat with Customer on WhatsApp</span>
+                </a>
+
+                {/* 2. Call Customer */}
+                <a
+                  href={`tel:${selectedOrder.phone.replace(/[^0-9+]/g, '')}`}
+                  className="py-2.5 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-chocolate-900 flex items-center justify-center gap-1.5 transition-colors font-semibold border border-stone-200"
+                >
+                  <Phone className="w-4 h-4 text-caramel-600" />
+                  <span>Call</span>
+                </a>
+              </div>
+
+              {/* 3. Send Order Slip to Owner WhatsApp */}
+              <a
+                href={getOwnerWhatsAppOrderSlip(selectedOrder)}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full py-2.5 px-3 rounded-xl bg-chocolate-900 hover:bg-caramel-600 text-cream-50 flex items-center justify-center gap-2 transition-colors font-semibold text-xs shadow-xs"
+              >
+                <Send className="w-3.5 h-3.5 text-caramel-300" />
+                <span>Send WhatsApp Order Slip to Owner Phone</span>
+              </a>
+            </div>
+
+            {/* Customer Details & Delivery Destination */}
+            <div className="bg-white border border-stone-200 rounded-2xl p-4 space-y-3 shadow-2xs">
+              <div>
+                <h4 className="font-bold text-sm text-chocolate-950">{selectedOrder.customerName}</h4>
+                <span className="text-stone-500 font-mono text-xs">{selectedOrder.phone}</span>
               </div>
 
               {/* Delivery Destination */}
@@ -223,7 +235,7 @@ export const OrderDrawer: React.FC = () => {
                   <span className="font-mono text-chocolate-900 font-medium">₹{selectedOrder.subtotal}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Kanniyakumari Delivery Fee</span>
+                  <span>Delivery Fee</span>
                   <span className="font-mono">
                     {selectedOrder.deliveryFee === 0 ? (
                       <span className="text-emerald-700 font-bold">FREE</span>
@@ -234,12 +246,12 @@ export const OrderDrawer: React.FC = () => {
                 </div>
                 {selectedOrder.discount > 0 && (
                   <div className="flex justify-between text-emerald-700 font-medium">
-                    <span>Celebration Discount</span>
+                    <span>Discount</span>
                     <span className="font-mono">-₹{selectedOrder.discount}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-sm font-bold text-chocolate-950 pt-2 border-t border-stone-200">
-                  <span>Total Amount</span>
+                  <span>Total Paid</span>
                   <span className="font-mono text-caramel-700 text-base">₹{selectedOrder.total}</span>
                 </div>
               </div>
@@ -278,32 +290,13 @@ export const OrderDrawer: React.FC = () => {
             {selectedOrder.notes && (
               <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3.5">
                 <span className="block text-[11px] font-bold text-caramel-700 uppercase tracking-wider mb-1">
-                  Baker & Kitchen Instructions
+                  Customer Instructions
                 </span>
                 <p className="text-stone-700 text-xs italic font-medium">
                   "{selectedOrder.notes}"
                 </p>
               </div>
             )}
-
-            {/* Order Timeline */}
-            <div className="bg-white border border-stone-200 rounded-2xl p-4 space-y-3 shadow-2xs">
-              <span className="block text-[11px] font-bold uppercase tracking-wider text-caramel-700">
-                Live Audit & Kitchen Timeline
-              </span>
-              <div className="space-y-3 relative pl-4 border-l border-stone-200">
-                {selectedOrder.timeline.map((item, idx) => (
-                  <div key={idx} className="relative">
-                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-caramel-500 ring-4 ring-white" />
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-chocolate-950">{item.title}</span>
-                      <span className="text-[10px] font-mono text-stone-400">{item.time}</span>
-                    </div>
-                    <p className="text-[11px] text-stone-500 mt-0.5">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
 
           </div>
 
