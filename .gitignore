@@ -39,3 +39,11 @@ Admin_final.html
 /js/
 
 
+
+
+# Backend and Databases
+*.db
+backend/venv/
+backend/.env
+**/__pycache__/
+*.pyc

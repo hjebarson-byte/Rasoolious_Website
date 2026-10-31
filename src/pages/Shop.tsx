@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, X, SlidersHorizontal, ArrowUpDown, Heart } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
 import type { CategoryType, Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { ProductQuickView } from '../components/ProductQuickView';
@@ -14,6 +14,7 @@ const CATEGORIES: CategoryType[] = [
 ];
 
 export const Shop: React.FC = () => {
+  const { products } = useAdmin();
   const [searchParams, setSearchParams] = useSearchParams();
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isBoxModalOpen, setIsBoxModalOpen] = useState(false);
@@ -66,9 +67,9 @@ export const Shop: React.FC = () => {
     setSearchParams(newParams);
   };
 
-  // Filter and sort products
+  // Filter and sort products dynamically
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return (products as Product[]).filter((product) => {
       // Category filter
       if (selectedCategory !== 'All' && product.category !== selectedCategory) {
         return false;
@@ -78,7 +79,8 @@ export const Shop: React.FC = () => {
         return false;
       }
       // Price filter
-      if (product.price > maxPrice) {
+      const curPrice = product.salePrice || product.price;
+      if (curPrice > maxPrice) {
         return false;
       }
       // Search query filter (search name, category, description, ingredients)
@@ -87,31 +89,36 @@ export const Shop: React.FC = () => {
         const matchesName = product.name.toLowerCase().includes(query);
         const matchesCategory = product.category.toLowerCase().includes(query);
         const matchesDesc = product.description.toLowerCase().includes(query);
-        const matchesIng = product.ingredients.some((i) =>
-          i.toLowerCase().includes(query)
-        );
+        const matchesIng = Array.isArray(product.ingredients)
+          ? product.ingredients.some((i) => i.toLowerCase().includes(query))
+          : typeof product.ingredients === 'string'
+          ? (product.ingredients as string).toLowerCase().includes(query)
+          : false;
+
         if (!matchesName && !matchesCategory && !matchesDesc && !matchesIng) {
           return false;
         }
       }
       return true;
     }).sort((a, b) => {
+      const aPrice = a.salePrice || a.price;
+      const bPrice = b.salePrice || b.price;
       switch (sortBy) {
         case 'price-low':
-          return a.price - b.price;
+          return aPrice - bPrice;
         case 'price-high':
-          return b.price - a.price;
+          return bPrice - aPrice;
         case 'rating':
           return b.rating - a.rating;
         case 'newest':
           return a.badge === 'NEW' ? -1 : 1;
         case 'best-selling':
-          return a.reviews - b.reviews;
+          return b.reviews - a.reviews;
         default:
           return 0; // featured
       }
     });
-  }, [selectedCategory, searchQuery, sortBy, onlyEggless, maxPrice]);
+  }, [products, selectedCategory, searchQuery, sortBy, onlyEggless, maxPrice]);
 
   return (
     <div className="pt-28 pb-20 min-h-screen bg-cream-50">

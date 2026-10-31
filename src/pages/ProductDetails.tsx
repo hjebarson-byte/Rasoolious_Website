@@ -10,7 +10,9 @@ import {
   Sparkles, 
   AlertCircle
 } from 'lucide-react';
-import { PRODUCTS, SIGNATURE_FLAVOURS } from '../data/products';
+import { SIGNATURE_FLAVOURS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
+import type { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { QuantitySelector } from '../components/QuantitySelector';
@@ -20,10 +22,15 @@ import { Gift } from 'lucide-react';
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { products } = useAdmin();
   const { addToCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
 
-  const product = PRODUCTS.find((p) => p.id === id || p.slug === id);
+  const product = (products as Product[]).find((p) => p.id === id || p.slug === id);
+  const isSoldOut = product?.status === 'Sold Out' || product?.available === false;
+  const isLimited = product?.status === 'Limited Stock';
+  const displayPrice = product ? (product.salePrice || product.price) : 0;
+  const displayOriginalPrice = product ? (product.originalPrice || (product.salePrice && product.salePrice < product.price ? product.price : undefined)) : undefined;
 
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
@@ -67,6 +74,7 @@ export const ProductDetails: React.FC = () => {
   const wishlisted = isWishlisted(product.id);
 
   const handleAddToCart = () => {
+    if (isSoldOut) return;
     addToCart(
       product,
       quantity,
@@ -79,6 +87,7 @@ export const ProductDetails: React.FC = () => {
   };
 
   const handleBuyNow = () => {
+    if (isSoldOut) return;
     addToCart(
       product,
       quantity,
@@ -88,7 +97,7 @@ export const ProductDetails: React.FC = () => {
   };
 
   // Related products from same or similar category
-  const relatedProducts = PRODUCTS.filter(
+  const relatedProducts = (products as Product[]).filter(
     (p) => p.category === product.category && p.id !== product.id
   ).slice(0, 4);
 
@@ -177,18 +186,33 @@ export const ProductDetails: React.FC = () => {
                 </div>
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-4xl text-chocolate-950 font-normal leading-tight mb-3">
-                {product.name}
-              </h1>
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <h1 className="font-serif text-3xl sm:text-4xl text-chocolate-950 font-normal leading-tight">
+                  {product.name}
+                </h1>
+                {isSoldOut ? (
+                  <span className="px-3 py-1 bg-rose-100 text-rose-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    Sold Out for Today
+                  </span>
+                ) : isLimited ? (
+                  <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    Limited Batch Left
+                  </span>
+                ) : (
+                  <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-bold text-xs uppercase tracking-wider">
+                    In Stock · Fresh Today
+                  </span>
+                )}
+              </div>
 
               {/* Price and weight */}
               <div className="flex items-baseline gap-3 mb-5">
                 <span className="font-bold text-3xl text-chocolate-900">
-                  ₹{product.price}
+                  ₹{displayPrice}
                 </span>
-                {product.originalPrice && (
+                {displayOriginalPrice && displayOriginalPrice > displayPrice && (
                   <span className="text-base text-chocolate-400 line-through">
-                    ₹{product.originalPrice}
+                    ₹{displayOriginalPrice}
                   </span>
                 )}
                 {product.weight && (
@@ -357,7 +381,7 @@ export const ProductDetails: React.FC = () => {
                   size="md"
                 />
                 <span className="text-xs text-chocolate-500 ml-auto">
-                  Total: <strong className="text-chocolate-900 text-sm">₹{product.price * quantity}</strong>
+                  Total: <strong className="text-chocolate-900 text-sm">₹{displayPrice * quantity}</strong>
                 </span>
               </div>
 
@@ -366,14 +390,18 @@ export const ProductDetails: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  disabled={isAdded}
+                  disabled={isAdded || isSoldOut}
                   className={`w-full sm:flex-1 py-4 px-6 rounded-full text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-soft transition-all duration-200 active:scale-95 ${
-                    isAdded
+                    isSoldOut
+                      ? 'bg-stone-300 text-stone-600 cursor-not-allowed'
+                      : isAdded
                       ? 'bg-emerald-600 text-white'
                       : 'bg-chocolate-900 text-cream-50 hover:bg-caramel-600'
                   }`}
                 >
-                  {isAdded ? (
+                  {isSoldOut ? (
+                    <span>Sold Out for Today</span>
+                  ) : isAdded ? (
                     <>
                       <Check className="w-4 h-4" />
                       <span>Added to Basket</span>
@@ -390,7 +418,12 @@ export const ProductDetails: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleBuyNow}
-                  className="w-full sm:w-auto px-7 py-4 rounded-full bg-caramel-500 hover:bg-caramel-600 text-white text-xs font-semibold tracking-wider uppercase transition-colors shadow-soft"
+                  disabled={isSoldOut}
+                  className={`w-full sm:w-auto px-7 py-4 rounded-full text-xs font-semibold tracking-wider uppercase transition-colors shadow-soft ${
+                    isSoldOut
+                      ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                      : 'bg-caramel-500 hover:bg-caramel-600 text-white'
+                  }`}
                 >
                   Buy Now
                 </button>
@@ -447,7 +480,12 @@ export const ProductDetails: React.FC = () => {
                   Every batch of <strong>{product.name}</strong> is crafted without preservatives, artificial emulsifiers, or margarine.
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
-                  {product.ingredients.map((ing, i) => (
+                  {(Array.isArray(product.ingredients)
+                    ? product.ingredients
+                    : typeof product.ingredients === 'string'
+                    ? (product.ingredients as string).split(',').map((s) => s.trim())
+                    : []
+                  ).map((ing: string, i: number) => (
                     <span
                       key={i}
                       className="px-3.5 py-1.5 rounded-full bg-cream-100 text-chocolate-800 text-xs font-medium border border-cream-200"

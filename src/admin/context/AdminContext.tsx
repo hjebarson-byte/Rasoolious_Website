@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import type {
   AdminScreen,
   Order,
@@ -10,7 +10,8 @@ import type {
   Role,
   UserRole,
   PermissionModule,
-  StoreInfo
+  StoreInfo,
+  ProductStatus
 } from '../types/adminTypes';
 import {
   INITIAL_STORE_INFO,
@@ -21,6 +22,7 @@ import {
   INITIAL_ROLES,
   INITIAL_USERS
 } from '../data/initialAdminData';
+import { rasooliciousApi } from '../../services/api';
 
 export interface ToastItem {
   id: string;
@@ -36,7 +38,17 @@ export interface AdminNotification {
   screen: AdminScreen;
 }
 
-interface AdminContextType {
+const STORAGE_KEYS = {
+  ORDERS: 'rasoolicious_orders',
+  PRODUCTS: 'rasoolicious_products',
+  STORE: 'rasoolicious_store_info',
+  SLOTS: 'rasoolicious_delivery_slots',
+  ZONES: 'rasoolicious_delivery_zones',
+  USERS: 'rasoolicious_users',
+  ROLES: 'rasoolicious_roles'
+};
+
+export interface AdminContextType {
   // Navigation & Shell
   currentScreen: AdminScreen;
   setCurrentScreen: (screen: AdminScreen) => void;
@@ -56,10 +68,11 @@ interface AdminContextType {
   roles: Role[];
 
   // Mutations
+  addOrder: (order: Order) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
   advanceOrderStatus: (orderId: string) => void;
-  addProduct: (product: Omit<Product, 'id'>) => void;
-  updateProduct: (product: Product) => void;
+  addProduct: (prod: Omit<Product, 'id'>) => void;
+  updateProduct: (prod: Product) => void;
   toggleProductStatus: (productId: string) => void;
   updateSlotCapacity: (slotId: string, capacity: number, active: boolean) => void;
   addDeliveryZone: (zone: Omit<DeliveryZone, 'id'>) => void;
@@ -70,32 +83,46 @@ interface AdminContextType {
   toggleUserStatus: (userId: string) => void;
   updateRole: (role: Role) => void;
 
-  // Drawer & Modals
+  // Drawer
   selectedOrder: Order | null;
   openOrderDrawer: (order: Order) => void;
   closeOrderDrawer: () => void;
+
+  // Modals
   activeModal: string | null;
   modalData: any;
   openModal: (modal: string, data?: any) => void;
   closeModal: () => void;
 
-  // Filters & Search
-  orderFilters: { search: string; status: string; slot: string; payment: string };
-  setOrderFilters: React.Dispatch<React.SetStateAction<{ search: string; status: string; slot: string; payment: string }>>;
+  // Filtering
+  orderFilters: {
+    search: string;
+    status: string;
+    slot: string;
+    payment: string;
+  };
+  setOrderFilters: React.Dispatch<React.SetStateAction<{
+    search: string;
+    status: string;
+    slot: string;
+    payment: string;
+  }>>;
   inventoryCategory: string;
   setInventoryCategory: (cat: string) => void;
   inventorySearch: string;
-  setInventorySearch: (s: string) => void;
+  setInventorySearch: (search: string) => void;
   zoneSearch: string;
-  setZoneSearch: (s: string) => void;
+  setZoneSearch: (search: string) => void;
   userSearch: string;
-  setUserSearch: (s: string) => void;
+  setUserSearch: (search: string) => void;
   userRoleFilter: string;
-  setUserRoleFilter: (r: string) => void;
+  setUserRoleFilter: (role: string) => void;
 
-  // Notifications & Toasts
+  // Notifications
   notifications: AdminNotification[];
   removeNotification: (id: string) => void;
+
+  // Toasts
   toasts: ToastItem[];
   showToast: (message: string, type?: 'success' | 'warning' | 'error' | 'info') => void;
   removeToast: (id: string) => void;
@@ -105,17 +132,117 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentScreen, setCurrentScreen] = useState<AdminScreen>('overview');
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1024;
+    }
+    return true;
+  });
   const [activeRole, setActiveRole] = useState<UserRole>('Super Admin');
 
-  // Entities
-  const [store] = useState<StoreInfo>(INITIAL_STORE_INFO);
-  const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
-  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [deliverySlots, setDeliverySlots] = useState<DeliverySlot[]>(INITIAL_DELIVERY_SLOTS);
-  const [deliveryZones, setDeliveryZones] = useState<DeliveryZone[]>(INITIAL_DELIVERY_ZONES);
+  // Entities initialized from persistent localStorage with default fallbacks
+  const [store] = useState<StoreInfo>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.STORE);
+      if (saved) return JSON.parse(saved);
+    } catch { /* ignore */ }
+    return INITIAL_STORE_INFO;
+  });
+
+  const [orders, setOrders] = useState<Order[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ORDERS);
+      if (saved) {
+        const parsed: Order[] = JSON.parse(saved);
+        // Exclude hardcoded legacy mock dummy orders
+        const mockNames = ["Sarah Joseph", "Ananthakrishnan M", "Maria Fernandez", "Priya Nair", "Vignesh Kumar", "Priya Soundar", "Rahul Stephen", "Deepa S.", "Jerome Xavier", "Karthika Balan"];
+        const cleanOrders = parsed.filter(o => !mockNames.includes(o.customerName));
+        return cleanOrders;
+      }
+    } catch { /* ignore */ }
+    return INITIAL_ORDERS;
+  });
+
+  const [products, setProducts] = useState<Product[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+      if (saved) return JSON.parse(saved);
+    } catch { /* ignore */ }
+    return INITIAL_PRODUCTS;
+  });
+
+  const [deliverySlots, setDeliverySlots] = useState<DeliverySlot[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.SLOTS);
+      if (saved) return JSON.parse(saved);
+    } catch { /* ignore */ }
+    return INITIAL_DELIVERY_SLOTS;
+  });
+
+  const [deliveryZones, setDeliveryZones] = useState<DeliveryZone[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ZONES);
+      if (saved) return JSON.parse(saved);
+    } catch { /* ignore */ }
+    return INITIAL_DELIVERY_ZONES;
+  });
+
   const [users, setUsers] = useState<User[]>(INITIAL_USERS);
   const [roles, setRoles] = useState<Role[]>(INITIAL_ROLES);
+
+  // Sync state to localStorage whenever modified
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+    } catch (e) {
+      console.error('Failed to sync orders to localStorage', e);
+    }
+  }, [orders]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+    } catch (e) {
+      console.error('Failed to sync products to localStorage', e);
+    }
+  }, [products]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.SLOTS, JSON.stringify(deliverySlots));
+    } catch (e) {
+      console.error('Failed to sync delivery slots to localStorage', e);
+    }
+  }, [deliverySlots]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.ZONES, JSON.stringify(deliveryZones));
+    } catch (e) {
+      console.error('Failed to sync delivery zones to localStorage', e);
+    }
+  }, [deliveryZones]);
+
+  // Real-time cross-tab & custom event listener
+  useEffect(() => {
+    const handleStorageSync = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEYS.ORDERS && e.newValue) {
+        try {
+          setOrders(JSON.parse(e.newValue));
+        } catch { /* ignore */ }
+      }
+      if (e.key === STORAGE_KEYS.PRODUCTS && e.newValue) {
+        try {
+          setProducts(JSON.parse(e.newValue));
+        } catch { /* ignore */ }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageSync);
+    return () => {
+      window.removeEventListener('storage', handleStorageSync);
+    };
+  }, []);
 
   // Drawer & Modal State
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -149,30 +276,100 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setToasts(prev => prev.filter(t => t.id !== id));
   };
 
-  // Notifications
-  const [notifications, setNotifications] = useState<AdminNotification[]>([
-    {
-      id: 'notif-1',
-      title: 'Evening Slot Full (20/20)',
-      desc: 'Kanniyakumari delivery capacity reached for today',
-      type: 'warning',
-      screen: 'delivery-slots'
-    },
-    {
-      id: 'notif-2',
-      title: 'Deck Oven #1 Batch Ready',
-      desc: 'Fudge brownies ready for cooling & slicing rack',
-      type: 'oven',
-      screen: 'kitchen-orders'
-    },
-    {
-      id: 'notif-3',
-      title: '8 Orders Pending Dispatch',
-      desc: 'NH-66 courier pickup arriving in 15 mins',
-      type: 'dispatch',
-      screen: 'kitchen-orders'
-    }
-  ]);
+  // Notifications - start clean
+  const [notifications, setNotifications] = useState<AdminNotification[]>([]);
+
+  // Fetch live database catalog and real orders from FastAPI backend on mount
+  useEffect(() => {
+    let isMounted = true;
+    const loadBackendData = async () => {
+      try {
+        const health = await rasooliciousApi.checkHealth();
+        if (health && isMounted) {
+          const [backendProducts, backendOrders] = await Promise.all([
+            rasooliciousApi.getProducts().catch(() => null),
+            rasooliciousApi.getOrders().catch(() => null)
+          ]);
+
+          if (backendProducts && backendProducts.length > 0 && isMounted) {
+            setProducts(backendProducts.map(bp => ({
+              id: bp.id,
+              name: bp.name,
+              slug: bp.slug,
+              category: bp.category,
+              price: bp.price,
+              salePrice: bp.sale_price,
+              originalPrice: bp.original_price,
+              weight: bp.weight,
+              dailyLimit: bp.daily_limit,
+              booked: bp.booked,
+              status: bp.status,
+              available: bp.available,
+              image: bp.image,
+              description: bp.description || '',
+              shortDescription: bp.short_description || '',
+              ingredients: bp.ingredients || '',
+              allergens: bp.allergens ? bp.allergens.split(', ') : [],
+              rating: bp.rating,
+              reviews: bp.reviews,
+              gallery: [bp.image],
+              storageInfo: 'Store in an airtight container at room temperature.',
+              deliveryInfo: 'Fresh morning bake sealed for maximum aroma.',
+              pieces: bp.weight
+            })));
+          }
+
+          if (backendOrders && isMounted) {
+            const normalizePaymentMethod = (pm: string): 'UPI' | 'Card' | 'COD' => {
+              const upper = (pm || '').toUpperCase();
+              if (upper.includes('CARD') || upper.includes('VISA') || upper.includes('MAST')) return 'Card';
+              if (upper.includes('COD') || upper.includes('CASH')) return 'COD';
+              return 'UPI';
+            };
+
+            setOrders(backendOrders.map(bo => ({
+              id: bo.id,
+              customerName: bo.customer_name,
+              phone: bo.phone,
+              altPhone: bo.alt_phone || '',
+              date: new Date(bo.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+              slot: bo.slot || 'Standard',
+              slotId: 'slot-morning',
+              locality: bo.locality || 'Nagercoil',
+              pincode: bo.pincode || '629001',
+              address: bo.address,
+              paymentMethod: normalizePaymentMethod(bo.payment_method),
+              paymentStatus: bo.payment_status,
+              paymentRef: bo.payment_ref || '',
+              subtotal: bo.subtotal,
+              deliveryFee: bo.delivery_fee || 0,
+              discount: bo.discount || 0,
+              total: bo.total,
+              status: (bo.status === 'completed' ? 'completed' : 'pending') as OrderStatus,
+              hasGiftMessage: bo.has_gift_message || false,
+              giftMessage: bo.gift_message ? { to: bo.customer_name, from: '', message: bo.gift_message } : null,
+              items: bo.items.map(bi => ({
+                name: bi.product_name,
+                quantity: bi.quantity,
+                weight: bi.weight || '500g Slab',
+                unitPrice: bi.unit_price,
+                totalPrice: bi.total_price
+              })),
+              notes: bo.notes || '',
+              timeline: [
+                { time: new Date(bo.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), title: 'Order Placed', desc: `Payment: ${bo.payment_status}` }
+              ]
+            })));
+          }
+        }
+      } catch (err) {
+        console.warn('Backend not reached, running in standalone mode:', err);
+      }
+    };
+
+    loadBackendData();
+    return () => { isMounted = false; };
+  }, []);
 
   const removeNotification = (id: string) => {
     setNotifications(prev => prev.filter(n => n.id !== id));
@@ -186,7 +383,70 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   // Mutations
+  const addOrder = (newOrder: Order) => {
+    setOrders(prev => [newOrder, ...prev]);
+
+    // Persist to FastAPI MySQL/SQLite database
+    rasooliciousApi.createOrder({
+      customer_name: newOrder.customerName,
+      phone: newOrder.phone,
+      alt_phone: newOrder.altPhone,
+      address: newOrder.address,
+      locality: newOrder.locality,
+      pincode: newOrder.pincode,
+      slot: newOrder.slot,
+      payment_method: newOrder.paymentMethod,
+      payment_status: newOrder.paymentStatus,
+      payment_ref: newOrder.paymentRef,
+      subtotal: newOrder.subtotal,
+      delivery_fee: newOrder.deliveryFee,
+      discount: newOrder.discount,
+      total: newOrder.total,
+      notes: newOrder.notes,
+      has_gift_message: newOrder.hasGiftMessage,
+      gift_message: newOrder.giftMessage?.message,
+      items: newOrder.items.map(i => ({
+        product_name: i.name,
+        quantity: i.quantity,
+        weight: i.weight,
+        unit_price: i.unitPrice,
+        total_price: i.totalPrice
+      }))
+    }).catch(err => console.warn('Backend database sync note:', err));
+
+    // Dynamically increment booked count for ordered brownies
+    setProducts(prevProducts =>
+      prevProducts.map(p => {
+        const itemMatch = newOrder.items.find(
+          item => item.name.toLowerCase().includes(p.name.toLowerCase()) || (p.id && item.name.toLowerCase().includes(p.id.toLowerCase()))
+        );
+        if (itemMatch) {
+          const updatedBooked = (p.booked || 0) + itemMatch.quantity;
+          const isNowSoldOut = updatedBooked >= (p.dailyLimit || 25);
+          const isNowLimited = updatedBooked >= (p.dailyLimit || 25) - 4;
+          const nextStatus: ProductStatus = isNowSoldOut 
+            ? 'Sold Out' 
+            : isNowLimited 
+            ? 'Limited Stock' 
+            : p.status;
+
+          return {
+            ...p,
+            booked: updatedBooked,
+            status: nextStatus,
+            available: nextStatus !== 'Sold Out'
+          };
+        }
+        return p;
+      })
+    );
+
+    showToast(`Order #${newOrder.id} confirmed for ${newOrder.customerName}`, 'success');
+  };
+
   const updateOrderStatus = (orderId: string, newStatus: OrderStatus) => {
+    rasooliciousApi.updateOrderStatus(orderId, newStatus).catch(() => null);
+
     const statusMapTitle: Record<string, string> = {
       pending: 'Order Confirmed & Pending',
       received: 'Order Confirmed',
@@ -218,7 +478,6 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       })
     );
 
-    // Also update selectedOrder if open
     setSelectedOrder(prev => (prev && prev.id === orderId ? { ...prev, status: newStatus } : prev));
     showToast(`Order #${orderId} marked as ${newStatus === 'completed' ? 'DELIVERED' : 'PENDING'}`, 'success');
   };
@@ -234,23 +493,36 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const addProduct = (prodData: Omit<Product, 'id'>) => {
-    const newId = `PROD-${String(products.length + 1).padStart(3, '0')}`;
-    const newProd: Product = { ...prodData, id: newId };
+    const newId = `br-custom-${Date.now()}`;
+    const newProd: Product = { 
+      ...prodData, 
+      id: newId,
+      available: prodData.status !== 'Sold Out'
+    };
     setProducts(prev => [newProd, ...prev]);
     showToast(`Added ${newProd.name} to catalogue`, 'success');
   };
 
   const updateProduct = (prod: Product) => {
-    setProducts(prev => prev.map(p => (p.id === prod.id ? prod : p)));
+    setProducts(prev => prev.map(p => (p.id === prod.id ? {
+      ...prod,
+      available: prod.status !== 'Sold Out'
+    } : p)));
     showToast(`Updated ${prod.name}`, 'success');
   };
 
   const toggleProductStatus = (productId: string) => {
+    rasooliciousApi.toggleProductStatus(productId).catch(() => null);
+
     setProducts(prev =>
       prev.map(p => {
         if (p.id !== productId) return p;
-        const nextStatus = p.status === 'In Stock' ? 'Sold Out' : 'In Stock';
-        return { ...p, status: nextStatus };
+        const nextStatus: ProductStatus = p.status === 'In Stock' ? 'Sold Out' : 'In Stock';
+        return { 
+          ...p, 
+          status: nextStatus,
+          available: nextStatus !== 'Sold Out'
+        };
       })
     );
     showToast('Product status updated', 'info');
@@ -354,6 +626,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         deliveryZones,
         users,
         roles,
+        addOrder,
         updateOrderStatus,
         advanceOrderStatus,
         addProduct,
@@ -404,4 +677,14 @@ export const useAdmin = () => {
     throw new Error('useAdmin must be used within an AdminProvider');
   }
   return context;
+};
+
+export const useProducts = () => {
+  const { products, toggleProductStatus, updateProduct } = useAdmin();
+  return { products, toggleProductStatus, updateProduct };
+};
+
+export const useOrders = () => {
+  const { orders, addOrder, updateOrderStatus, advanceOrderStatus } = useAdmin();
+  return { orders, addOrder, updateOrderStatus, advanceOrderStatus };
 };

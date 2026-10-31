@@ -28,7 +28,7 @@ export const INITIAL_DELIVERY_SLOTS: DeliverySlot[] = [
     name: "Morning Slot",
     timeWindow: "9 AM–1 PM",
     capacity: 20,
-    booked: 15,
+    booked: 0,
     active: true,
     description: "Early dispatch for fresh morning bakes & office celebrations"
   },
@@ -37,7 +37,7 @@ export const INITIAL_DELIVERY_SLOTS: DeliverySlot[] = [
     name: "Afternoon Slot",
     timeWindow: "1 PM–5 PM",
     capacity: 20,
-    booked: 12,
+    booked: 0,
     active: true,
     description: "Mid-day batch dispatch across NH-66 corridor"
   },
@@ -46,7 +46,7 @@ export const INITIAL_DELIVERY_SLOTS: DeliverySlot[] = [
     name: "Evening Slot",
     timeWindow: "5 PM–9 PM",
     capacity: 20,
-    booked: 20,
+    booked: 0,
     active: true,
     description: "Prime dessert & family dinner delivery slot"
   }
@@ -54,104 +54,194 @@ export const INITIAL_DELIVERY_SLOTS: DeliverySlot[] = [
 
 export const INITIAL_PRODUCTS: Product[] = [
   {
-    id: "PROD-001",
+    id: "br-original",
     name: "The Original",
+    slug: "the-original",
     category: "Signature Brownies",
     price: 450,
     salePrice: 420,
-    weight: "500 g",
+    originalPrice: 480,
+    weight: "500g Slab",
     dailyLimit: 25,
-    booked: 18,
+    booked: 0,
     status: "In Stock",
+    available: true,
+    rating: 4.9,
+    reviews: 154,
+    shortDescription: "Classic chocolate indulgence.",
+    description: "Our timeless signature recipe with dense, glossy crinkled top and molten fudge center. Handcrafted with single-origin Belgian chocolate and French cultured butter.",
     image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
-    description: "Classic chocolate indulgence. Our timeless signature recipe with dense, glossy crinkled top and molten fudge center.",
+    gallery: [
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=800&q=80"
+    ],
+    badge: "BEST SELLER",
     ingredients: "Belgian Couverture Chocolate 70%, French Butter, Organic Cane Sugar, Free-Range Eggs, Dutch Cocoa, Sea Salt",
     allergens: ["Eggs", "Dairy", "Gluten"],
+    storageInfo: "Store in an airtight container at room temperature for up to 5 days, or chill for up to 10 days. Warm for 15 seconds for a molten centre.",
+    deliveryInfo: "Freshly baked every morning. Delivered in our signature Rasoolicious bakery box.",
+    pieces: "Whole 500g Slab",
+    isSignature: true,
     freshToday: true,
     featured: true
   },
   {
-    id: "PROD-002",
+    id: "br-rasool",
     name: "The Rasool",
+    slug: "the-rasool",
     category: "Signature Brownies",
     price: 490,
     salePrice: 460,
-    weight: "500 g",
+    originalPrice: 520,
+    weight: "500g Slab",
     dailyLimit: 30,
-    booked: 26,
+    booked: 0,
     status: "In Stock",
+    available: true,
+    rating: 5.0,
+    reviews: 198,
+    shortDescription: "Our special creation, inspired by the love story behind our brand.",
+    description: "Our special creation, inspired by the love story behind our brand. Infused with Bourbon vanilla and Maldon sea salt crystals. Ultra-luxe velvety dark chocolate.",
     image: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80",
-    description: "Our special creation, inspired by the love story behind our brand. Infused with Bourbon vanilla and Maldon sea salt crystals.",
+    gallery: [
+      "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80"
+    ],
+    badge: "CHEF SPECIAL",
     ingredients: "72% Belgian Couverture Chocolate, French Cultured Butter, Bourbon Vanilla Beans, Organic Cane Sugar, Eggs, Maldon Salt",
     allergens: ["Eggs", "Dairy", "Gluten"],
+    storageInfo: "Store in an airtight container at room temperature for up to 6 days. Best enjoyed slightly warmed.",
+    deliveryInfo: "Bespoke daily morning bake. Hand-packed with care.",
+    pieces: "Whole 500g Slab",
+    isSignature: true,
     freshToday: true,
     featured: true
   },
   {
-    id: "PROD-003",
+    id: "br-double-chocolate",
     name: "Double Chocolate",
+    slug: "double-chocolate",
     category: "Signature Brownies",
     price: 480,
     salePrice: 450,
-    weight: "500 g",
+    originalPrice: 510,
+    weight: "500g Slab",
     dailyLimit: 20,
-    booked: 15,
+    booked: 0,
     status: "In Stock",
+    available: true,
+    rating: 4.9,
+    reviews: 112,
+    shortDescription: "Double the chocolate, double the delight.",
+    description: "Double the chocolate, double the delight. Loaded with molten pockets of dark and milk chocolate folded into rich Dutch cocoa fudge batter.",
     image: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?auto=format&fit=crop&w=800&q=80",
-    description: "Double the chocolate, double the delight. Loaded with molten pockets of dark and milk chocolate.",
+    gallery: [
+      "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80"
+    ],
+    badge: "NEW",
     ingredients: "Belgian Dark Chocolate 70%, Swiss Milk Chocolate Chunks, Dutch Process Cocoa, French Butter, Eggs, Flour",
     allergens: ["Eggs", "Dairy", "Gluten"],
+    storageInfo: "Room temperature for 5 days. Warm gently for flowing chocolate chunks.",
+    deliveryInfo: "Fresh morning bake sealed for maximum aroma.",
+    pieces: "Whole 500g Slab",
+    isSignature: true,
     freshToday: true,
     featured: true
   },
   {
-    id: "PROD-004",
+    id: "br-nutella",
     name: "Nutella",
+    slug: "nutella",
     category: "Signature Brownies",
     price: 520,
     salePrice: 490,
-    weight: "500 g",
+    originalPrice: 550,
+    weight: "500g Slab",
     dailyLimit: 25,
-    booked: 21,
-    status: "Limited Stock",
+    booked: 0,
+    status: "In Stock",
+    available: true,
+    rating: 4.9,
+    reviews: 167,
+    shortDescription: "A rich chocolate-hazelnut treat.",
+    description: "A rich chocolate-hazelnut treat with roasted hazelnuts and continuous molten rivers of pure Italian Nutella. Decadent, nutty, and irresistible.",
     image: "https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=800&q=80",
-    description: "A rich chocolate-hazelnut treat with roasted hazelnuts and continuous molten rivers of pure Italian Nutella.",
-    ingredients: "Italian Nutella, Roasted Hazelnuts, 60% Dark Cocoa, Butter, Eggs, Flour",
+    gallery: [
+      "https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=800&q=80"
+    ],
+    badge: "BEST SELLER",
+    ingredients: "Italian Nutella, Roasted Hazelnuts, 60% Dark Cocoa, French Cultured Butter, Free-Range Eggs, Flour",
     allergens: ["Eggs", "Dairy", "Gluten", "Nuts"],
+    storageInfo: "Store airtight. Keeps 6 days at room temperature, 2 weeks refrigerated.",
+    deliveryInfo: "Fresh daily batch dispatch.",
+    pieces: "Whole 500g Slab",
+    isSignature: true,
     freshToday: true,
     featured: true
   },
   {
-    id: "PROD-005",
+    id: "br-biscoff",
     name: "Biscoff",
+    slug: "biscoff",
     category: "Signature Brownies",
     price: 490,
     salePrice: 460,
-    weight: "500 g",
+    originalPrice: 520,
+    weight: "500g Slab",
     dailyLimit: 24,
-    booked: 20,
+    booked: 0,
     status: "In Stock",
+    available: true,
+    rating: 4.9,
+    reviews: 145,
+    shortDescription: "Chocolate brownies with a caramelised biscuit twist.",
+    description: "Chocolate brownies with a caramelised biscuit twist, swirled with thick molten ribbons of Belgian Lotus Biscoff speculoos spread and crowned with spiced biscuit dust.",
     image: "https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=800&q=80",
-    description: "Chocolate brownies with a caramelised biscuit twist, swirled with Lotus Biscoff ribbons and spiced biscuit dust.",
+    gallery: [
+      "https://images.unsplash.com/photo-1589218436045-ee320057f443?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80"
+    ],
+    badge: "BEST SELLER",
     ingredients: "Lotus Biscoff Spread, Lotus Speculoos Biscuits, 64% Dark Chocolate, French Butter, Flour, Eggs",
     allergens: ["Eggs", "Dairy", "Gluten"],
+    storageInfo: "Keeps fresh up to 6 days at room temperature.",
+    deliveryInfo: "Packed in signature gold-embossed box.",
+    pieces: "Whole 500g Slab",
+    isSignature: true,
     freshToday: true,
     featured: true
   },
   {
-    id: "PROD-006",
+    id: "rasoolicious-gift-box",
     name: "The Rasoolicious Gift Box",
+    slug: "the-rasoolicious-gift-box",
     category: "Gift Boxes",
     price: 850,
     salePrice: 850,
+    originalPrice: 950,
     weight: "Box of 4",
     dailyLimit: 15,
-    booked: 12,
+    booked: 0,
     status: "In Stock",
+    available: true,
+    rating: 5.0,
+    reviews: 210,
+    shortDescription: "Share a little happiness with a box of brownies made for life's sweetest moments.",
+    description: "Share a little happiness with a box of brownies made for life's sweetest moments. Choose any four brownies from our five signature flavours to create your own delicious combination. Packed in our luxury keepsake gift box with satin bow.",
     image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80",
-    description: "Share a little happiness with a box of brownies made for life's sweetest moments. Choose any four brownies from our signature collection.",
+    gallery: [
+      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=800&q=80"
+    ],
+    badge: "BEST SELLER",
     ingredients: "Selection of 4 Signature Brownies crafted with Belgian Chocolate, French Butter, Lotus Biscoff, Nutella, and Pure Bourbon Vanilla.",
     allergens: ["Eggs", "Dairy", "Gluten", "Nuts"],
+    storageInfo: "Keeps fresh up to 6 days at room temperature. Perfect for gifting and celebrations.",
+    deliveryInfo: "Packed in deluxe insulated gift box with satin bow and greeting card.",
+    pieces: "4 Brownies (Build Your Own Box)",
+    isSignature: true,
     freshToday: true,
     featured: true
   }
@@ -232,427 +322,13 @@ export const INITIAL_DELIVERY_ZONES: DeliveryZone[] = [
   }
 ];
 
-export const INITIAL_ORDERS: Order[] = [
-  {
-    id: "RAS1042",
-    customerName: "Sarah Joseph",
-    phone: "+91 98421 88390",
-    altPhone: "+91 94432 10982",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Nagercoil Central",
-    pincode: "629001",
-    address: "No. 42, Vadasery High Road, Near District Court, Nagercoil, Kanniyakumari Dist - 629001",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/SBIN/8291039841",
-    subtotal: 1280,
-    deliveryFee: 40,
-    discount: 80,
-    total: 1240,
-    status: "received",
-    hasGiftMessage: true,
-    giftMessage: {
-      to: "Sarah Joseph",
-      from: "Joshua & Rachel",
-      message: "Happy Birthday dearest Sarah! May this year be as rich, sweet, and comforting as Rasolicious brownies! Can't wait to celebrate together this evening. With tons of love!"
-    },
-    items: [
-      {
-        name: "Dark Chocolate Fudge Brownie",
-        quantity: 2,
-        weight: "500 g each",
-        unitPrice: 450,
-        totalPrice: 900
-      },
-      {
-        name: "Lotus Biscoff Swirl Brownie Slab",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 380,
-        totalPrice: 380
-      }
-    ],
-    notes: "Customer requested extra dusting of sea salt on brownies.",
-    timeline: [
-      { time: "08:15 AM", title: "Order Placed Online", desc: "Paid ₹1,240 via GooglePay UPI" },
-      { time: "08:20 AM", title: "Order Confirmed by System", desc: "Allocated to Morning Dispatch (9 AM–1 PM)" }
-    ]
-  },
-  {
-    id: "RAS1043",
-    customerName: "Ananthakrishnan M",
-    phone: "+91 94431 23456",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Afternoon, 1 PM–5 PM",
-    slotId: "slot-afternoon",
-    locality: "Marthandam",
-    pincode: "629165",
-    address: "Flat 3B, Riverview Apartments, Near Kuzhithurai Bridge, Marthandam - 629165",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/HDFC/1928374650",
-    subtotal: 890,
-    deliveryFee: 0,
-    discount: 0,
-    total: 890,
-    status: "oven",
-    hasGiftMessage: false,
-    giftMessage: null,
-    items: [
-      {
-        name: "Assorted Brownie Gift Box",
-        quantity: 1,
-        weight: "8 pcs (750 g)",
-        unitPrice: 890,
-        totalPrice: 890
-      }
-    ],
-    notes: "Please pack with extra insulation for afternoon commute.",
-    timeline: [
-      { time: "09:05 AM", title: "Order Received", desc: "Verified payment via HDFC UPI" },
-      { time: "09:40 AM", title: "Baking Started in Deck Oven #2", desc: "Tray #14 loaded by Chef Anand" }
-    ]
-  },
-  {
-    id: "RAS1044",
-    customerName: "Maria Fernandez",
-    phone: "+91 97890 54321",
-    altPhone: "+91 97890 54322",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Kanyakumari Town",
-    pincode: "629702",
-    address: "Seaview Villa, Beach Road, Near Sunset Point, Kanyakumari - 629702",
-    paymentMethod: "Card",
-    paymentStatus: "Paid via Card",
-    paymentRef: "TXN/VISA/99281726",
-    subtotal: 1680,
-    deliveryFee: 70,
-    discount: 210,
-    total: 1540,
-    status: "oven",
-    hasGiftMessage: true,
-    giftMessage: {
-      to: "Maria & Francis",
-      from: "David & Sharon (Chennai)",
-      message: "Wishing you a truly magical 25th Wedding Anniversary overlooking the Indian Ocean! Treat yourselves to these warm delights."
-    },
-    items: [
-      {
-        name: "Red Velvet Cream Cheese Brownie Slab",
-        quantity: 2,
-        weight: "500 g each",
-        unitPrice: 650,
-        totalPrice: 1300
-      },
-      {
-        name: "Nutella Hazelnut Molten Lava Brownie",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 380,
-        totalPrice: 380
-      }
-    ],
-    notes: "Keep brownie slabs insulated and freshly sealed during transport.",
-    timeline: [
-      { time: "08:30 AM", title: "Order Placed", desc: "Visa Credit Card verified" },
-      { time: "09:15 AM", title: "Baking Commenced", desc: "Brownie Slabs in Deck Oven #1" }
-    ]
-  },
-  {
-    id: "RAS1045",
-    customerName: "Dr. Kavitha Raman",
-    phone: "+91 98422 11223",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Asaripallam",
-    pincode: "629201",
-    address: "Doctors Quarters, Government Medical College Campus, Asaripallam, Nagercoil - 629201",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/ICIC/7733441199",
-    subtotal: 930,
-    deliveryFee: 0,
-    discount: 0,
-    total: 930,
-    status: "cooling",
-    hasGiftMessage: false,
-    giftMessage: null,
-    items: [
-      {
-        name: "Dark Chocolate Fudge Brownie",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 450,
-        totalPrice: 450
-      },
-      {
-        name: "Classic Walnut Brownie",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 480,
-        totalPrice: 480
-      }
-    ],
-    notes: "Leave with security at Dean's gate if busy in rounds.",
-    timeline: [
-      { time: "07:45 AM", title: "Order Placed", desc: "Paid via UPI" },
-      { time: "08:30 AM", title: "Baking Done", desc: "Slabs pulled from oven" },
-      { time: "09:30 AM", title: "Cooling & Slicing", desc: "Portioning into 9 squares" }
-    ]
-  },
-  {
-    id: "RAS1046",
-    customerName: "Vignesh Kumar",
-    phone: "+91 99445 66778",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Colachel",
-    pincode: "629251",
-    address: "Harbour Road, Opp. Fish Landing Centre, Colachel - 629251",
-    paymentMethod: "COD",
-    paymentStatus: "Cash on Delivery",
-    paymentRef: "COD-PENDING",
-    subtotal: 760,
-    deliveryFee: 60,
-    discount: 60,
-    total: 760,
-    status: "cooling",
-    hasGiftMessage: false,
-    giftMessage: null,
-    items: [
-      {
-        name: "Slow-Roasted Kashmiri Walnut Brownie",
-        quantity: 2,
-        weight: "500 g each",
-        unitPrice: 380,
-        totalPrice: 760
-      }
-    ],
-    notes: "Collect ₹760 cash on doorstep. Bring exact change if possible.",
-    timeline: [
-      { time: "08:00 AM", title: "COD Order Confirmed", desc: "Phone verification passed" },
-      { time: "09:10 AM", title: "Freshly Baked", desc: "Rested on cooling racks" }
-    ]
-  },
-  {
-    id: "RAS1047",
-    customerName: "Priya Soundar",
-    phone: "+91 94888 33445",
-    altPhone: "+91 94888 33446",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Thuckalay",
-    pincode: "629175",
-    address: "71/B Palace Road, Near Royal Theater, Thuckalay - 629175",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/PAYTM/4488229911",
-    subtotal: 1540,
-    deliveryFee: 0,
-    discount: 200,
-    total: 1340,
-    status: "delivery",
-    hasGiftMessage: true,
-    giftMessage: {
-      to: "Priya & Kids",
-      from: "Aravind (Bangalore)",
-      message: "Surprise treats for the vacation break! Enjoy the brownies hot with ice cream."
-    },
-    items: [
-      {
-        name: "Assorted Brownie Gift Box",
-        quantity: 1,
-        weight: "8 pcs",
-        unitPrice: 890,
-        totalPrice: 890
-      },
-      {
-        name: "Sea Salt Amber Caramel Brownie Slab",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 650,
-        totalPrice: 650
-      }
-    ],
-    notes: "Hand to recipient directly.",
-    timeline: [
-      { time: "07:15 AM", title: "Order Confirmed", desc: "Paid ₹1,340" },
-      { time: "08:45 AM", title: "Packed & Sealed", desc: "Foil embossed ribbon affixed" },
-      { time: "09:30 AM", title: "Out for Delivery", desc: "Assigned to Courier Murugan on NH-66 Route" }
-    ]
-  },
-  {
-    id: "RAS1048",
-    customerName: "Rahul Stephen",
-    phone: "+91 94421 77889",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Nagercoil Central",
-    pincode: "629001",
-    address: "12, College Road, Near Scott Christian College, Nagercoil - 629001",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/GPay/8811772233",
-    subtotal: 450,
-    deliveryFee: 40,
-    discount: 40,
-    total: 450,
-    status: "delivery",
-    hasGiftMessage: false,
-    giftMessage: null,
-    items: [
-      {
-        name: "Dark Chocolate Fudge Brownie",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 450,
-        totalPrice: 450
-      }
-    ],
-    notes: "Gate code: 1984.",
-    timeline: [
-      { time: "07:30 AM", title: "Order Processed", desc: "UPI Verified" },
-      { time: "08:50 AM", title: "Boxed Warm", desc: "Thermal pouch inserted" },
-      { time: "09:35 AM", title: "Out for Delivery", desc: "Rider Selvan en route" }
-    ]
-  },
-  {
-    id: "RAS1049",
-    customerName: "Deepa S.",
-    phone: "+91 98944 99001",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Morning, 9 AM–1 PM",
-    slotId: "slot-morning",
-    locality: "Kulasekharam",
-    pincode: "629161",
-    address: "Greenwood Estate Bungalow, Pechiparai Road, Kulasekharam - 629161",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/AXIS/3300998811",
-    subtotal: 1240,
-    deliveryFee: 70,
-    discount: 70,
-    total: 1240,
-    status: "completed",
-    hasGiftMessage: true,
-    giftMessage: {
-      to: "Deepa",
-      from: "Alumni Batch 2018",
-      message: "Congratulations on opening your new clinic in Kulasekharam! Sweet success ahead!"
-    },
-    items: [
-      {
-        name: "Dark Chocolate Fudge Brownie",
-        quantity: 2,
-        weight: "500 g each",
-        unitPrice: 450,
-        totalPrice: 900
-      },
-      {
-        name: "Lotus Biscoff Swirl Brownie Slab",
-        quantity: 1,
-        weight: "500 g",
-        unitPrice: 380,
-        totalPrice: 380
-      }
-    ],
-    notes: "Delivered to reception desk at 09:45 AM. Received by Dr. Deepa.",
-    timeline: [
-      { time: "06:30 AM", title: "Early Morning Bake", desc: "Prioritized batch" },
-      { time: "08:15 AM", title: "Dispatched", desc: "Courier Anand routed" },
-      { time: "09:45 AM", title: "Delivered Successfully", desc: "Signed with OTP 4920" }
-    ]
-  },
-  {
-    id: "RAS1050",
-    customerName: "Jerome Xavier",
-    phone: "+91 97880 22334",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Evening, 5 PM–9 PM",
-    slotId: "slot-evening",
-    locality: "Nagercoil Central",
-    pincode: "629001",
-    address: "18, Water Tank Road, Carmel Nagar, Nagercoil - 629001",
-    paymentMethod: "UPI",
-    paymentStatus: "Paid via UPI",
-    paymentRef: "UPI/SBIN/5544332211",
-    subtotal: 890,
-    deliveryFee: 40,
-    discount: 40,
-    total: 890,
-    status: "received",
-    hasGiftMessage: false,
-    giftMessage: null,
-    items: [
-      {
-        name: "Assorted Brownie Gift Box",
-        quantity: 1,
-        weight: "8 pcs",
-        unitPrice: 890,
-        totalPrice: 890
-      }
-    ],
-    notes: "Family dessert after 7 PM.",
-    timeline: [
-      { time: "09:30 AM", title: "Order Booked", desc: "Reserved for Evening Slot" }
-    ]
-  },
-  {
-    id: "RAS1051",
-    customerName: "Karthika Balan",
-    phone: "+91 94877 66554",
-    altPhone: "",
-    date: "Today, 13 Oct 2026",
-    slot: "Afternoon, 1 PM–5 PM",
-    slotId: "slot-afternoon",
-    locality: "Karungal",
-    pincode: "629157",
-    address: "Main Bazaar Road, Near Bus Stand, Karungal - 629157",
-    paymentMethod: "Card",
-    paymentStatus: "Paid via Card",
-    paymentRef: "TXN/MAST/77889900",
-    subtotal: 760,
-    deliveryFee: 60,
-    discount: 0,
-    total: 820,
-    status: "received",
-    hasGiftMessage: false,
-    giftMessage: null,
-    items: [
-      {
-        name: "Lotus Biscoff Swirl Brownie Slab",
-        quantity: 2,
-        weight: "500 g each",
-        unitPrice: 380,
-        totalPrice: 760
-      }
-    ],
-    notes: "Call before reaching Karungal junction.",
-    timeline: [
-      { time: "09:50 AM", title: "Order Booked", desc: "Awaiting Chef review" }
-    ]
-  }
-];
+export const INITIAL_ORDERS: Order[] = [];
 
 export const INITIAL_ANALYTICS: AnalyticsData = {
   revenuePeriods: {
     today: {
-      total: 24850,
-      orders: 42,
+      total: 0,
+      orders: 0,
       labels: ["8 AM", "10 AM", "12 PM", "2 PM", "4 PM", "6 PM", "8 PM"],
       data: [2400, 5800, 4200, 3100, 6200, 2150, 1000]
     },

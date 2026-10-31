@@ -11,7 +11,8 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
+import type { Product } from '../types';
 
 interface StarTreat {
   id: string;
@@ -109,13 +110,17 @@ const STAR_TREATS: StarTreat[] = [
 
 export const HeroShowcase: React.FC = () => {
   const { addToCart } = useCart();
+  const { products } = useAdmin();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isAdded, setIsAdded] = useState(false);
 
   const activeTreat = STAR_TREATS[selectedIndex];
-  const matchedProduct = PRODUCTS.find((p) => p.id === activeTreat.id) || PRODUCTS[0];
+  const matchedProduct = (products as Product[]).find((p) => p.id === activeTreat.id) || (products as Product[])[0];
+  const isSoldOut = matchedProduct?.status === 'Sold Out' || matchedProduct?.available === false;
+  const currentPrice = matchedProduct?.salePrice || matchedProduct?.price || activeTreat.price;
 
   const handleQuickAdd = () => {
+    if (isSoldOut) return;
     addToCart(matchedProduct, 1);
     setIsAdded(true);
     setTimeout(() => {
@@ -201,16 +206,16 @@ export const HeroShowcase: React.FC = () => {
           <div className="text-right shrink-0">
             <div className="flex items-baseline gap-1.5 justify-end">
               <span className="font-bold text-2xl text-chocolate-950">
-                ₹{activeTreat.price}
+                ₹{currentPrice}
               </span>
-              {activeTreat.originalPrice && (
+              {activeTreat.originalPrice && activeTreat.originalPrice > currentPrice && (
                 <span className="text-xs text-chocolate-400 line-through">
                   ₹{activeTreat.originalPrice}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-emerald-700 font-semibold block">
-              In Stock • Fresh Today
+            <span className={`text-[10px] font-semibold block ${isSoldOut ? 'text-rose-600' : 'text-emerald-700'}`}>
+              {isSoldOut ? 'Sold Out Today' : 'In Stock • Fresh Today'}
             </span>
           </div>
         </div>
@@ -246,14 +251,18 @@ export const HeroShowcase: React.FC = () => {
             <button
               type="button"
               onClick={handleQuickAdd}
-              disabled={isAdded}
+              disabled={isAdded || isSoldOut}
               className={`flex-1 sm:flex-none px-5 py-2.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 shadow-soft transition-all duration-200 active:scale-95 ${
-                isAdded
+                isSoldOut
+                  ? 'bg-stone-300 text-stone-500 cursor-not-allowed'
+                  : isAdded
                   ? 'bg-emerald-600 text-white'
                   : 'bg-chocolate-900 text-cream-50 hover:bg-caramel-600'
               }`}
             >
-              {isAdded ? (
+              {isSoldOut ? (
+                <span>Sold Out</span>
+              ) : isAdded ? (
                 <>
                   <Check className="w-3.5 h-3.5" />
                   <span>Added to Basket</span>

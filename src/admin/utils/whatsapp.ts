@@ -17,7 +17,7 @@ export const getCustomerWhatsAppUrl = (phone: string, orderId: string, customerN
  * Generates a direct WhatsApp link with the structured order summary to send to the bakery owner
  */
 export const getOwnerWhatsAppOrderSlip = (order: Order): string => {
-  const ownerRawPhone = BRAND_CONFIG.contact.phone || '9489201823';
+  const ownerRawPhone = BRAND_CONFIG.contact.phone || '9486518486';
   const cleanPhone = ownerRawPhone.replace(/[^0-9]/g, '');
   const phoneWithCountry = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
 
@@ -52,7 +52,7 @@ ${itemsList}${giftMsg}${note}
  * Generates a direct WhatsApp link with daily sales and dispatch summary for the owner
  */
 export const getOwnerDailySummaryWhatsAppUrl = (orders: Order[], dateStr: string): string => {
-  const ownerRawPhone = BRAND_CONFIG.contact.phone || '9489201823';
+  const ownerRawPhone = BRAND_CONFIG.contact.phone || '9486518486';
   const cleanPhone = ownerRawPhone.replace(/[^0-9]/g, '');
   const phoneWithCountry = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
 

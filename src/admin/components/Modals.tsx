@@ -10,16 +10,21 @@ import {
   MapPin, 
   Eye, 
   EyeOff, 
-  Gift 
+  Gift,
+  Plus,
+  Minus,
+  ShoppingBag
 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
-import type { Product, User, Role, PermissionModule, DeliveryZone, DeliverySlot } from '../types/adminTypes';
+import type { Product, User, Role, PermissionModule, DeliveryZone, DeliverySlot, Order } from '../types/adminTypes';
 
 export const Modals: React.FC = () => {
   const { 
     activeModal, 
     modalData, 
     closeModal, 
+    products,
+    addOrder,
     addProduct, 
     updateProduct, 
     updateSlotCapacity, 
@@ -124,6 +129,18 @@ export const Modals: React.FC = () => {
           <ViewUserProfileModal 
             user={modalData as User} 
             onClose={closeModal} 
+          />
+        )}
+
+        {/* 8. CREATE MANUAL ORDER MODAL */}
+        {activeModal === 'newOrder' && (
+          <NewOrderModalForm 
+            products={products} 
+            onClose={closeModal} 
+            onSave={(ord) => {
+              addOrder(ord);
+              closeModal();
+            }} 
           />
         )}
 
@@ -1059,5 +1076,304 @@ const ViewUserProfileModal: React.FC<{
         </button>
       </div>
     </div>
+  );
+};
+
+// -------------------------------------------------------------
+// 8. CREATE MANUAL ORDER MODAL FORM
+// -------------------------------------------------------------
+const NewOrderModalForm: React.FC<{
+  products: Product[];
+  onClose: () => void;
+  onSave: (order: Order) => void;
+}> = ({ products, onClose, onSave }) => {
+  const [customerName, setCustomerName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [locality, setLocality] = useState('Nagercoil Central');
+  const [pincode, setPincode] = useState('629001');
+  const [paymentMethod, setPaymentMethod] = useState<'UPI' | 'Card' | 'COD'>('UPI');
+  const [notes, setNotes] = useState('');
+  const [quantities, setQuantities] = useState<{ [id: string]: number }>({
+    [products[0]?.id || 'br-original']: 1
+  });
+
+  const handleQtyChange = (id: string, delta: number) => {
+    setQuantities(prev => {
+      const cur = prev[id] || 0;
+      const next = Math.max(0, cur + delta);
+      if (next === 0) {
+        const copy = { ...prev };
+        delete copy[id];
+        return copy;
+      }
+      return { ...prev, [id]: next };
+    });
+  };
+
+  const calculatedItems = Object.entries(quantities).map(([id, qty]) => {
+    const p = products.find(prod => prod.id === id);
+    const unitPrice = p ? (p.salePrice || p.price) : 450;
+    return {
+      name: p ? p.name : 'Brownie Slab',
+      quantity: qty,
+      weight: p?.weight || '500g Slab',
+      unitPrice,
+      totalPrice: unitPrice * qty
+    };
+  });
+
+  const subtotal = calculatedItems.reduce((sum, item) => sum + item.totalPrice, 0);
+  const deliveryFee = subtotal >= 999 || subtotal === 0 ? 0 : 40;
+  const total = subtotal + deliveryFee;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customerName.trim() || !phone.trim() || calculatedItems.length === 0) {
+      alert('Please fill customer name, phone, and select at least 1 brownie item.');
+      return;
+    }
+
+    const orderId = `RAS${Math.floor(1000 + Math.random() * 9000)}`;
+    const newOrder: Order = {
+      id: orderId,
+      customerName,
+      phone,
+      altPhone: '',
+      date: `Today, ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`,
+      slot: 'Standard Slot (9 AM–1 PM)',
+      slotId: 'slot-morning',
+      locality,
+      pincode,
+      address: address || locality,
+      paymentMethod,
+      paymentStatus: paymentMethod === 'COD' ? 'Pending on Delivery' : 'Paid via ' + paymentMethod,
+      paymentRef: `MANUAL-${Date.now().toString(36).toUpperCase()}`,
+      subtotal,
+      deliveryFee,
+      discount: 0,
+      total,
+      status: 'pending',
+      hasGiftMessage: false,
+      giftMessage: null,
+      items: calculatedItems,
+      notes,
+      timeline: [
+        {
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          title: 'Manual Order Created',
+          desc: 'Created directly via Admin Console by Chef Rasool'
+        }
+      ]
+    };
+
+    onSave(newOrder);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col max-h-[88vh]">
+      {/* Header */}
+      <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/70">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-caramel-100 border border-caramel-200 flex items-center justify-center text-caramel-700">
+            <ShoppingBag className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="font-serif font-bold text-lg text-chocolate-950">Create Manual Order</h2>
+            <p className="text-xs text-stone-500">Record a phone, in-person, or bespoke order for Chef Rasool's kitchen</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="p-1.5 rounded-xl hover:bg-stone-200 text-stone-400 hover:text-stone-700 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Body */}
+      <div className="p-6 overflow-y-auto space-y-5 flex-1">
+        
+        {/* Customer Info */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-bold text-stone-700 block mb-1">Customer Full Name *</label>
+            <input
+              type="text"
+              required
+              placeholder="e.g. Priyantha Kumar"
+              value={customerName}
+              onChange={e => setCustomerName(e.target.value)}
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-stone-700 block mb-1">WhatsApp / Phone Number *</label>
+            <input
+              type="tel"
+              required
+              placeholder="+91 98421 XXXXX"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Locality & Address */}
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="sm:col-span-2">
+            <label className="text-xs font-bold text-stone-700 block mb-1">Delivery Address</label>
+            <input
+              type="text"
+              placeholder="Street, flat / house number, landmark..."
+              value={address}
+              onChange={e => setAddress(e.target.value)}
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-stone-700 block mb-1">Locality</label>
+            <input
+              type="text"
+              value={locality}
+              onChange={e => setLocality(e.target.value)}
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-stone-700 block mb-1">Pincode</label>
+            <input
+              type="text"
+              value={pincode}
+              onChange={e => setPincode(e.target.value)}
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Brownie Item Selection */}
+        <div className="space-y-3">
+          <label className="text-xs font-bold text-stone-700 block">Select Brownie Confections</label>
+          <div className="space-y-2 border border-stone-200 rounded-2xl p-3 bg-stone-50/50 max-h-56 overflow-y-auto">
+            {products.map(prod => {
+              const qty = quantities[prod.id] || 0;
+              const price = prod.salePrice || prod.price;
+              const isSoldOut = prod.status === 'Sold Out';
+
+              return (
+                <div key={prod.id} className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <img src={prod.image} alt={prod.name} className="w-10 h-10 rounded-lg object-cover border border-stone-200 shrink-0" />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-chocolate-950 truncate">{prod.name}</span>
+                        {isSoldOut && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-700">Sold Out</span>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-stone-500 font-mono">₹{price} ({prod.weight})</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleQtyChange(prod.id, -1)}
+                      disabled={qty === 0}
+                      className="w-7 h-7 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center disabled:opacity-40"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="w-6 text-center text-xs font-bold text-chocolate-950">{qty}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleQtyChange(prod.id, 1)}
+                      className="w-7 h-7 rounded-lg bg-chocolate-900 hover:bg-caramel-600 text-white flex items-center justify-center transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Payment Method & Order Summary */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div>
+            <label className="text-xs font-bold text-stone-700 block mb-1">Payment Method</label>
+            <div className="grid grid-cols-3 gap-2">
+              {(['UPI', 'Card', 'COD'] as const).map(pm => (
+                <button
+                  key={pm}
+                  type="button"
+                  onClick={() => setPaymentMethod(pm)}
+                  className={`py-2 rounded-xl text-xs font-bold border transition-colors ${
+                    paymentMethod === pm
+                      ? 'bg-caramel-500 text-white border-caramel-500'
+                      : 'bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100'
+                  }`}
+                >
+                  {pm}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-3">
+              <label className="text-xs font-bold text-stone-700 block mb-1">Internal Note / Special Request</label>
+              <input
+                type="text"
+                placeholder="e.g. Birthday candles, extra chocolate ganache..."
+                value={notes}
+                onChange={e => setNotes(e.target.value)}
+                className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2 text-xs text-chocolate-900 focus:bg-white focus:border-caramel-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 flex flex-col justify-between space-y-2">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500">Order Summary</span>
+            <div className="space-y-1 text-xs">
+              <div className="flex justify-between text-stone-600">
+                <span>Subtotal ({calculatedItems.reduce((s, i) => s + i.quantity, 0)} items):</span>
+                <span className="font-mono font-bold text-chocolate-900">₹{subtotal}</span>
+              </div>
+              <div className="flex justify-between text-stone-600">
+                <span>Delivery Fee:</span>
+                <span className="font-mono font-bold text-chocolate-900">{deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`}</span>
+              </div>
+              <div className="flex justify-between text-base font-extrabold text-chocolate-950 pt-2 border-t border-stone-200">
+                <span>Total:</span>
+                <span className="font-mono text-caramel-700">₹{total}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-stone-200 bg-stone-50/80 flex items-center justify-end gap-3">
+        <button
+          type="button"
+          onClick={onClose}
+          className="px-5 py-2.5 rounded-xl border border-stone-300 text-stone-700 font-semibold text-xs hover:bg-stone-100 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="px-6 py-2.5 rounded-xl bg-caramel-500 hover:bg-caramel-600 text-white font-bold text-xs shadow-sm transition-all"
+        >
+          Create Order &amp; Save
+        </button>
+      </div>
+    </form>
   );
 };

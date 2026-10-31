@@ -13,7 +13,7 @@ export const BRAND_CONFIG = {
   logo: rasooliciousLogo,
   logoText: rasooliciousText,
   contact: {
-    phone: "+91 94892 01823",
+    phone: "+91 94865 18486",
     email: "orders@rasoolicious.com",
     address: "Rasoolicious Brownie Atelier, Main Road, Marthandam, Kanniyakumari, Tamil Nadu 629165",
     hours: "Tue – Sun: 8:00 AM – 9:00 PM (Closed Mondays)",

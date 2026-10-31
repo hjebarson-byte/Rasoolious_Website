@@ -21,6 +21,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
   const wishlisted = isWishlisted(product.id);
+  const isSoldOut = product.status === 'Sold Out' || product.available === false;
+  const isLimited = product.status === 'Limited Stock';
+  const displayPrice = product.salePrice || product.price;
+  const displayOriginalPrice = product.originalPrice || (product.salePrice && product.salePrice < product.price ? product.price : undefined);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -44,6 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isSoldOut) return;
     addToCart(product, 1);
     setIsAdded(true);
     setTimeout(() => {
@@ -114,16 +119,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
-        {/* Badge with subtle gold foil sheen */}
-        {product.badge && (
+        {/* Badge: Live Sold Out / Limited / Promotional */}
+        {isSoldOut ? (
+          <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-extrabold tracking-wider rounded-full shadow-md uppercase bg-rose-600 text-white z-20">
+            SOLD OUT
+          </span>
+        ) : isLimited ? (
+          <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-extrabold tracking-wider rounded-full shadow-md uppercase bg-amber-500 text-white z-20">
+            LIMITED BATCH
+          </span>
+        ) : product.badge ? (
           <span
-            className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-extrabold tracking-wider rounded-full shadow-md uppercase ${getBadgeStyle(
+            className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-extrabold tracking-wider rounded-full shadow-md uppercase z-20 ${getBadgeStyle(
               product.badge
             )}`}
           >
             {product.badge}
           </span>
-        )}
+        ) : null}
 
         {/* Dietary Icon: Eggless green dot */}
         {product.isEggless && (
@@ -198,11 +211,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           <div>
             <div className="flex items-baseline gap-1.5">
               <span className="font-semibold text-lg text-chocolate-900">
-                ₹{product.price}
+                ₹{displayPrice}
               </span>
-              {product.originalPrice && (
+              {displayOriginalPrice && displayOriginalPrice > displayPrice && (
                 <span className="text-xs text-chocolate-400 line-through">
-                  ₹{product.originalPrice}
+                  ₹{displayOriginalPrice}
                 </span>
               )}
             </div>
@@ -217,14 +230,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
           <button
             type="button"
             onClick={handleAddToCart}
-            disabled={isAdded}
+            disabled={isAdded || isSoldOut}
             className={`px-3.5 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 active:scale-95 shadow-sm ${
-              isAdded
+              isSoldOut
+                ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
+                : isAdded
                 ? 'bg-emerald-600 text-white'
                 : 'bg-chocolate-900 text-cream-50 hover:bg-caramel-600 hover:shadow-soft'
             }`}
           >
-            {isAdded ? (
+            {isSoldOut ? (
+              <span>Sold Out</span>
+            ) : isAdded ? (
               <>
                 <Check className="w-3.5 h-3.5" />
                 <span>Added</span>

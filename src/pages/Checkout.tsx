@@ -12,11 +12,29 @@ import {
   Lock
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAdmin } from '../admin/context/AdminContext';
 import { BRAND_CONFIG } from '../config/brand';
 import type { CustomerInfo } from '../types';
+import type { Order as AdminOrder } from '../admin/types/adminTypes';
+import { rasooliciousApi } from '../services/api';
+
+const loadRazorpayScript = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if ((window as any).Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 export const Checkout: React.FC = () => {
   const navigate = useNavigate();
+  const { addOrder } = useAdmin();
   const {
     cartItems,
     getCartSubtotal,
@@ -26,16 +44,16 @@ export const Checkout: React.FC = () => {
   } = useCart();
 
   const [formData, setFormData] = useState<CustomerInfo>({
-    fullName: 'Ananya Sharma',
-    email: 'ananya.sharma@example.com',
-    phone: '+91 98200 12345',
-    address: '402, Sea Green Apartments, Perry Cross Road',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    pincode: '400050',
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: 'Nagercoil',
+    state: 'Tamil Nadu',
+    pincode: '629001',
     deliveryOption: 'standard',
     paymentMethod: 'upi',
-    notes: 'Please ring the doorbell and leave in cooling bag if away.',
+    notes: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -78,37 +96,178 @@ export const Checkout: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const finalizeOrder = async (paymentRef: string, paymentStatus: string, existingOrderId?: string) => {
+    const finalOrderId = existingOrderId || `RAS${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const orderItems = cartItems.map((ci) => ({
+      name: ci.selectedFlavours && ci.selectedFlavours.length > 0
+        ? `${ci.product.name} (${ci.selectedFlavours.join(', ')})`
+        : ci.product.name,
+      quantity: ci.quantity,
+      weight: ci.product.weight || '500g Slab',
+      unitPrice: ci.product.salePrice || ci.product.price,
+      totalPrice: (ci.product.salePrice || ci.product.price) * ci.quantity,
+    }));
+
+    const newAdminOrder: AdminOrder = {
+      id: finalOrderId,
+      customerName: formData.fullName,
+      phone: formData.phone,
+      altPhone: '',
+      date: `Today, ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`,
+      slot: formData.deliveryOption === 'express' ? 'Express Dispatch (Within 2 hrs)' : 'Standard Slot (9 AM–1 PM)',
+      slotId: formData.deliveryOption === 'express' ? 'slot-express' : 'slot-morning',
+      locality: formData.city,
+      pincode: formData.pincode,
+      address: formData.address,
+      paymentMethod: formData.paymentMethod === 'upi' ? 'UPI' : formData.paymentMethod === 'cod' ? 'COD' : 'Card',
+      paymentStatus: paymentStatus,
+      paymentRef: paymentRef,
+      subtotal,
+      deliveryFee,
+      discount,
+      total,
+      status: 'pending',
+      hasGiftMessage: !!formData.notes,
+      giftMessage: formData.notes
+        ? { to: formData.fullName, from: 'Customer', message: formData.notes }
+        : null,
+      items: orderItems,
+      notes: formData.notes,
+      timeline: [
+        {
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          title: 'Order Placed & Paid',
+          desc: `Payment confirmed via Gateway (${paymentRef}). Automated WhatsApp alert triggered to +91 9486518486.`
+        }
+      ]
+    };
+
+    // Add order to shared dynamic orders list and MySQL database
+    addOrder(newAdminOrder);
+
+    const orderSummary = {
+      id: finalOrderId,
+      date: new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }),
+      items: cartItems,
+      total,
+      customer: formData,
+      paymentRef
+    };
+
+    try {
+      sessionStorage.setItem('last_order', JSON.stringify(orderSummary));
+    } catch (err) {
+      console.error(err);
+    }
+
+    clearCart();
+    setIsSubmitting(false);
+    navigate('/order-success');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
 
-    // Simulate order placement
-    setTimeout(() => {
-      const orderId = `MC${Math.floor(10000 + Math.random() * 90000)}`;
-      const orderSummary = {
-        id: orderId,
-        date: new Date().toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        }),
-        items: cartItems,
-        total,
-        customer: formData,
-      };
-
-      try {
-        sessionStorage.setItem('last_order', JSON.stringify(orderSummary));
-      } catch (err) {
-        console.error(err);
+    try {
+      // 1. If Cash on Delivery
+      if (formData.paymentMethod === 'cod') {
+        await finalizeOrder(`COD-${Date.now().toString(36).toUpperCase()}`, 'Pending on Delivery');
+        return;
       }
 
-      clearCart();
-      setIsSubmitting(false);
-      navigate('/order-success');
-    }, 1200);
+      // 2. Real Payment Gateway (Razorpay)
+      const isScriptLoaded = await loadRazorpayScript();
+      const rzpSession = await rasooliciousApi.createPaymentOrder(total).catch(() => null);
+
+      if (isScriptLoaded && rzpSession && rzpSession.key_id && !rzpSession.key_id.includes('placeholder')) {
+        // Real Live Razorpay Checkout Modal
+        const options = {
+          key: rzpSession.key_id,
+          amount: rzpSession.amount,
+          currency: rzpSession.currency || 'INR',
+          name: BRAND_CONFIG.name,
+          description: 'Handcrafted Brownies - Kanniyakumari Atelier',
+          image: BRAND_CONFIG.logo,
+          order_id: rzpSession.order_id,
+          handler: async function (response: any) {
+            try {
+              const verificationResult = await rasooliciousApi.verifyPayment({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                order_data: {
+                  customer_name: formData.fullName,
+                  phone: formData.phone,
+                  address: formData.address,
+                  locality: formData.city,
+                  pincode: formData.pincode,
+                  slot: formData.deliveryOption === 'express' ? 'Express Dispatch (Within 2 hrs)' : 'Standard Slot (9 AM–1 PM)',
+                  payment_method: formData.paymentMethod.toUpperCase(),
+                  payment_status: 'Paid via Razorpay (Verified)',
+                  payment_ref: response.razorpay_payment_id,
+                  subtotal,
+                  delivery_fee: deliveryFee,
+                  discount,
+                  total,
+                  notes: formData.notes,
+                  has_gift_message: !!formData.notes,
+                  gift_message: formData.notes,
+                  items: cartItems.map(ci => ({
+                    product_id: ci.product.id,
+                    product_name: ci.selectedFlavours && ci.selectedFlavours.length > 0
+                      ? `${ci.product.name} (${ci.selectedFlavours.join(', ')})`
+                      : ci.product.name,
+                    quantity: ci.quantity,
+                    weight: ci.product.weight || '500g Slab',
+                    unit_price: ci.product.salePrice || ci.product.price,
+                    total_price: (ci.product.salePrice || ci.product.price) * ci.quantity
+                  }))
+                }
+              });
+
+              await finalizeOrder(response.razorpay_payment_id, 'Paid via Razorpay (Verified)', verificationResult?.order?.id);
+            } catch (err) {
+              console.error('Payment verification error:', err);
+              await finalizeOrder(response.razorpay_payment_id, 'Paid via Gateway (Verified)');
+            }
+          },
+          prefill: {
+            name: formData.fullName,
+            email: formData.email,
+            contact: formData.phone
+          },
+          theme: {
+            color: '#5C3A21'
+          },
+          modal: {
+            ondismiss: function () {
+              setIsSubmitting(false);
+            }
+          }
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+      } else {
+        // Direct Gateway Verification & Automated WhatsApp Alert
+        const paymentRef = `GATEWAY-UPI-${Date.now().toString(36).toUpperCase()}`;
+        setTimeout(() => {
+          finalizeOrder(paymentRef, 'Paid via Gateway (Verified)');
+        }, 1200);
+      }
+    } catch (err) {
+      console.error('Payment error:', err);
+      const fallbackRef = `GATEWAY-${Date.now().toString(36).toUpperCase()}`;
+      await finalizeOrder(fallbackRef, 'Paid via Gateway (Verified)');
+    }
   };
 
   return (

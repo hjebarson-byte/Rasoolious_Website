@@ -64,6 +64,9 @@ export const TopNav: React.FC = () => {
       ).slice(0, 3)
     : [];
 
+  const pendingOrders = orders.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
+  const pendingSlabs = pendingOrders.reduce((sum, ord) => sum + ord.items.reduce((s, it) => s + it.quantity, 0), 0);
+
   return (
     <header className="sticky top-0 z-40 h-16 bg-white/95 backdrop-blur-md border-b border-border shadow-[0_1px_6px_rgba(43,27,23,0.03)] flex items-center justify-between px-4 sm:px-8 font-body">
       {/* Left: Mobile Toggle & Breadcrumb */}
@@ -178,11 +181,13 @@ export const TopNav: React.FC = () => {
           <span className="text-xs font-bold text-espresso">Ovens Online</span>
         </div>
 
-        {/* 14 Slabs in Progress Badge */}
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFDDB6]/70 border border-[#EAE2D8] text-[#402600]">
-          <span className="material-symbols-outlined text-[17px] text-[#795548]">skillet</span>
-          <span className="text-xs font-bold tracking-tight">14 Slabs in Progress</span>
-        </div>
+        {/* Live Pending Slabs Badge */}
+        {pendingSlabs > 0 && (
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFDDB6]/70 border border-[#EAE2D8] text-[#402600]">
+            <span className="material-symbols-outlined text-[17px] text-[#795548]">skillet</span>
+            <span className="text-xs font-bold tracking-tight">{pendingSlabs} Slabs in Progress</span>
+          </div>
+        )}
 
         {/* Notifications Bell */}
         <div className="relative" ref={notifRef}>

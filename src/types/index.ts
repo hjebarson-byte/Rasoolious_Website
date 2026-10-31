@@ -3,6 +3,8 @@ export type CategoryType =
   | 'Signature Brownies' 
   | 'Gift Boxes';
 
+export type ProductStatus = 'In Stock' | 'Limited Stock' | 'Sold Out';
+
 export interface Product {
   id: string;
   name: string;
@@ -10,6 +12,10 @@ export interface Product {
   category: CategoryType;
   price: number;
   originalPrice?: number;
+  salePrice?: number;
+  dailyLimit?: number;
+  booked?: number;
+  status?: ProductStatus;
   rating: number;
   reviews: number;
   shortDescription: string;
@@ -17,7 +23,7 @@ export interface Product {
   image: string;
   gallery: string[];
   badge?: 'BEST SELLER' | 'NEW' | 'LIMITED' | 'SALE' | 'CHEF SPECIAL';
-  ingredients: string[];
+  ingredients: string[] | string;
   allergens: string[];
   storageInfo: string;
   deliveryInfo: string;
@@ -26,6 +32,8 @@ export interface Product {
   isSignature?: boolean;
   weight?: string;
   pieces?: string;
+  freshToday?: boolean;
+  featured?: boolean;
 }
 
 export interface CartItem {
