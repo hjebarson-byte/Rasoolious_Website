@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { AdminProvider } from './admin/context/AdminContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { Navbar } from './components/Navbar';
@@ -96,25 +97,27 @@ export const App: React.FC = () => {
 
   return (
     <Router>
-      <CartProvider>
-        <WishlistProvider>
-          {/* Branded Rasoolicious Splash Loader (Storefront) */}
-          <AnimatePresence>
-            {initialLoading && (
-              <motion.div
-                key="splash-loader"
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-              >
-                <RasooliciousLoader variant="fullscreen" />
-              </motion.div>
-            )}
-          </AnimatePresence>
+      <AdminProvider>
+        <CartProvider>
+          <WishlistProvider>
+            {/* Branded Rasoolicious Splash Loader (Storefront) */}
+            <AnimatePresence>
+              {initialLoading && (
+                <motion.div
+                  key="splash-loader"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                >
+                  <RasooliciousLoader variant="fullscreen" />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          <AppRoutes />
-        </WishlistProvider>
-      </CartProvider>
+            <AppRoutes />
+          </WishlistProvider>
+        </CartProvider>
+      </AdminProvider>
     </Router>
   );
 };

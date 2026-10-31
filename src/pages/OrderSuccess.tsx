@@ -37,7 +37,7 @@ export const OrderSuccess: React.FC = () => {
   }, []);
 
   const getOwnerWhatsAppUrl = (ord: any) => {
-    const rawPhone = BRAND_CONFIG.contact.phone || '9489201823';
+    const rawPhone = BRAND_CONFIG.contact.phone || '9486518486';
     const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
     const phoneWithCountry = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
 

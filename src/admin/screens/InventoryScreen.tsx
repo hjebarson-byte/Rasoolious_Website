@@ -30,10 +30,13 @@ export const InventoryScreen: React.FC = () => {
     }
     if (inventorySearch.trim()) {
       const q = inventorySearch.toLowerCase();
+      const ingStr = Array.isArray(prod.ingredients)
+        ? prod.ingredients.join(' ')
+        : (prod.ingredients || '');
       return (
         prod.name.toLowerCase().includes(q) ||
         prod.category.toLowerCase().includes(q) ||
-        prod.ingredients.toLowerCase().includes(q)
+        ingStr.toLowerCase().includes(q)
       );
     }
     return true;

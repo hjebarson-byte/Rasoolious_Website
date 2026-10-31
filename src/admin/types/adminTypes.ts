@@ -55,19 +55,32 @@ export interface Order {
 export interface Product {
   id: string;
   name: string;
+  slug?: string;
   category: string;
   price: number;
+  originalPrice?: number;
   salePrice?: number;
   weight: string;
   dailyLimit: number;
   booked: number;
   status: ProductStatus;
   image: string;
+  gallery?: string[];
   description: string;
-  ingredients: string;
+  shortDescription?: string;
+  ingredients: string | string[];
   allergens: string[];
-  freshToday: boolean;
-  featured: boolean;
+  freshToday?: boolean;
+  featured?: boolean;
+  rating?: number;
+  reviews?: number;
+  badge?: string;
+  storageInfo?: string;
+  deliveryInfo?: string;
+  available?: boolean;
+  isEggless?: boolean;
+  isSignature?: boolean;
+  pieces?: string;
 }
 
 export interface DeliverySlot {

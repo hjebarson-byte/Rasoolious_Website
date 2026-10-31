@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { Product } from '../types';
-import { PRODUCTS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
 
 interface WishlistContextType {
   wishlistIds: string[];
@@ -67,7 +67,8 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return wishlistIds.length;
   };
 
-  const wishlistProducts = PRODUCTS.filter((p) => wishlistIds.includes(p.id));
+  const { products } = useAdmin();
+  const wishlistProducts = (products as Product[]).filter((p) => wishlistIds.includes(p.id));
 
   return (
     <WishlistContext.Provider

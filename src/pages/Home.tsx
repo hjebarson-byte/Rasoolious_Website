@@ -14,7 +14,8 @@ import {
   Gift
 } from 'lucide-react';
 import { BRAND_CONFIG } from '../config/brand';
-import { PRODUCTS, TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
+import { TESTIMONIALS, INSTAGRAM_POSTS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
 import type { Product } from '../types';
 import { SectionHeading } from '../components/SectionHeading';
 import { ProductCard } from '../components/ProductCard';
@@ -25,12 +26,13 @@ import { ScrollVideoStory } from '../components/ScrollVideoStory';
 import { BuildYourOwnBoxModal } from '../components/BuildYourOwnBoxModal';
 
 export const Home: React.FC = () => {
+  const { products } = useAdmin();
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isBoxModalOpen, setIsBoxModalOpen] = useState(false);
 
-  // 5 Signature Flavours
-  const signatureBrownies = PRODUCTS.filter((p) => p.category === 'Signature Brownies');
-  const giftBoxProduct = PRODUCTS.find((p) => p.id === 'rasoolicious-gift-box') || PRODUCTS[0];
+  // Dynamic 5 Signature Flavours and Gift Box from live store
+  const signatureBrownies = (products as Product[]).filter((p) => p.category === 'Signature Brownies');
+  const giftBoxProduct = (products as Product[]).find((p) => p.id === 'rasoolicious-gift-box') || (products as Product[])[0];
 
   return (
     <div className="pt-24 sm:pt-28">

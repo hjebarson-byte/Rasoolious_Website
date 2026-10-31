@@ -11,7 +11,8 @@ import {
   ChevronDown 
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
+import type { Product } from '../types';
 
 const TOTAL_FRAMES = 120;
 
@@ -24,7 +25,8 @@ export const ScrollVideoStory: React.FC = () => {
   const [isAdded, setIsAdded] = useState(false);
 
   const { addToCart } = useCart();
-  const matchedProduct = PRODUCTS.find((p) => p.id === 'br-rasool') || PRODUCTS[0];
+  const { products } = useAdmin();
+  const matchedProduct = (products as Product[]).find((p) => p.id === 'br-rasool') || (products as Product[])[0];
 
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);

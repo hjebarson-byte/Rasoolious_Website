@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { X, Check, Gift, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS } from '../data/products';
+import { useAdmin } from '../admin/context/AdminContext';
+import type { Product } from '../types';
 
 interface BuildYourOwnBoxModalProps {
   isOpen: boolean;
@@ -10,11 +11,12 @@ interface BuildYourOwnBoxModalProps {
 
 export const BuildYourOwnBoxModal: React.FC<BuildYourOwnBoxModalProps> = ({ isOpen, onClose }) => {
   const { addToCart } = useCart();
+  const { products } = useAdmin();
   const [selected, setSelected] = useState<string[]>([]);
   const [isAdded, setIsAdded] = useState(false);
 
-  const giftBoxProduct = PRODUCTS.find((p) => p.id === 'rasoolicious-gift-box') || PRODUCTS[0];
-  const signatureProducts = PRODUCTS.filter((p) => p.category === 'Signature Brownies');
+  const giftBoxProduct = (products as Product[]).find((p) => p.id === 'rasoolicious-gift-box') || (products as Product[])[0];
+  const signatureProducts = (products as Product[]).filter((p) => p.category === 'Signature Brownies');
 
   if (!isOpen) return null;
 
@@ -132,11 +134,16 @@ export const BuildYourOwnBoxModal: React.FC<BuildYourOwnBoxModalProps> = ({ isOp
           {signatureProducts.map((p) => {
             const count = countForFlavour(p.name);
             const isFull = selected.length >= 4;
+            const isSoldOut = p.status === 'Sold Out' || p.available === false;
 
             return (
               <div
                 key={p.id}
-                className="flex items-center justify-between p-3 rounded-2xl bg-white border border-cream-200 hover:border-caramel-300 transition-all shadow-xs"
+                className={`flex items-center justify-between p-3 rounded-2xl bg-white border transition-all shadow-xs ${
+                  isSoldOut
+                    ? 'border-cream-200/60 opacity-60 bg-cream-50/50'
+                    : 'border-cream-200 hover:border-caramel-300'
+                }`}
               >
                 <div className="flex items-center gap-3 min-w-0 pr-2">
                   <img
@@ -149,11 +156,15 @@ export const BuildYourOwnBoxModal: React.FC<BuildYourOwnBoxModalProps> = ({ isOp
                       <span className="font-serif text-sm font-semibold text-chocolate-950">
                         {p.name}
                       </span>
-                      {p.badge && (
+                      {isSoldOut ? (
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-700">
+                          Sold Out
+                        </span>
+                      ) : p.badge ? (
                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-caramel-100 text-caramel-700">
                           {p.badge}
                         </span>
-                      )}
+                      ) : null}
                     </div>
                     <p className="text-[11px] text-chocolate-500 line-clamp-1">
                       {p.shortDescription}
@@ -182,9 +193,9 @@ export const BuildYourOwnBoxModal: React.FC<BuildYourOwnBoxModalProps> = ({ isOp
                   <button
                     type="button"
                     onClick={() => handleAddFlavour(p.name)}
-                    disabled={isFull}
+                    disabled={isFull || isSoldOut}
                     className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors ${
-                      !isFull
+                      !isFull && !isSoldOut
                         ? 'bg-chocolate-900 text-white hover:bg-caramel-600'
                         : 'bg-cream-100 text-chocolate-300 cursor-not-allowed'
                     }`}
@@ -201,7 +212,9 @@ export const BuildYourOwnBoxModal: React.FC<BuildYourOwnBoxModalProps> = ({ isOp
         <div className="pt-4 border-t border-cream-100 flex flex-col sm:flex-row items-center justify-between gap-3 mt-2">
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold text-chocolate-950">₹{giftBoxProduct.price}</span>
+              <span className="text-xl font-bold text-chocolate-950">
+                ₹{giftBoxProduct.salePrice || giftBoxProduct.price}
+              </span>
               {giftBoxProduct.originalPrice && (
                 <span className="text-xs text-chocolate-400 line-through">₹{giftBoxProduct.originalPrice}</span>
               )}

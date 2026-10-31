@@ -7,12 +7,21 @@ import {
   Clock, 
   Truck 
 } from 'lucide-react';
+import { useAdmin } from '../context/AdminContext';
 import { INITIAL_ANALYTICS } from '../data/initialAdminData';
 
 export const AnalyticsScreen: React.FC = () => {
+  const { orders } = useAdmin();
   const [period, setPeriod] = useState<'today' | 'week' | 'month'>('today');
 
   const currPeriodData = INITIAL_ANALYTICS.revenuePeriods[period];
+  const liveTodayTotal = orders.reduce((sum, ord) => sum + ord.total, 0);
+  const liveTodayOrders = orders.length;
+
+  const displayTotal = period === 'today' ? liveTodayTotal : currPeriodData.total;
+  const displayOrders = period === 'today' ? liveTodayOrders : currPeriodData.orders;
+  const avgOrderVal = displayOrders > 0 ? Math.round(displayTotal / displayOrders) : 0;
+
   const maxVal = Math.max(...currPeriodData.data);
 
   return (
@@ -54,7 +63,7 @@ export const AnalyticsScreen: React.FC = () => {
             Period Revenue ({period.toUpperCase()})
           </span>
           <div className="font-serif font-black text-3xl text-chocolate-950">
-            ₹{currPeriodData.total.toLocaleString()}
+            ₹{displayTotal.toLocaleString()}
           </div>
           <p className="text-xs text-emerald-700 font-semibold pt-1">
             ↑ +18.4% above target
@@ -66,10 +75,10 @@ export const AnalyticsScreen: React.FC = () => {
             Orders Fulfilled
           </span>
           <div className="font-serif font-black text-3xl text-chocolate-950">
-            {currPeriodData.orders} orders
+            {displayOrders} orders
           </div>
           <p className="text-xs text-caramel-700 font-semibold pt-1">
-            Average Order Value: ₹{Math.round(currPeriodData.total / currPeriodData.orders)}
+            Average Order Value: ₹{avgOrderVal}
           </p>
         </div>
 

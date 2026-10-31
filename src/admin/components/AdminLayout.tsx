@@ -32,14 +32,14 @@ export const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface text-espresso font-body flex flex-col selection:bg-caramel-200 selection:text-espresso">
-      {/* Top Application Header */}
-      <TopNav />
+    <div className="min-h-screen bg-surface text-espresso font-body flex selection:bg-caramel-200 selection:text-espresso">
+      {/* Navigation Sidebar */}
+      <Sidebar />
 
-      {/* Body container: Sidebar + Main Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Navigation Sidebar */}
-        <Sidebar />
+      {/* Main Workspace Column */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        {/* Top Application Header */}
+        <TopNav />
 
         {/* Primary Content Workspace */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-surface">
